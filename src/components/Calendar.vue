@@ -3,7 +3,7 @@
     <v-col>
       <v-sheet height="64">
         <v-toolbar flat>
-          <v-btn color="primary" class="mr-4" @click="dialog = true">
+          <v-btn color="primary" class="mr-4" @click="StartNewEvent">
             New Event
           </v-btn>
           <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
@@ -24,7 +24,8 @@
           </v-btn>
           <v-toolbar-title v-if="$refs.calendar">
             {{ $refs.calendar.title }}
-          </v-toolbar-title>
+          </v-toolbar-title>>
+
           <v-spacer></v-spacer>
           <v-menu bottom right>
             <template v-slot:activator="{ on, attrs }">
@@ -34,18 +35,21 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item @click="type = 'day'">
-                <v-list-item-title>Day</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'week'">
-                <v-list-item-title>Week</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'month'">
+             <v-list-item @click="type = 'month'">
                 <v-list-item-title>Month</v-list-item-title>
+              </v-list-item>
+               <v-list-item @click="type = 'week'">
+                <v-list-item-title>Week</v-list-item-title>
               </v-list-item>
               <v-list-item @click="type = '4day'">
                 <v-list-item-title>4 days</v-list-item-title>
               </v-list-item>
+              <v-list-item @click="type = 'day'">
+                <v-list-item-title>Day</v-list-item-title>
+              </v-list-item>
+             
+             
+              
             </v-list>
           </v-menu>
         </v-toolbar>
@@ -55,7 +59,7 @@
       <v-dialog v-model="dialog" max-width="500">
         <v-card>
           <v-container>
-            <v-form @submit.prevent="addEvent">
+            <v-form @submit.prevent="addEvent" v-if="this.endEndDrag === ''">
               <v-text-field
                 v-model="name"
                 type="text"
@@ -65,12 +69,10 @@
                 v-model="details"
                 type="text"
                 label="detail"
-                min="minDate"
               ></v-text-field>
               <v-text-field
                 v-model="start"
                 type="datetime-local"
-                :value="startEndDrag"
                 label="start (required)"
               ></v-text-field>
               <v-text-field
@@ -92,6 +94,29 @@
                 Create Event
               </v-btn>
             </v-form>
+            <v-form @submit.prevent="addEventDrag" v-else>
+              <v-text-field
+                v-model="name"
+                type="text"
+                label="event name (required)"
+                value="type"
+              ></v-text-field>
+              <v-text-field
+                v-model="details"
+                type="text"
+                label="detail"
+                value=""
+              ></v-text-field>
+              <v-btn
+                type="submit"
+                color="primary"
+                class="mr-4"
+                @click.stop="dialog = false"
+                
+              >
+                Create Event
+              </v-btn>
+            </v-form>
           </v-container>
         </v-card>
       </v-dialog>
@@ -108,7 +133,7 @@
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
-          @mousedown:event="startDrag"
+
           @mousedown:time="startTime"
           @mousemove:time="mouseMove"
           @mouseup:time="endDrag"
@@ -123,6 +148,7 @@
             ></div>
           </template>
         </v-calendar>
+
         <v-menu
           v-model="selectedOpen"
           :close-on-content-click="false"
@@ -192,8 +218,6 @@ export default {
     details: null,
     start: null,
     end: null,
-    startEndDrag: null,
-    endEndDrag: null,
     color: "#1936D2",
     colors: [
       "#2196F3",
@@ -222,12 +246,15 @@ export default {
     dialog: false,
     value: "",
     ready: false,
+    startEndDrag: "",
+    endEndDrag: "",
 
     dragEvent: null,
     dragStart: null,
     createEvent: null,
     createStart: null,
     extendOriginal: null,
+
   }),
   computed: {
     // 달력 제목 (주 단위 경우 5~6월 사이면 표시하기)
@@ -268,8 +295,8 @@ export default {
 
   mounted() {
     this.getEvents();
-    let idName = 1;
-    let isDown = false;
+    this.$axios.get("/api/0").then((res) => {
+    });
   },
   methods: {
     // 여기가 이벤트를 이벤트로 받아주는곳
@@ -300,13 +327,35 @@ export default {
         this.getEvents();
         this.name = "";
         this.details = "";
-        this.start = "";
-        this.end = "";
         this.endEndDrag = "";
         this.startEndDrag = "";
+        this.start = "";
+        this.end = "";
         this.color = "#1936D2";
       } else {
         alert("Name, Start and End date are required");
+      }
+    },
+  
+    async addEventDrag() {
+      if (this.name) {
+        await db.collection("calEvent").add({
+          name: this.name,
+          details: this.details,
+          start: this.startEndDrag,
+          end: this.endEndDrag,
+          color: this.color,
+        });
+        this.getEvents();
+        this.name = "";
+        this.details = "";
+        this.endEndDrag = "";
+        this.startEndDrag = "";
+        this.start = "";
+        this.end = "";
+        this.color = "#1936D2";
+      } else {
+        alert("Name is required");
       }
     },
 
@@ -412,7 +461,6 @@ export default {
         this.dragTime = mouse - start;
       } else {
         this.createStart = this.roundTime(mouse);
-
         this.createEvent = {
           name: `Event #${this.events.length}`,
           color: this.rndElement(this.colors),
@@ -456,7 +504,9 @@ export default {
         this.isDown = false;
         this.dialog = true;
         this.endEndDrag = tms.date + "T" + tms.time;
+        this.color = this.createEvent.color;
       }
+      this.events.pop();
       this.dragTime = null;
       this.dragEvent = null;
       this.createEvent = null;
@@ -497,6 +547,10 @@ export default {
         tms.minute
       ).getTime();
     },
+    StartNewEvent(){
+      this.dialog = true;
+      this.endEndDrag = '';
+    }
   },
 };
 </script>

@@ -4,6 +4,9 @@ import vuetify from "./plugins/vuetify";
 import VueTextareaAutoSize from "vue-textarea-autosize";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import axios from "axios";
+
+Vue.prototype.$axios = axios;
 
 Vue.use(VueTextareaAutoSize);
 

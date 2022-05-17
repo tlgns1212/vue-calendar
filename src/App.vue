@@ -7,8 +7,7 @@
 </template>
 
 <script>
-import Calendar from "./components/Calendar";
-
+import Calendar from "./components/RadialChart";
 export default {
   name: "App",
 
