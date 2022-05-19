@@ -1,18 +1,22 @@
 <template>
   <v-app>
     <v-main>
-      <Calendar />
+      <div>
+        <main-header></main-header>
+        <router-view></router-view>
+      </div>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Calendar from "./components/RadialChart";
+import MainHeader from './components/MainHeader.vue';
+
 export default {
-  name: "App",
+  name: 'App',
 
   components: {
-    Calendar,
+    'main-header': MainHeader,
   },
 
   data: () => ({

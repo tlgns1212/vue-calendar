@@ -3,7 +3,7 @@
     <v-col>
       <v-sheet height="64">
         <v-toolbar flat>
-          <v-btn color="primary" class="mr-4" @click="dialog = true"> New Event </v-btn>
+          <v-btn color="primary" class="mr-4" @click="StartNewEvent"> New Event </v-btn>
           <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday"> Today </v-btn>
           <v-btn fab text small color="grey darken-2" @click="prev">
             <v-icon small> mdi-chevron-left </v-icon>
@@ -12,8 +12,9 @@
             <v-icon small> mdi-chevron-right </v-icon>
           </v-btn>
           <v-toolbar-title v-if="$refs.calendar">
-            {{ $refs.calendar.title }}
-          </v-toolbar-title>
+            {{ $refs.calendar.title }} </v-toolbar-title
+          >>
+
           <v-spacer></v-spacer>
           <v-menu bottom right>
             <template v-slot:activator="{ on, attrs }">
@@ -23,17 +24,17 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item @click="type = 'day'">
-                <v-list-item-title>Day</v-list-item-title>
+              <v-list-item @click="type = 'month'">
+                <v-list-item-title>Month</v-list-item-title>
               </v-list-item>
               <v-list-item @click="type = 'week'">
                 <v-list-item-title>Week</v-list-item-title>
               </v-list-item>
-              <v-list-item @click="type = 'month'">
-                <v-list-item-title>Month</v-list-item-title>
-              </v-list-item>
               <v-list-item @click="type = '4day'">
                 <v-list-item-title>4 days</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="type = 'day'">
+                <v-list-item-title>Day</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -44,12 +45,17 @@
       <v-dialog v-model="dialog" max-width="500">
         <v-card>
           <v-container>
-            <v-form @submit.prevent="addEvent">
+            <v-form @submit.prevent="addEvent" v-if="this.endEndDrag === ''">
               <v-text-field v-model="name" type="text" label="event name (required)"></v-text-field>
               <v-text-field v-model="details" type="text" label="detail"></v-text-field>
-              <v-text-field v-model="start" type="date" label="start (required)"></v-text-field>
-              <v-text-field v-model="end" type="date" label="end (required)"></v-text-field>
+              <v-text-field v-model="start" type="datetime-local" label="start (required)"></v-text-field>
+              <v-text-field v-model="end" type="datetime-local" label="end (required)"></v-text-field>
               <v-text-field v-model="color" type="color" label="color (click to open color menu)"></v-text-field>
+              <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog = false"> Create Event </v-btn>
+            </v-form>
+            <v-form @submit.prevent="addEventDrag" v-else>
+              <v-text-field v-model="name" type="text" label="event name (required)" value="type"></v-text-field>
+              <v-text-field v-model="details" type="text" label="detail" value=""></v-text-field>
               <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog = false"> Create Event </v-btn>
             </v-form>
           </v-container>
@@ -68,7 +74,6 @@
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
-          @mousedown:event="startDrag"
           @mousedown:time="startTime"
           @mousemove:time="mouseMove"
           @mouseup:time="endDrag"
@@ -78,6 +83,7 @@
             <div v-if="timed" class="v-event-drag-bottom" @mousedown.stop="extendBottom(event)"></div>
           </template>
         </v-calendar>
+
         <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
           <v-card color="grey lighten-4" min-width="350px" flat>
             <v-toolbar :color="selectedEvent.color" dark>
@@ -144,6 +150,8 @@ export default {
     dialog: false,
     value: '',
     ready: false,
+    startEndDrag: '',
+    endEndDrag: '',
 
     dragEvent: null,
     dragStart: null,
@@ -190,6 +198,7 @@ export default {
 
   mounted() {
     this.getEvents();
+    this.$axios.get('/api/0').then(res => {});
   },
   methods: {
     // 여기가 이벤트를 이벤트로 받아주는곳
@@ -220,11 +229,35 @@ export default {
         this.getEvents();
         this.name = '';
         this.details = '';
+        this.endEndDrag = '';
+        this.startEndDrag = '';
         this.start = '';
         this.end = '';
         this.color = '#1936D2';
       } else {
         alert('Name, Start and End date are required');
+      }
+    },
+
+    async addEventDrag() {
+      if (this.name) {
+        await db.collection('calEvent').add({
+          name: this.name,
+          details: this.details,
+          start: this.startEndDrag,
+          end: this.endEndDrag,
+          color: this.color,
+        });
+        this.getEvents();
+        this.name = '';
+        this.details = '';
+        this.endEndDrag = '';
+        this.startEndDrag = '';
+        this.start = '';
+        this.end = '';
+        this.color = '#1936D2';
+      } else {
+        alert('Name is required');
       }
     },
 
@@ -321,7 +354,7 @@ export default {
     },
     startTime(tms) {
       const mouse = this.toTime(tms);
-
+      this.startEndDrag = tms.date + 'T' + tms.time;
       if (this.dragEvent && this.dragTime === null) {
         const start = this.dragEvent.start;
 
@@ -335,6 +368,7 @@ export default {
           end: this.createStart,
           timed: true,
         };
+        this.isDown = true;
 
         this.events.push(this.createEvent);
       }
@@ -346,7 +380,6 @@ export default {
     },
     mouseMove(tms) {
       const mouse = this.toTime(tms);
-
       if (this.dragEvent && this.dragTime !== null) {
         const start = this.dragEvent.start;
         const end = this.dragEvent.end;
@@ -366,8 +399,14 @@ export default {
         this.createEvent.end = max;
       }
     },
-    endDrag() {
-      this.dialog = true;
+    endDrag(tms) {
+      if (this.isDown == true) {
+        this.isDown = false;
+        this.dialog = true;
+        this.endEndDrag = tms.date + 'T' + tms.time;
+        this.color = this.createEvent.color;
+      }
+      this.events.pop();
       this.dragTime = null;
       this.dragEvent = null;
       this.createEvent = null;
@@ -392,13 +431,17 @@ export default {
       this.dragEvent = null;
     },
     roundTime(time, down = true) {
-      const roundTo = 15; // minutes
+      const roundTo = 5; // minutes
       const roundDownTime = roundTo * 60 * 1000;
 
       return down ? time - (time % roundDownTime) : time + (roundDownTime - (time % roundDownTime));
     },
     toTime(tms) {
       return new Date(tms.year, tms.month - 1, tms.day, tms.hour, tms.minute).getTime();
+    },
+    StartNewEvent() {
+      this.dialog = true;
+      this.endEndDrag = '';
     },
   },
 };

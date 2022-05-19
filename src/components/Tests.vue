@@ -19,6 +19,9 @@
       <div id="app">
         <v-btn @click="dialogEtc4 = true">Etc4 리스트</v-btn>
       </div>
+      <div>
+        <p>{{this.events.data.announcementSchedules}}</p>
+        </div>
 
     </v-main>
     <v-dialog v-model="dialogOpic" max-width="500" @click="whatKind='opic'">
@@ -60,6 +63,25 @@
           </v-container>
         </v-card>
       </v-dialog>
+      <v-dialog v-model="dialogEtc1" max-width="500" @click="whatKind='test'">
+        <v-card >
+          <v-container >
+            <v-form >
+            <div id="app" v-for="item in this.events.data" :key="item.id" @submit.prevent="addEvent" >
+              <v-btn
+              type="submit"
+                color="primary"
+                class="mr-4"
+                @click.stop="dialogToeic = false"
+                value=item.date
+              >
+                {{item}}
+              </v-btn>
+              </div>
+            </v-form>
+          </v-container>
+        </v-card>
+      </v-dialog>
   </v-app>
   
 </template>
@@ -72,6 +94,7 @@ import { db } from "@/main";
 export default {
   data: () => ({
     events: [],
+    eventsServer: [],
     eventsOpic:[],
         eventsToeic:[],
     dialogOpic : false,
@@ -90,7 +113,7 @@ export default {
     async getEvents() {
       this.$axios
         .get(
-          "api/0/user-schedules"
+          "api/0"
         )
         .then((res) => {
           this.events = res;
