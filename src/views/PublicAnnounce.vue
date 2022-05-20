@@ -4,7 +4,7 @@
     <v-dialog v-model="dialog" max-width="500">
       <v-card>
         <v-container>
-          <v-form @submit.prevent="addEvent">
+          <v-form @submit.prevent="updateEvent">
             <v-text-field v-model="PSid" type="text" label="name"></v-text-field>
             <v-text-field v-model="PSDetail" type="text" label="detail"></v-text-field>
             <v-text-field v-model="PSSTime" type="datetime-local" label="start (required)"></v-text-field>
@@ -15,11 +15,14 @@
         </v-container>
       </v-card>
     </v-dialog>
-    <p>{{ this.events.data }}</p>
+    <p>{{ this.events[0]}}</p>
   </div>
 </template>
 
 <script>
+import { db } from '@/main';
+
+
 export default {
   data: () => ({
     dialog: false,
@@ -37,27 +40,28 @@ export default {
     this.getEvents();
   },
   methods: {
-    // async getEvents() {
-    //   this.$axios.get('api/0/user-targets').then(res => {
-    //     this.events = res;
-    //   });
-    // },
-    async getEvents() {
-      this.$axios.get('api/0/user-schedules').then(res => {
-        this.events = res.data;
+    // 여기가 이벤트를 이벤트로 받아주는곳
+   async getEvents() {
+      // db에 저장된 걸 가져와서
+      let snapshot = await db.collection('user').get();
+      let events = [];
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
       });
+      // 이벤트를 위에 있는 data()의 events에 넣어준다.
+      this.events = events;
     },
     async addEvent() {
-        this.$axios.post('pi/0/user-schedules',{
-          personalSchedules: {          observation: true,
-          // date: PSSTime.substr(0,10),
-          // detail: PSDetail,
-          // s_time: PSSTime,
-          // e_time: PSETime,
-          date: "2022-05-18",
+        this.$axios.post('api/0/user-schedules',{
+          observation: true,
+          date: "2022-05-19",
           detail: "Meet Sihoon at his house",
           s_time: "10:50",
-          e_time: "22:30",}
+          e_time: "22:30",
         }
 
           ).then(res=>{
@@ -73,6 +77,21 @@ export default {
         this.PSETime = '';
         this.color = '#1936D2';
     },
+    async deleteEvent(ev) {
+      this.$axios.delete('api/0/user-schedules/0',{
+        [target-date]:"2020-03-01"
+      }).then(res => {console.log(res)});
+
+      this.selectedOpen = false;
+      this.getEvents();
+    },
+    async updateEvent(ev) {
+      await db.collection('user').doc("KF1tl1R42f9NurZ7bl9c").update({
+        myToeicScore: "300",
+      });
+      this.getEvents();
+    },
+    
   },
 };
 </script>

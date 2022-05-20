@@ -32,9 +32,9 @@
           <td class="txt_left">
             <p>{{ item.position.title }}</p>
             <v-btn :href="item.url">자세히 보기</v-btn>
-            <v-btn @click="consoleGo">일정에 추가</v-btn>
+            <v-btn @click="consoleGo(item)" 
+            >일정에 추가</v-btn>
           </td>
-
           <td>{{ item.company.detail.name }}</td>
           <td v-if="item['expiration-timestamp'] > 1700000000">상시 채용</td>
           <td v-else>{{ UnixToDate(item['opening-timestamp']) }} ~ {{ UnixToDate(item['expiration-timestamp']) }}</td>
@@ -56,6 +56,11 @@ import { db } from '@/main';
 
 export default {
   data: () => ({
+    name: "",
+    details : "",
+    start: "",
+    end : "",
+    color : "red",
     events: [],
     keyword: '',
     loc_cd: '',
@@ -141,8 +146,34 @@ export default {
       const formattedTime = `${year}-${month}-${dt}`;
       return formattedTime;
     },
-    consoleGo() {
-      alert('입력에 추가하는거 해야함');
+    async consoleGo(item) {
+if(item['expiration-timestamp'] > 1700000000){
+        await db.collection('calEvent').add({
+          name:item.company.detail.name + " [상시 모집]",
+          details: item.position.title,
+          start: this.UnixToDate(item['opening-timestamp']),
+          end: this.UnixToDate(item['opening-timestamp']),
+          color: "red",
+        });
+}
+else{
+  await db.collection('calEvent').add({
+  name:item.company.detail.name + " [모집 시작일]",
+          details: item.position.title,
+          start: this.UnixToDate(item['opening-timestamp']),
+          end: this.UnixToDate(item['opening-timestamp']),
+          color: "green",
+          });
+          await db.collection('calEvent').add({
+          name:item.company.detail.name + " [모집 마감일]",
+          details: item.position.title,
+          start: this.UnixToDate(item['expiration-timestamp']),
+          end: this.UnixToDate(item['expiration-timestamp']),
+          color: "red",
+          });
+}
+alert("일정에 추가되었습니다.")
+        this.getEvents();
     },
     fnSearch() {
       this.job_mid_cd = this.job_mid_cd.substr(1, 2);
