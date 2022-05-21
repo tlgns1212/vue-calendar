@@ -4,7 +4,7 @@
       <ul class="menu1" style="list-style: none">
         <li>
           <router-link
-            to="/Announce"
+            to="/SearchAnnoun"
             style="
               text-decoration: none;
               box-sizing: border-box;
@@ -37,26 +37,13 @@
         </li>
       </ul>
     </div>
-    <div>
+    <h2>게시판 리스트</h2>
+    <div class="searchWrap">
       <v-row align="center">
-        <v-col class="d-flex" style="position: relative; left: 10%; width: 100%; margin-right: 15%">
-          <v-text-field
-            label="키워드를 검색하시오"
-            v-model="keyword"
-            dense
-            style="position: relative; font-size: 1vh; margin-right: 2%; width: 40%"></v-text-field>
-          <v-select
-            v-model="job_mid_cd"
-            :items="this.jobMidCD"
-            label="희망 직군을 고르시오"
-            dense
-            style="margin-right: 2%; width: 40%"></v-select>
-          <v-select
-            v-model="loc_cd"
-            :items="this.locStates"
-            label="희망 지역을 고르시오"
-            dense
-            style="width: 40%"></v-select>
+        <v-col class="d-flex" cols="12" sm="6">
+          <v-text-field label="원하는 것을 검색하시오" v-model="keyword"></v-text-field>
+          <v-select v-model="job_mid_cd" :items="this.jobMidCD" label="직군을 고르시오" dense></v-select>
+          <v-select v-model="loc_cd" :items="this.locStates" label="지역을 고르시오" dense></v-select>
         </v-col>
       </v-row>
       <a href="javascript:;" @click="fnSearch" class="btnSearch btn">검색</a>
@@ -82,7 +69,7 @@
           <td class="txt_left">
             <p>{{ item.position.title }}</p>
             <v-btn :href="item.url">자세히 보기</v-btn>
-            <v-btn @click="consoleGo(item)">일정에 추가</v-btn>
+            <v-btn @click="consoleGo">일정에 추가</v-btn>
           </td>
 
           <td>{{ item.company.detail.name }}</td>
@@ -103,13 +90,9 @@
 
 <script>
 import { db } from '@/main';
+
 export default {
   data: () => ({
-    name: '',
-    details: '',
-    start: '',
-    end: '',
-    color: 'red',
     events: [],
     keyword: '',
     loc_cd: '',
@@ -195,35 +178,9 @@ export default {
       const formattedTime = `${year}-${month}-${dt}`;
       return formattedTime;
     },
-    async consoleGo(item) {
-      if (item['expiration-timestamp'] > 1700000000) {
-        await db.collection('calEvent').add({
-          name: item.company.detail.name + ' [상시 모집]',
-          details: item.position.title,
-          start: this.UnixToDate(item['opening-timestamp']),
-          end: this.UnixToDate(item['opening-timestamp']),
-          color: 'red',
-        });
-      } else {
-        await db.collection('calEvent').add({
-          name: item.company.detail.name + ' [모집 시작일]',
-          details: item.position.title,
-          start: this.UnixToDate(item['opening-timestamp']),
-          end: this.UnixToDate(item['opening-timestamp']),
-          color: 'green',
-        });
-        await db.collection('calEvent').add({
-          name: item.company.detail.name + ' [모집 마감일]',
-          details: item.position.title,
-          start: this.UnixToDate(item['expiration-timestamp']),
-          end: this.UnixToDate(item['expiration-timestamp']),
-          color: 'red',
-        });
-      }
-      alert('일정에 추가되었습니다.');
-      this.getEvents();
+    consoleGo() {
+      alert('입력에 추가하는거 해야함');
     },
-
     fnSearch() {
       this.job_mid_cd = this.job_mid_cd.substr(1, 2);
       if (this.job_mid_cd[1] == ')') {
@@ -246,7 +203,6 @@ export default {
   },
 };
 </script>
-
 <style lang="scss">
 .header-wrap {
   font-weight: bold;
@@ -258,6 +214,7 @@ export default {
     margin-top: 10px;
   }
 }
+
 .searchWrap {
   border: 1px solid #888;
   border-radius: 5px;
@@ -275,6 +232,9 @@ export default {
 .searchWrap .btnSearch {
   display: inline-block;
   margin-left: 10px;
+}
+.searchWrap a {
+  color: #333;
 }
 .tbList th {
   border-top: 1px solid #888;

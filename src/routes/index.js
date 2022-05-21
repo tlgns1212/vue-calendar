@@ -15,7 +15,7 @@ export default new VueRouter({
     },
     {
       path: '/PublicAnnounce',
-      component: () => import('@/views/HomeExample.vue'),
+      component: () => import('@/views/PublicAnnounce.vue'),
     },
     {
       path: '/Announce',
@@ -27,7 +27,7 @@ export default new VueRouter({
     },
     {
       path: '/Login',
-      component: () => import('@/views/PublicAnnounce.vue'),
+      component: () => import('@/views/Login.vue'),
     },
   ],
   mode: 'history',

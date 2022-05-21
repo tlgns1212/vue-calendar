@@ -9,6 +9,8 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import { store } from './store/index';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 //Vue.use(VueTextareaAutoSize);
 Vue.prototype.$axios = axios;
