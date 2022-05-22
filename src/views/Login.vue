@@ -16,7 +16,7 @@
             @click="this.tryLogin" />
 
           <br />
-          <a href="/findEmailPage"><span>이메일 찾기</span></a>
+          <a href="/findEmailPage" style="margin-right: 30px"><span>이메일 찾기</span></a>
           <a href="/findPwdPage"><span>비밀번호 찾기</span></a>
         </div>
         <div class="col"></div>
@@ -64,6 +64,7 @@ export default {
   text-align: center;
   margin-top: 50px;
   color: aliceblue;
+  background-color: #f57c18;
   font: italic 3em 'Fira Sans';
 }
 

@@ -4,133 +4,93 @@
 
     <header>
       <form class="mypage" action="">
-        <div class="row paddingBottom20">
-          <div class="container col-7">
+        <div class="row">
+          <div class="container col-7" style="width: 100%">
             <div class="row1">
               <h6 class="text-center col-12 mb-0">My Page [유저 정보]</h6>
             </div>
-            <div class="container-info-main">
+
+            <div class="container-info-main" style="width: 100%">
               <div class="form-group row">
-                <label for="firstName" class="col-4">아이디</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName" v-for="item in this.events" :key="item.email">
-                      {{ item.email }}
-                    </div>
+                <div class="bar">아이디</div>
+                <div class="value">
+                  <div class="UserName" v-for="item in this.events" :key="item.email">
+                    {{ item.email }}
                   </div>
                 </div>
-              </div>
-              <div class="form-group row align-items-center">
-                <label for="lastName" class="col-4">이름</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName" v-for="item in this.events" :key="item.email">
-                      {{ item.name }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">성별</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName">{{ this.events[0].mySex }}</div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">나이</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName">{{ this.events[0].myAge }}</div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">목표 기업</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName">{{ this.events[0].wantToGo }}</div>
+                <div class="bar">이름</div>
+                <div class="value">
+                  <div class="UserName" v-for="item in this.events" :key="item.email">
+                    {{ item.name }}
                   </div>
                 </div>
               </div>
 
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">학점</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName">{{ this.events[0].mySchoolScore }}</div>
-                  </div>
+                <label for="targetCompany" class="bar">성별</label>
+                <div class="value">
+                  <div class="UserName">{{ this.events[0].mySex }}</div>
+                </div>
+                <label for="targetCompany" class="bar">나이</label>
+                <div class="value">
+                  <div class="UserName">{{ this.events[0].myAge }}</div>
                 </div>
               </div>
 
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">토익 점수</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName">{{ this.events[0].myToeicScore }}</div>
-                  </div>
+                <label for="targetCompany" class="bar">목표 기업</label>
+                <div class="value">
+                  <div class="UserName">{{ this.events[0].wantToGo }}</div>
+                </div>
+                <label for="targetCompany" class="bar">학점</label>
+                <div class="value">
+                  <div class="UserName">{{ this.events[0].mySchoolScore }}</div>
                 </div>
               </div>
 
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">토익 스피킹</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName">{{ this.events[0].myToeicSpeakingScore }}</div>
-                  </div>
+                <label for="targetCompany" class="bar">토익 점수</label>
+                <div class="value">
+                  <div class="UserName">{{ this.events[0].myToeicScore }}</div>
+                </div>
+
+                <label for="targetCompany" class="bar">토익 스피킹</label>
+                <div class="value">
+                  <div class="UserName">{{ this.events[0].myToeicSpeakingScore }}</div>
                 </div>
               </div>
 
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">오픽</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName">{{ this.events[0].myOpicScore }}</div>
-                  </div>
+                <label for="targetCompany" class="bar">오픽</label>
+                <div class="value">
+                  <div class="UserName">{{ this.events[0].myOpicScore }}</div>
+                </div>
+
+                <label for="targetCompany" class="bar">수상경력</label>
+                <div class="value">
+                  <div class="UserName">{{ this.events[0].myContest }}</div>
                 </div>
               </div>
 
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">수상경력</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName">{{ this.events[0].myContest }}</div>
-                  </div>
+                <label for="targetCompany" class="bar">자격증</label>
+                <div class="value">
+                  <div class="UserName">{{ this.events[0].myCertification }}</div>
+                </div>
+                <label for="targetCompany" class="bar">사용가능 언어</label>
+                <div class="value">
+                  <div class="UserName">{{ this.events[0].myForeign }}</div>
                 </div>
               </div>
 
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">자격증</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName">{{ this.events[0].myCertification }}</div>
-                  </div>
+                <label for="targetCompany" class="bar">인턴 경험</label>
+                <div class="value">
+                  <div class="UserName">{{ this.events[0].myIntern }}</div>
                 </div>
-              </div>
-
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">사용가능 언어 수</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName">{{ this.events[0].myForeign }}</div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">인턴 경험 회수</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName">{{ this.events[0].myIntern }}</div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">해외 경험 회수</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName">{{ this.events[0].myTravel }}</div>
-                  </div>
+                <label for="targetCompany" class="bar">해외 경험</label>
+                <div class="value">
+                  <div class="UserName">{{ this.events[0].myTravel }}</div>
                 </div>
               </div>
             </div>
@@ -155,8 +115,42 @@
             <v-text-field v-model="myForeign" type="text" label="사용 가능 언어 개수"></v-text-field>
             <v-text-field v-model="myIntern" type="text" label="인턴 경험 횟수"></v-text-field>
             <v-text-field v-model="myTravel" type="text" label="해외 경험 횟수"></v-text-field>
-            <v-text-field v-model="myVolunteer" type="text" label="봉사 횟수"></v-text-field>
+
             <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog = false"> Create Event </v-btn>
+          </v-form>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogCal" max-width="500">
+      <v-card>
+        <v-container>
+          <v-form v-if="dialogToeic === true">
+            <p>일정에 추가되었습니다!!!!</p>
+            <v-btn @click="GetOutFromAddedCal" :href="'https://exam.toeic.co.kr/receipt/receiptStep1.php'">확인</v-btn>
+          </v-form>
+          <v-form v-else-if="dialogToeicSpeaking === true">
+            <p>추가되었습니다!!!!</p>
+            <v-btn
+              @click="GetOutFromAddedCal"
+              :href="'https://www.toeicswt.co.kr/receipt/receiptStep1.php?sbGoodsType1=TOS'"
+              >확인</v-btn
+            >
+          </v-form>
+          <v-form v-else-if="dialogOpic === true">
+            <p>추가되었습니다!!!!</p>
+            <v-btn
+              @click="GetOutFromAddedCal"
+              :href="'https://www.opic.or.kr/opics/servlet/controller.opic.site.receipt.ExamReceiptServlet?p_process=select-list&p_nav=1_1'"
+              >확인</v-btn
+            >
+          </v-form>
+          <v-form v-else>
+            <p>추가되었습니다!!!!</p>
+            <v-btn
+              @click="GetOutFromAddedCal"
+              :href="'https://www.toeicswt.co.kr/receipt/receiptStep1.php?sbGoodsType1=TOS'"
+              >확인</v-btn
+            >
           </v-form>
         </v-container>
       </v-card>
@@ -166,7 +160,9 @@
       <v-card>
         <v-container>
           <v-form v-for="item in this.eventsToeic" :key="item.id">
-            <p>토익</p>
+            <p>{{ item.name }} 접수마감일 : {{ item.end }} 시험일 : {{ item.test.substr(0, 10) }}</p>
+            <v-btn @click="consoleGo(item)">추가하기</v-btn>
+            <v-btn :href="'https://exam.toeic.co.kr/receipt/receiptStep1.php'">접수하러가기</v-btn>
           </v-form>
         </v-container>
       </v-card>
@@ -175,8 +171,11 @@
     <v-dialog v-model="dialogSchool" max-width="500">
       <v-card>
         <v-container>
-          <v-form @submit.prevent="">
-            <p>학점</p>
+          <v-form>
+            <div v-if="this.eventsTexts[1]">
+              <p>{{ this.eventsTexts[this.randomNumber].text }}</p>
+              <v-btn @click="AllDialogFalseAndRandom">힘내기!!</v-btn>
+            </div>
           </v-form>
         </v-container>
       </v-card>
@@ -186,7 +185,10 @@
       <v-card>
         <v-container>
           <v-form @submit.prevent="">
-            <p>자격증</p>
+            <div v-if="this.eventsTexts[1]">
+              <p>{{ this.eventsTexts[this.randomNumber].text }}</p>
+              <v-btn @click="AllDialogFalseAndRandom">힘내기!!</v-btn>
+            </div>
           </v-form>
         </v-container>
       </v-card>
@@ -196,7 +198,10 @@
       <v-card>
         <v-container>
           <v-form @submit.prevent="">
-            <p>사용 가능한 언어</p>
+            <div v-if="this.eventsTexts[1]">
+              <p>{{ this.eventsTexts[this.randomNumber].text }}</p>
+              <v-btn @click="AllDialogFalseAndRandom">힘내기!!</v-btn>
+            </div>
           </v-form>
         </v-container>
       </v-card>
@@ -205,8 +210,10 @@
     <v-dialog v-model="dialogToeicSpeaking" max-width="500">
       <v-card>
         <v-container>
-          <v-form @submit.prevent="">
-            <p>토익 스피킹</p>
+          <v-form v-for="item in this.eventsToeicSpeaking" :key="item.id">
+            <p>{{ item.name }} 접수마감일 : {{ item.end.substr(0, 10) }} 시험일 : {{ item.test.substr(0, 10) }}</p>
+            <v-btn @click="consoleGo(item)">추가하기</v-btn>
+            <v-btn :href="'https://www.toeicswt.co.kr/receipt/receiptStep1.php?sbGoodsType1=TOS'">접수하러가기</v-btn>
           </v-form>
         </v-container>
       </v-card>
@@ -215,8 +222,13 @@
     <v-dialog v-model="dialogOpic" max-width="500">
       <v-card>
         <v-container>
-          <v-form @submit.prevent="">
-            <p>오픽</p>
+          <v-form v-for="item in this.eventsOpic" :key="item.id">
+            <p>{{ item.name }} 접수마감일 : {{ item.end.substr(0, 10) }} 시험일 : {{ item.test.substr(0, 10) }}</p>
+            <v-btn @click="consoleGo(item)">추가하기</v-btn>
+            <v-btn
+              :href="'https://www.opic.or.kr/opics/servlet/controller.opic.site.receipt.ExamReceiptServlet?p_process=select-list&p_nav=1_1'"
+              >접수하러가기</v-btn
+            >
           </v-form>
         </v-container>
       </v-card>
@@ -226,7 +238,10 @@
       <v-card>
         <v-container>
           <v-form @submit.prevent="">
-            <p>해외 여행</p>
+            <div v-if="this.eventsTexts[1]">
+              <p>{{ this.eventsTexts[this.randomNumber].text }}</p>
+              <v-btn @click="AllDialogFalseAndRandom">힘내기!!</v-btn>
+            </div>
           </v-form>
         </v-container>
       </v-card>
@@ -236,7 +251,10 @@
       <v-card>
         <v-container>
           <v-form @submit.prevent="">
-            <p>인턴 경험 횟수</p>
+            <div v-if="this.eventsTexts[1]">
+              <p>{{ this.eventsTexts[this.randomNumber].text }}</p>
+              <v-btn @click="AllDialogFalseAndRandom">힘내기!!</v-btn>
+            </div>
           </v-form>
         </v-container>
       </v-card>
@@ -246,17 +264,8 @@
       <v-card>
         <v-container>
           <v-form @submit.prevent="">
-            <p>수상 경력</p>
-          </v-form>
-        </v-container>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="dialogVolunteer" max-width="500">
-      <v-card>
-        <v-container>
-          <v-form @submit.prevent="">
-            <p>봉사</p>
+            <p>지금이라도 늦지 않았으니 아래 페이지에서 여러 대회들을 찾아봐요!!!!!</p>
+            <v-btn :href="'https://www.contestkorea.com/'">접수하러가기</v-btn>
           </v-form>
         </v-container>
       </v-card>
@@ -269,101 +278,127 @@
             <div class="spinner-div" v-if="loading == false">
               <q-spinner-cube color="primary" size="5em" />
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">토익 {{this.events[0].myToeicScore}} -> {{this.eventsCompany.companyToeicScore}}</label>
+                <label for="targetCompany" class="col-4"
+                  >토익 {{ this.events[0].myToeicScore }} -> {{ this.eventsCompany.companyToeicScore }}</label
+                >
                 <div class="col-8">
                   <div class="input-group">
-                    <div class="UserName"> <v-btn @click="dialogToeic = true"> {{ this.events[0].myForeign }} 일</v-btn></div>
+                    <div class="UserName">
+                      <v-btn @click="dialogToeic = true"> {{ Math.ceil((10 / this.myStudyTime) * 4.1/) }} 일</v-btn>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">학점 {{this.events[0].mySchoolScore}} -> {{this.eventsCompany.companySchoolScore}}</label>
+                <label for="targetCompany" class="col-4"
+                  >학점 {{ this.events[0].mySchoolScore }} -> {{ this.eventsCompany.companySchoolScore }}</label
+                >
                 <div class="col-8">
                   <div class="input-group">
-                    <div class="UserName"><v-btn text> {{ this.events[0].myForeign }} 일</v-btn></div>
+                    <div class="UserName">
+                      <div class="UserName"><v-btn @click="dialogSchool = true"> 不可</v-btn></div>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">자격증 개수 {{this.events[0].myCertification}} -> {{this.eventsCompany.companyCertification}}</label>
+                <label for="targetCompany" class="col-4"
+                  >자격증 개수 {{ this.events[0].myCertification }} ->
+                  {{ this.eventsCompany.companyCertification }}</label
+                >
                 <div class="col-8">
                   <div class="input-group">
-                    <div class="UserName"><v-btn text> {{ this.events[0].myForeign }} 일</v-btn></div>
+                    <div class="UserName">
+                      <v-btn @click="dialogCertification = true">
+                        {{ Math.ceil((10 / this.myStudyTime) * 4.3) }} 일</v-btn
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">사용 가능 언어 {{this.events[0].myForeign}} -> {{this.eventsCompany.companyForeign}}</label>
+                <label for="targetCompany" class="col-4"
+                  >사용 가능 언어 {{ this.events[0].myForeign }} -> {{ this.eventsCompany.companyForeign }}</label
+                >
                 <div class="col-8">
                   <div class="input-group">
-                    <div class="UserName"><v-btn text> {{ this.events[0].myForeign }} 일</v-btn></div>
+                    <div class="UserName">
+                      <v-btn @click="dialogForeign = true"> {{ Math.ceil((10 / this.myStudyTime) * 12.7) }} 일</v-btn>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">토익 스피킹 {{this.events[0].myOpicScore}} -> {{this.eventsCompany.companyOpicScore}}</label>
+                <label for="targetCompany" class="col-4"
+                  >토익 스피킹 {{ this.events[0].myToeicSpeakingScore }} ->
+                  {{ this.eventsCompany.companyToeicSpeakingScore }}</label
+                >
                 <div class="col-8">
                   <div class="input-group">
-                    <div class="UserName"><v-btn text> {{ this.events[0].myForeign }} 일</v-btn></div>
+                    <div class="UserName">
+                      <v-btn @click="dialogToeicSpeaking = true">
+                        {{ Math.ceil((10 / this.myStudyTime) * 6.7) }} 일</v-btn
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">오픽 {{this.events[0].myTravel}} -> {{this.eventsCompany.companyTravel}}</label>
+                <label for="targetCompany" class="col-4"
+                  >오픽 {{ this.events[0].myOpicScore }} -> {{ this.eventsCompany.companyOpicScore }}</label
+                >
                 <div class="col-8">
                   <div class="input-group">
-                    <div class="UserName"><v-btn text> {{ this.events[0].myForeign }} 일</v-btn></div>
+                    <div class="UserName">
+                      <v-btn @click="dialogOpic = true"> {{ Math.ceil((10 / this.myStudyTime) * 9.4) }} 일</v-btn>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">해외 경험 {{this.events[0].myIntern}} -> {{this.eventsCompany.companyIntern}}</label>
+                <label for="targetCompany" class="col-4"
+                  >해외 경험 {{ this.events[0].myTravel }} -> {{ this.eventsCompany.companyTravel }}</label
+                >
                 <div class="col-8">
                   <div class="input-group">
-                    <div class="UserName"><v-btn text> {{ this.events[0].myForeign }} 일</v-btn></div>
+                    <div class="UserName">
+                      <v-btn @click="dialogTravel = true"> {{ Math.ceil((10 / this.myStudyTime) * 1.8) }} 일</v-btn>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">인턴 경험 {{this.events[0].myContest}} -> {{this.eventsCompany.companyContest}}</label>
+                <label for="targetCompany" class="col-4"
+                  >인턴 경험 {{ this.events[0].myIntern }} -> {{ this.eventsCompany.companyIntern }}</label
+                >
                 <div class="col-8">
                   <div class="input-group">
-                    <div class="UserName"><v-btn text> {{ this.events[0].myForeign }} 일</v-btn></div>
+                    <div class="UserName">
+                      <div class="UserName"><v-btn @click="dialogIntern = true"> 不可</v-btn></div>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">수상 내역 {{this.events[0].myVolunteer}} -> {{this.eventsCompany.companyVolunteer}}</label>
+                <label for="targetCompany" class="col-4"
+                  >수상 내역 {{ this.events[0].myContest }} -> {{ this.eventsCompany.companyContest }}</label
+                >
                 <div class="col-8">
                   <div class="input-group">
-                    <div class="UserName"><v-btn text> {{ this.events[0].myForeign }} 일</v-btn></div>
+                    <div class="UserName">
+                      <v-btn @click="dialogContest = true"> {{ Math.ceil((10 / this.myStudyTime) * 7.4) }} 일</v-btn>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4">봉사 횟수 {{this.events[0].myCertification}} -> {{this.eventsCompany.companyCertification}}</label>
-                <div class="col-8">
-                  <div class="input-group">
-                    <div class="UserName"><v-btn text> {{ this.events[0].myForeign }} 일</v-btn></div>
-                  </div>
-                </div>
-              </div>
-
-              
             </div>
-            <div class="spinner-div" v-else >
-
-              </div>
-              <div class="form-group row align-items-center">
-                <LoadingButton ref="button" :loading="this.loading"
-      @click="buttonClicked"
-    >
-      다시 검색
-    </LoadingButton>
-              </div>
+            <div class="spinner-div" v-else></div>
+            <div class="form-group row align-items-center">
+              <v-text-field v-model="tempStudyTime" type="text" label="하루 공부시간(hour)"></v-text-field>
+              <LoadingButton ref="button" :loading="this.loading" @click="buttonClicked"> 다시 검색 </LoadingButton>
+            </div>
             <!-- <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog = false"> Create Event </v-btn>
              -->
-             
           </v-form>
         </v-container>
       </v-card>
@@ -392,8 +427,7 @@
                 aria-valuenow="70"
                 aria-valuemin="0"
                 aria-valuemax="100"
-                :style="ToeicPercentage"
-                >
+                :style="ToeicPercentage">
                 {{
                   Math.floor(
                     (parseFloat(this.events[0].myToeicScore) / parseFloat(this.eventsCompany.companyToeicScore)) * 100
@@ -405,10 +439,8 @@
                       )
                 }}%
               </div>
-              
               <!-- <span class="pull-right strong">{{this.events[0].myToeicScore}}</span> -->
             </div>
-            
             학점<span class="pull-right strong">{{ this.eventsCompany.companySchoolScore }}</span>
             <div class="progress">
               <div
@@ -555,27 +587,10 @@
                 }}%
               </div>
             </div>
-            봉사 횟수<span class="pull-right strong" style="font-weight: bold">{{
-              this.eventsCompany.companyVolunteer
-            }}</span>
-            <div class="progress" style="text-align: right">
-              <div
-                :class="VolunteerProgressBar"
-                role="progressbar"
-                aria-valuenow="100"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                :style="VolunteerPercentage">
-                {{
-                  Math.floor(
-                    (parseFloat(this.events[0].myVolunteer) / parseFloat(this.eventsCompany.companyVolunteer)) * 100
-                  )
-                }}%
-              </div>
-            </div>
           </div>
         </div>
       </div>
+      <v-text-field v-model="tempStudyTime" type="text" label="하루 공부시간(hour)"></v-text-field>
       <v-btn @click="DialogCheckEvent">검사받기</v-btn>
     </div>
   </div>
@@ -584,7 +599,7 @@
 <script>
 import { db } from '@/main';
 import { mapState } from 'vuex';
-import LoadingButton from "./LoadingButton";
+import LoadingButton from './LoadingButton';
 
 function displayMessage() {
   alert('메시지 출력 테스트');
@@ -615,7 +630,10 @@ export default {
   data: () => ({
     events: [],
     eventsCompany: [],
-    eventsToeic:[],
+    eventsToeic: [],
+    eventsToeicSpeaking: [],
+    eventsOpic: [],
+    eventsTexts: [],
     eventNameCompany: 'KF1tl1R42f9NurZ7bl9c',
     wantToGo: '',
     myToeicScore: '',
@@ -627,7 +645,6 @@ export default {
     myTravel: '',
     myIntern: '',
     myContest: '',
-    myVolunteer: '',
     myAge: '',
     mySex: '',
     myEnglishTest: '',
@@ -641,7 +658,6 @@ export default {
     companyTravel: '',
     companyIntern: '',
     companyContest: '',
-    companyVolunteer: '',
     isLoading: false,
     dialog: false,
     dialogCheck: false,
@@ -654,10 +670,12 @@ export default {
     dialogTravel: false,
     dialogIntern: false,
     dialogContest: false,
-    dialogVolunteer: false,
+    dialogCal: false,
     currentlyEditing: null,
     selectedEvent: {},
     loading: false,
+    randomNumber: 2,
+    tempStudyTime: '',
     OpicState: { NL: 1, NM: 2, NH: 3, IL: 4, IM1: 5, IM2: 6, IM3: 7, AL: 8 },
   }),
   computed: {
@@ -827,27 +845,10 @@ export default {
         return 'progress-bar progress-bar-success';
       }
     },
-    VolunteerScore() {
-      return Math.floor(
-        (parseFloat(this.events[0].myVolunteer) / parseFloat(this.eventsCompany.companyVolunteer)) * 100
-      ).toString();
-    },
-    VolunteerPercentage() {
-      return { width: this.VolunteerScore + '%' };
-    },
-    VolunteerProgressBar() {
-      let temp = this.VolunteerScore;
-      if (parseInt(temp) < 40) {
-        return 'progress-bar progress-bar-danger';
-      } else if (parseInt(temp) < 90) {
-        return 'progress-bar progress-bar-warning';
-      } else {
-        return 'progress-bar progress-bar-success';
-      }
-    },
   },
   mounted() {
     this.getEvents();
+    this.getCheckEvents();
     // this.InitalData();
   },
   methods: {
@@ -872,13 +873,59 @@ export default {
       this.myForeign = events[0].myForeign;
       this.myAge = events[0].myAge;
       this.mySex = events[0].mySex;
+      this.myStudyTime = events[0].myStudyTime;
+      this.tempStudyTime = events[0].myStudyTime;
       this.myToeicSpeakingScore = events[0].myToeicSpeakingScore;
       this.myOpicScore = events[0].myOpicScore;
       this.myContest = events[0].myContest;
       this.myIntern = events[0].myIntern;
       this.myTravel = events[0].myTravel;
-      this.myVolunteer = events[0].myVolunteer;
       this.isCompanyName();
+    },
+    async getCheckEvents() {
+      let snapshot = await db.collection('toeic').get();
+      let events = [];
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
+      });
+      this.eventsToeic = events;
+
+      snapshot = await db.collection('toeicSpeaking').get();
+      events = [];
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
+      });
+      this.eventsToeicSpeaking = events;
+
+      snapshot = await db.collection('opic').get();
+      events = [];
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
+      });
+      this.eventsOpic = events;
+
+      snapshot = await db.collection('texts').get();
+      events = [];
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
+      });
+      this.eventsTexts = events;
     },
     InitalData() {
       console.log('\n\n\n\n\n\n\n\\n\n\n\n');
@@ -946,19 +993,79 @@ export default {
         this.eventsCompany = this.events[0];
       }
     },
-    DialogCheckEvent() {
+    async DialogCheckEvent() {
+      await db.collection('user').doc('KF1tl1R42f9NurZ7bl9c').update({
+        myStudyTime: this.tempStudyTime,
+      });
+      this.getEvents();
       this.dialogCheck = true;
       this.isLoading = true;
       this.loading = true;
+      this.myStudyTime = this.tempStudyTime;
       setTimeout(() => {
         this.loading = false;
-      }, 2000);
+      }, 0);
+      this.getCheckEvents();
     },
-    buttonClicked() {
+    async buttonClicked() {
+      await db.collection('user').doc('KF1tl1R42f9NurZ7bl9c').update({
+        myStudyTime: this.tempStudyTime,
+      });
       this.loading = true;
+      this.myStudyTime = this.tempStudyTime;
       setTimeout(() => {
         this.loading = false;
       }, 2000);
+      this.getCheckEvents();
+    },
+    async consoleGo(item) {
+      await db.collection('calEvent').add({
+        name: item.detail1,
+        details: item.name + item.detail1,
+        start: item.end,
+        end: item.end,
+        color: 'orange',
+      });
+      await db.collection('calEvent').add({
+        name: item.detail2,
+        details: item.name + item.detail2,
+        start: item.test,
+        end: item.test,
+        color: 'green',
+      });
+      this.getEvents();
+      this.AddedToCal();
+      // this.dialogToeic = false;
+      // this.dialogSchool = false;
+      // this.dialogCheck = false;
+      // this.dialogCertification= false;
+      // this.dialogForeign= false;
+      // this.dialogToeicSpeaking= false;
+      // this.dialogOpic= false;
+      // this.dialogTravel= false;
+      // this.dialogIntern= false;
+      // this.dialogContest= false;
+    },
+    AddedToCal() {
+      this.dialogCal = true;
+    },
+    GetOutFromAddedCal() {
+      this.dialogCal = false;
+    },
+    RandomNumber() {
+      this.randomNumber = Math.floor(Math.random() * 13);
+    },
+    AllDialogFalseAndRandom() {
+      this.dialogToeic = false;
+      this.dialogSchool = false;
+      this.dialogCertification = false;
+      this.dialogForeign = false;
+      this.dialogToeicSpeaking = false;
+      this.dialogOpic = false;
+      this.dialogTravel = false;
+      this.dialogIntern = false;
+      this.dialogContest = false;
+      this.RandomNumber();
     },
   },
 };
@@ -973,25 +1080,42 @@ export default {
 .row1 h6 {
   margin-top: 10px;
   display: inline-block;
+  font-weight: bolder;
   font-size: 24px;
   font-family: 'Musinsa', sans-serif !important;
   border-bottom-width: 3px;
   border-bottom-style: solid;
   border-bottom-color: rgb(0, 0, 0);
   padding-bottom: 14px;
+  background-color: #d6d5d2;
 }
 .container-info-main {
-  font-size: 24px;
+  font-size: 1vh;
   font-family: 'Musinsa', sans-serif !important;
   border-bottom-width: 3px;
   border-bottom-style: solid;
   border-bottom-color: rgb(0, 0, 0);
-  padding-bottom: 1px;
+  font-weight: bolder;
   position: relative;
   top: 20px;
+  right: 15%;
+  text-align: center;
 }
-.col-4 {
-  font-size: 20px;
-  font-family: 'Musinsa', sans-serif !important;
+
+.bar {
+  background-color: #fcc46a;
+  width: 140px;
+  margin-left: 15px;
+}
+.form-group {
+  width: 800px;
+}
+.value {
+  width: 25%;
+}
+.Username {
+  width: 160px;
+
+  text-align: center;
 }
 </style>

@@ -1,8 +1,9 @@
 <template>
   <div>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
     <div class="header-wrap">
       <ul class="menu1" style="list-style: none">
-        <li>
+        <li class="menu">
           <router-link
             to="/Announce"
             style="
@@ -19,7 +20,7 @@
           >
         </li>
         <p style="width: 5%"></p>
-        <li>
+        <li class="menu">
           <router-link
             to="/CustomAnnoun"
             style="
@@ -31,7 +32,8 @@
               font-size: 1.1rem;
               border-radius: 10px;
               font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-            ">
+            "
+            onclick="colorchange()">
             맞춤 채용공고</router-link
           >
         </li>
@@ -39,7 +41,7 @@
     </div>
     <div>
       <v-row align="center">
-        <v-col class="d-flex" style="position: relative; left: 10%; width: 100%; margin-right: 15%">
+        <v-col class="d-flex" style="position: relative; left: 8%; width: 100%; margin-right: 15%">
           <v-text-field
             label="키워드를 검색하시오"
             v-model="keyword"
@@ -59,25 +61,38 @@
             style="width: 40%"></v-select>
         </v-col>
       </v-row>
-      <a href="javascript:;" @click="fnSearch" class="btnSearch btn">검색</a>
+      <a
+        href="javascript:;"
+        @click="fnSearch"
+        class="btnSearch btn"
+        style="
+          background-color: #c7f9ff;
+          margin-bottom: 10px;
+          position: relative;
+          left: 70%;
+          font-weight: bolder;
+          width: 20%;
+        "
+        >검색</a
+      >
     </div>
 
     <div class="listWrap">
       <table class="tbList">
         <colgroup>
-          <col width="6%" />
+          <col width="8%" />
           <col width="*" />
-          <col width="10%" />
+          <col width="15%" />
           <col width="15%" />
         </colgroup>
-        <tr>
+        <tr style="text-align: center; background-color: #c6c7c5">
           <th>no</th>
           <th>제목</th>
           <th>아이디</th>
           <th>날짜</th>
         </tr>
         <tr v-for="(item, i) in this.events.data.jobs.job" :key="item.id">
-          <td>{{ i + 1 }}</td>
+          <td style="text-align: center">{{ i + 1 }}</td>
 
           <td class="txt_left">
             <p>{{ item.position.title }}</p>
@@ -93,10 +108,6 @@
           <td colspan="4">데이터가 없습니다.</td>
         </tr>
       </table>
-    </div>
-
-    <div class="btnRightWrap">
-      <a class="btn">등록</a>
     </div>
   </div>
 </template>
@@ -243,6 +254,13 @@ export default {
           this.events = res;
         });
     },
+
+    changeColor() {
+      this.$('li').click(function () {
+        $('li').removeClass();
+        $(this).addClass('on');
+      });
+    },
   },
 };
 </script>
@@ -330,6 +348,11 @@ export default {
   height: calc(3rem + 2px) !important;
   border-radius: 0;
 }
+.clicked {
+  color: #c7f9ff;
+  background-color: #1976d2;
+}
+
 @media (min-width: 992px) {
   .search-sec {
     position: relative;

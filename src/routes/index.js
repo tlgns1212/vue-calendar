@@ -19,7 +19,11 @@ export default new VueRouter({
     },
     {
       path: '/Announce',
-      component: () => import('@/views/Announce.vue'),
+      component: () => import('@/views/Announce/SearchAnnounce.vue'),
+    },
+    {
+      path: '/CustomAnnounce',
+      component: () => import('@/views/Announce/CustomAnnounce.vue'),
     },
     {
       path: '/MyPage',

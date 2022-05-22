@@ -1,5 +1,6 @@
 <template>
   <v-row class="fill-height">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
     <v-col>
       <v-sheet height="64">
         <v-toolbar flat>
