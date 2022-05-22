@@ -5,8 +5,7 @@
     v-on="$listeners"
     class="loading-button"
     :aria-busy="loading"
-    :class="{ loading }"
-  >
+    :class="{ loading }">
     <span class="text" :aria-hidden="loading">
       <slot> </slot>
     </span>
@@ -20,7 +19,7 @@
 </template>
 
 <script>
-import { BSpinner, BButton } from "bootstrap-vue";
+import { BSpinner, BButton } from 'bootstrap-vue';
 
 export default {
   components: {
@@ -38,7 +37,7 @@ export default {
     },
     loadingLabel: {
       type: String,
-      default: "로딩중...",
+      default: '로딩중...',
     },
   },
 };
@@ -47,10 +46,12 @@ export default {
 <style lang="scss" scoped>
 .loading-button {
   position: relative;
+  width: 470px;
 }
 
 .loading .text {
   opacity: 0;
+  height: 20px;
 }
 
 .spinner-wrapper {
@@ -58,13 +59,11 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  width: 200px;
 }
 
 .spinner {
   width: 20px;
   height: 20px;
 }
-</style>
-
-<style>
 </style>
