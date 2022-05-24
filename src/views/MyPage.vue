@@ -284,7 +284,7 @@
                 <div class="col-8">
                   <div class="input-group">
                     <div class="UserName">
-                      <v-btn @click="dialogToeic = true"> {{ Math.ceil((10 / this.myStudyTime) * 4.1/) }} 일</v-btn>
+                      <v-btn @click="dialogToeic = true"> {{ this.MathforToeic() }} 일</v-btn>
                     </div>
                   </div>
                 </div>
@@ -310,7 +310,7 @@
                   <div class="input-group">
                     <div class="UserName">
                       <v-btn @click="dialogCertification = true">
-                        {{ Math.ceil((10 / this.myStudyTime) * 4.3) }} 일</v-btn
+                        {{ this.MathforCertification() }} 일</v-btn
                       >
                     </div>
                   </div>
@@ -323,7 +323,7 @@
                 <div class="col-8">
                   <div class="input-group">
                     <div class="UserName">
-                      <v-btn @click="dialogForeign = true"> {{ Math.ceil((10 / this.myStudyTime) * 12.7) }} 일</v-btn>
+                      <v-btn @click="dialogForeign = true"> {{ this.MathforForeign() }} 일</v-btn>
                     </div>
                   </div>
                 </div>
@@ -337,7 +337,7 @@
                   <div class="input-group">
                     <div class="UserName">
                       <v-btn @click="dialogToeicSpeaking = true">
-                        {{ Math.ceil((10 / this.myStudyTime) * 6.7) }} 일</v-btn
+                        {{ this.MathforToeicSpeakingScore() }} 일</v-btn
                       >
                     </div>
                   </div>
@@ -350,7 +350,7 @@
                 <div class="col-8">
                   <div class="input-group">
                     <div class="UserName">
-                      <v-btn @click="dialogOpic = true"> {{ Math.ceil((10 / this.myStudyTime) * 9.4) }} 일</v-btn>
+                      <v-btn @click="dialogOpic = true"> {{ this.MathforOpicScore() }} 일</v-btn>
                     </div>
                   </div>
                 </div>
@@ -362,7 +362,7 @@
                 <div class="col-8">
                   <div class="input-group">
                     <div class="UserName">
-                      <v-btn @click="dialogTravel = true"> {{ Math.ceil((10 / this.myStudyTime) * 1.8) }} 일</v-btn>
+                      <v-btn @click="dialogTravel = true"> {{ this.MathforTravel() }} 일</v-btn>
                     </div>
                   </div>
                 </div>
@@ -386,7 +386,7 @@
                 <div class="col-8">
                   <div class="input-group">
                     <div class="UserName">
-                      <v-btn @click="dialogContest = true"> {{ Math.ceil((10 / this.myStudyTime) * 7.4) }} 일</v-btn>
+                      <v-btn @click="dialogContest = true"> {{ this.MathforContest() }} 일</v-btn>
                     </div>
                   </div>
                 </div>
@@ -849,7 +849,6 @@ export default {
   mounted() {
     this.getEvents();
     this.getCheckEvents();
-    // this.InitalData();
   },
   methods: {
     // 여기가 이벤트를 이벤트로 받아주는곳
@@ -881,6 +880,7 @@ export default {
       this.myIntern = events[0].myIntern;
       this.myTravel = events[0].myTravel;
       this.isCompanyName();
+      this.InitalData();
     },
     async getCheckEvents() {
       let snapshot = await db.collection('toeic').get();
@@ -1066,6 +1066,86 @@ export default {
       this.dialogIntern = false;
       this.dialogContest = false;
       this.RandomNumber();
+    },
+    MathforToeic(){
+      let ToeicScore = 4
+      let grade = (parseInt(this.ToeicScore) > 800 ? 1: (parseInt(this.ToeicScore) > 600 ? 2 : (parseInt(this.ToeicScore) > 400 ? 3 : (parseInt(this.ToeicScore) > 1 ? 4 : 5))));
+      let multiply = 1
+      multiply *= this.mySex == "남자" ? 0.6 : 0.3;
+      multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
+      multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
+      let changed = (this.companyToeicScore - this.myToeicScore);
+      let result = changed * grade * multiply * ToeicScore;      
+      return Math.ceil(result / parseInt(this.myStudyTime));
+    },
+    MathforCertification(){
+      let Certification = 250
+      let grade = (parseInt(this.myCertification) > 4 ? 1: (parseInt(this.myCertification) > 3 ? 2 : (parseInt(this.myCertification) > 2 ? 3 : (parseInt(this.myCertification) > 1 ? 4 : 5))));
+      let multiply = 1
+      multiply *= this.mySex == "남자" ? 0.6 : 0.3;
+      multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
+      multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
+      let changed = (this.companyCertification - this.myCertification);
+      let result = changed * grade * multiply * Certification;     
+      return Math.ceil(result / parseInt(this.myStudyTime));
+    },
+    MathforForeign(){
+      let Foreign = 500
+      let grade = (parseInt(this.myForeign) > 4 ? 1: (parseInt(this.myForeign) > 3 ? 2 : (parseInt(this.myForeign) > 2 ? 3 : (parseInt(this.myForeign) > 1 ? 4 : 5))));
+      let multiply = 1
+      multiply *= this.mySex == "남자" ? 0.6 : 0.3;
+      multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
+      multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
+      let changed = (this.companyForeign - this.myForeign);
+      let result = changed * grade * multiply * Foreign;      
+      return Math.ceil(result / parseInt(this.myStudyTime));
+    },
+    MathforToeicSpeakingScore(){
+      let ToeicSpeakingScore = 500
+      let grade = (parseInt(this.myToeicSpeakingScore) > 6 ? 1: (parseInt(this.myToeicSpeakingScore) > 4 ? 2 : (parseInt(this.myToeicSpeakingScore) > 2 ? 3 : (parseInt(this.myToeicSpeakingScore) > 1 ? 4 : 5))));
+      let multiply = 1
+      multiply *= this.mySex == "남자" ? 0.6 : 0.3;
+      multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
+      multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
+      let changed = (this.companyToeicSpeakingScore - this.myToeicSpeakingScore);
+      console.log(grade);
+      console.log(multiply);
+      console.log(changed);
+      let result = changed * grade * multiply * ToeicSpeakingScore;      
+      return Math.ceil(result / parseInt(this.myStudyTime));
+    },
+    MathforOpicScore(){
+      let OpicScore = 500
+      let grade = ((this.OpicState[this.myOpicScore]) > 6 ? 1: ((this.OpicState[this.myOpicScore]) > 4 ? 2 : ((this.OpicState[this.myOpicScore]) > 2 ? 3 : ((this.OpicState[this.myOpicScore]) > 1 ? 4 : 5))));
+      let multiply = 1
+      multiply *= this.mySex == "남자" ? 0.6 : 0.3;
+      multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
+      multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
+      let changed = (this.OpicState[this.companyOpicScore] - this.OpicState[this.myOpicScore]);
+      let result = changed * grade * multiply * OpicScore;      
+      return Math.ceil(result / parseInt(this.myStudyTime));
+    },
+    MathforTravel(){
+      let Travel = 500
+      let grade = (parseInt(this.myTravel) > 4 ? 1: (parseInt(this.myTravel) > 3 ? 2 : (parseInt(this.myTravel) > 2 ? 3 : (parseInt(this.myTravel) > 1 ? 4 : 5))));
+      let multiply = 1
+      multiply *= this.mySex == "남자" ? 0.6 : 0.3;
+      multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
+      multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
+      let changed = (this.companyTravel - this.myTravel);
+      let result = changed * grade * multiply * Travel;      
+      return Math.ceil(result / parseInt(this.myStudyTime));
+    },
+    MathforContest(){
+      let Contest = 500
+      let grade = (parseInt(this.myContest) > 4 ? 1: (parseInt(this.myContest) > 3 ? 2 : (parseInt(this.myContest) > 2 ? 3 : (parseInt(this.myContest) > 1 ? 4 : 5))));
+      let multiply = 1
+      multiply *= this.mySex == "남자" ? 0.6 : 0.3;
+      multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
+      multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
+      let changed = (this.companyContest - this.myContest);
+      let result = changed * grade * multiply * Contest;      
+      return Math.ceil(result / parseInt(this.myStudyTime));
     },
   },
 };
