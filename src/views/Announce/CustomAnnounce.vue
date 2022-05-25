@@ -39,7 +39,7 @@
       </ul>
     </div>
     <div>
-      <div v-for="item in this.showKey" :key="item">{{ Object.keys(item).toString() }}</div>
+      <div v-for="item in Object.keys(this.sortable)" :key="item">{{ item }}</div>
     </div>
 
     <div class="listWrap">
@@ -94,6 +94,7 @@ export default {
     keywordKey: '',
     loc_cd: '',
     job_mid_cd: '',
+    sortable: [],
     jobMidCD: [
       '(16)기획·전략',
       '(14)마케팅·홍보·조사',
@@ -175,7 +176,7 @@ export default {
       this.$axios
         .get(
           'api/announcements?keywords=' +
-            Object.keys(this.showKey[0]) +
+            Object.keys(this.sortable)[0] +
             '&job_type=1&edu_lv=0&loc_cd=101010&job_mid_cd=2'
         )
         .then(res => {
@@ -246,28 +247,20 @@ export default {
       });
     },
     GetKeyNum() {
+      const result = {};
       for (let i = 0; i < this.eventsKey.length; i++) {
         this.tempKey.push(this.eventsKey[i].name);
       }
-      for (let i = 0; i < this.tempKey.length; i++) {
-        console.log(this.tempKey[i]);
-        console.log(this.showKey);
-        console.log(this.tempKey[i] in this.showKey);
-        console.log('\n\n\n\n');
-        // 이부분 계속 만져봐야함,-------------------------------------------------------------------------------------
-        // if(this.showKey.hasOwnProperty(this.tempKey[i])){
-        if (!(this.tempKey[i] in this.showKey)) {
-          // if (!(this.showKey).includes(this.tempKey[i])){
-          this.showKey.push({ [this.tempKey[i]]: 1 });
-          // 이부분 계속 만져봐야함,-------------------------------------------------------------------------------------
-        }
-      }
-      console.log(this.tempKey);
-      console.log('\n\n');
-      console.log(this.showKey);
+      this.tempKey.forEach((x)=>{
+        result[x] = (result[x] || 0)+1;
+      });
+      
+      const sortable = Object.entries(result).sort(([,a],[,b]) => b-a).reduce((r,[k,v]) => ({ ...r,[k]:v}), {});
+      this.sortable = sortable;
+      console.log(Object.keys(this.sortable));
+      },
     },
-  },
-};
+  };
 </script>
 
 <style lang="scss">

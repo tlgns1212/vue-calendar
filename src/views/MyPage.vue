@@ -40,7 +40,7 @@
               <div class="form-group row align-items-center">
                 <label for="targetCompany" class="bar">목표 기업</label>
                 <div class="value">
-                  <div class="UserName">{{ this.events[0].wantToGo }}</div>
+                  <div class="UserName">{{ this.wantToGo }}</div>
                 </div>
                 <label for="targetCompany" class="bar">학점</label>
                 <div class="value">
@@ -418,7 +418,15 @@
       <div class="col col-md-9">
         <div class="row">
           <div class="col" style="background-color: #a9e6fc">
-            <h4>목표 역량 대비 현재 나의 역량</h4>
+            <h4>목표 역량 대비 현재 나의 역량 </h4>
+            <v-select
+            :v-model="this.wantToGo"
+            :items="this.companyItems"
+            label="희망 기업을 고르시오"
+            dense
+            style="margin-right: 2%; width: 40%; margin-top: 5%"
+            v-on:change="ChangeCompany"
+            ></v-select>
             토익<span class="pull-right strong">{{ this.eventsCompany.companyToeicScore }}</span>
             <div class="progress">
               <div
@@ -634,7 +642,8 @@ export default {
     eventsToeicSpeaking: [],
     eventsOpic: [],
     eventsTexts: [],
-    eventNameCompany: 'KF1tl1R42f9NurZ7bl9c',
+    companyItems: [],
+    eventNameCompany: 'KEPC',
     wantToGo: '',
     myToeicScore: '',
     myToeicSpeakingScore: '',
@@ -881,6 +890,7 @@ export default {
       this.myTravel = events[0].myTravel;
       this.isCompanyName();
       this.InitalData();
+      this.CompanyItems();
     },
     async getCheckEvents() {
       let snapshot = await db.collection('toeic').get();
@@ -928,12 +938,9 @@ export default {
       this.eventsTexts = events;
     },
     InitalData() {
-      console.log('\n\n\n\n\n\n\n\\n\n\n\n');
-      console.log(this.events.wantToGo);
+      
       this.wantToGo = this.events[0].wantToGo;
-
       this.myToeicScore = this.events[0].myToeicScore;
-      console.log(this.myToeicScore);
       this.mySchoolScore = this.events[0].mySchoolScore;
       this.myCertification = this.events[0].myCertification;
       this.myForeign = this.events[0].myForeign;
@@ -958,7 +965,7 @@ export default {
 
     // 데이터를 firebase에 업데이트
     async updateEvent(ev) {
-      await db.collection('user').doc('KF1tl1R42f9NurZ7bl9c').update({
+      await db.collection('user').doc('KEPC').update({
         myToeicScore: this.myToeicScore,
         mySchoolScore: this.mySchoolScore,
         myCertification: this.myCertification,
@@ -974,7 +981,7 @@ export default {
       this.getEvents();
     },
     async DialogEvent() {
-      await db.collection('user').doc('KF1tl1R42f9NurZ7bl9c').update({
+      await db.collection('user').doc('KEPC').update({
         wantToGo: this.wantToGo,
         myToeicScore: this.myToeicScore,
         mySchoolScore: this.mySchoolScore,
@@ -994,7 +1001,7 @@ export default {
       }
     },
     async DialogCheckEvent() {
-      await db.collection('user').doc('KF1tl1R42f9NurZ7bl9c').update({
+      await db.collection('user').doc('KEPC').update({
         myStudyTime: this.tempStudyTime,
       });
       this.getEvents();
@@ -1008,7 +1015,7 @@ export default {
       this.getCheckEvents();
     },
     async buttonClicked() {
-      await db.collection('user').doc('KF1tl1R42f9NurZ7bl9c').update({
+      await db.collection('user').doc('KEPC').update({
         myStudyTime: this.tempStudyTime,
       });
       this.loading = true;
@@ -1108,9 +1115,6 @@ export default {
       multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
       multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
       let changed = (this.companyToeicSpeakingScore - this.myToeicSpeakingScore);
-      console.log(grade);
-      console.log(multiply);
-      console.log(changed);
       let result = changed * grade * multiply * ToeicSpeakingScore;      
       return Math.ceil(result / parseInt(this.myStudyTime));
     },
@@ -1147,8 +1151,22 @@ export default {
       let result = changed * grade * multiply * Contest;      
       return Math.ceil(result / parseInt(this.myStudyTime));
     },
-  },
-};
+    CompanyItems(){
+      for (let i = 0; i < this.events.length;i++){
+        this.companyItems.push(this.events[i].id);
+      }
+    },
+    async ChangeCompany(a){
+      console.log(a);
+      this.wantToGo = a;
+      
+      await db.collection('user').doc('KEPC').update({
+        wantToGo: this.wantToGo,
+      })
+      this.getEvents();
+    },
+    },
+  };
 </script>
 
 <style lang="scss">

@@ -74,7 +74,10 @@
           @click:more="viewDay"
           @click:date="viewDay"
           @mousedown:time="startTime"
+          @touchstart:time="startTime"
+          @touchmove:time="mouseMove"
           @mousemove:time="mouseMove"
+          @touchend:time="endDrag"
           @mouseup:time="endDrag"
           @mouseleave.native="cancelDrag">
           <template v-slot:event="{ event, timed, eventSummary }">

@@ -234,7 +234,7 @@ export default {
       this.getEvents();
     },
 
-    fnSearch() {
+    async fnSearch() {
       this.job_mid_cd = this.job_mid_cd.substr(1, 2);
       if (this.job_mid_cd[1] == ')') {
         this.job_mid_cd = this.job_mid_cd.substr(0, 1);
@@ -251,6 +251,9 @@ export default {
         )
         .then(res => {
           this.events = res;
+        });
+        await db.collection('keyword').add({
+          name: this.keyword,
         });
     },
 
