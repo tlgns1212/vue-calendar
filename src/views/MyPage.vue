@@ -5,7 +5,7 @@
     <header>
       <form class="mypage" action="">
         <div class="row">
-          <div class="container col-7" style="width: 100%">
+          <div class="container col-10" style="width: 100%">
             <div class="row1">
               <h6 class="text-center col-12 mb-0">My Page [유저 정보]</h6>
             </div>
@@ -14,7 +14,7 @@
               <div class="form-group row">
                 <div class="bar">아이디</div>
                 <div class="value">
-                  <div class="UserName" v-for="item in this.events" :key="item.email">
+                  <div class="UserName" v-for="item in this.events" :key="item.email" style="font-size: 2vw">
                     {{ item.email }}
                   </div>
                 </div>
@@ -99,7 +99,7 @@
       </form>
     </header>
     <v-dialog v-model="dialog" max-width="500">
-      <v-card>
+      <v-card class="pop-up">
         <v-container>
           <v-form @submit.prevent="DialogEvent">
             <v-text-field v-model="mySex" type="text" label="성별"></v-text-field>
@@ -271,17 +271,17 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="dialogCheck" max-width="500">
+    <v-dialog v-model="dialogCheck">
       <v-card>
         <v-container>
           <v-form @submit.prevent="DialogCheckEvent">
             <div class="spinner-div" v-if="loading == false">
               <q-spinner-cube color="primary" size="5em" />
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4"
+              <!-- <div class="form-group1 row align-items-center">
+                <label for="targetCompany" class="keys"
                   >토익 {{ this.events[0].myToeicScore }} -> {{ this.eventsCompany.companyToeicScore }}</label
                 >
-                <div class="col-8">
+                <div class="results">
                   <div class="input-group">
                     <div class="UserName">
                       <v-btn @click="dialogToeic = true"> {{ this.MathforToeic() }} 일</v-btn>
@@ -289,11 +289,11 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4"
+              <div class="form-group1 row align-items-center">
+                <label for="targetCompany" class="keys"
                   >학점 {{ this.events[0].mySchoolScore }} -> {{ this.eventsCompany.companySchoolScore }}</label
                 >
-                <div class="col-8">
+                <div class="results">
                   <div class="input-group">
                     <div class="UserName">
                       <div class="UserName"><v-btn @click="dialogSchool = true"> 不可</v-btn></div>
@@ -301,26 +301,24 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4"
+              <div class="form-group1 row align-items-center">
+                <label for="targetCompany" class="keys"
                   >자격증 개수 {{ this.events[0].myCertification }} ->
                   {{ this.eventsCompany.companyCertification }}</label
                 >
-                <div class="col-8">
+                <div class="results">
                   <div class="input-group">
                     <div class="UserName">
-                      <v-btn @click="dialogCertification = true">
-                        {{ this.MathforCertification() }} 일</v-btn
-                      >
+                      <v-btn @click="dialogCertification = true"> {{ this.MathforCertification() }} 일</v-btn>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4"
+              <div class="form-group1 row align-items-center">
+                <label for="targetCompany" class="keys"
                   >사용 가능 언어 {{ this.events[0].myForeign }} -> {{ this.eventsCompany.companyForeign }}</label
                 >
-                <div class="col-8">
+                <div class="results">
                   <div class="input-group">
                     <div class="UserName">
                       <v-btn @click="dialogForeign = true"> {{ this.MathforForeign() }} 일</v-btn>
@@ -328,26 +326,24 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4"
+              <div class="form-group1 row align-items-center">
+                <label for="targetCompany" class="keys"
                   >토익 스피킹 {{ this.events[0].myToeicSpeakingScore }} ->
                   {{ this.eventsCompany.companyToeicSpeakingScore }}</label
                 >
-                <div class="col-8">
+                <div class="results">
                   <div class="input-group">
                     <div class="UserName">
-                      <v-btn @click="dialogToeicSpeaking = true">
-                        {{ this.MathforToeicSpeakingScore() }} 일</v-btn
-                      >
+                      <v-btn @click="dialogToeicSpeaking = true"> {{ this.MathforToeicSpeakingScore() }} 일</v-btn>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4"
+              </div> -->
+              <div class="form-group1 row align-items-center">
+                <label for="targetCompany" class="keys"
                   >오픽 {{ this.events[0].myOpicScore }} -> {{ this.eventsCompany.companyOpicScore }}</label
                 >
-                <div class="col-8">
+                <div class="results">
                   <div class="input-group">
                     <div class="UserName">
                       <v-btn @click="dialogOpic = true"> {{ this.MathforOpicScore() }} 일</v-btn>
@@ -355,11 +351,11 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4"
+              <!-- <div class="form-group1 row align-items-center">
+                <label for="targetCompany" class="keys"
                   >해외 경험 {{ this.events[0].myTravel }} -> {{ this.eventsCompany.companyTravel }}</label
                 >
-                <div class="col-8">
+                <div class="results">
                   <div class="input-group">
                     <div class="UserName">
                       <v-btn @click="dialogTravel = true"> {{ this.MathforTravel() }} 일</v-btn>
@@ -367,11 +363,11 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4"
+              <div class="form-group1 row align-items-center">
+                <label for="targetCompany" class="keys"
                   >인턴 경험 {{ this.events[0].myIntern }} -> {{ this.eventsCompany.companyIntern }}</label
                 >
-                <div class="col-8">
+                <div class="results">
                   <div class="input-group">
                     <div class="UserName">
                       <div class="UserName"><v-btn @click="dialogIntern = true"> 不可</v-btn></div>
@@ -379,54 +375,63 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group row align-items-center">
-                <label for="targetCompany" class="col-4"
+              <div class="form-group1 row align-items-center">
+                <label for="targetCompany" class="keys"
                   >수상 내역 {{ this.events[0].myContest }} -> {{ this.eventsCompany.companyContest }}</label
                 >
-                <div class="col-8">
+                <div class="results">
                   <div class="input-group">
                     <div class="UserName">
                       <v-btn @click="dialogContest = true"> {{ this.MathforContest() }} 일</v-btn>
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
-            <div class="spinner-div" v-else></div>
-            <div class="form-group row align-items-center">
-              <v-text-field v-model="tempStudyTime" type="text" label="하루 공부시간(hour)"></v-text-field>
-              <LoadingButton ref="button" :loading="this.loading" @click="buttonClicked"> 다시 검색 </LoadingButton>
+            <div class="spinner-div" style="width: 300px" v-else></div>
+            <div class="form-group1 row align-items-center">
+              <v-text-field
+                v-model="tempStudyTime"
+                type="text"
+                label="한 번에 가능한 최대 집중 시간(hour)"
+                style="width: 100px"></v-text-field>
+                <v-text-field
+                v-model="tempSoon"
+                type="text"
+                label="수능 영어 등급"
+                style="width: 100px"></v-text-field>
             </div>
+            <LoadingButton ref="button" :loading="this.loading" @click="buttonClicked" class="aaa">
+              다시 검색
+            </LoadingButton>
             <!-- <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog = false"> Create Event </v-btn>
              -->
           </v-form>
         </v-container>
       </v-card>
     </v-dialog>
-    <v-row class=" " style="background-color: grey">
+    <v-row class="container2">
       <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#"> 목표 역량 </a>
+        <div class="navbar-header" style="height: 40px">
+          <div class="target">나의 목표 역량</div>
+          <button class="btn btn-success btn-md pull-right" @click="dialog = true" style="margin-top: 5px">
+            정보갱신
+          </button>
         </div>
-        <button class="btn btn-success btn-md pull-right" @click="dialog = true" style="margin-top: 5px">
-          정보갱신
-        </button>
       </div>
     </v-row>
-
     <div class="container-fluid">
-      <div class="col col-md-9">
+      <div class="col">
         <div class="row">
-          <div class="col" style="background-color: #a9e6fc">
-            <h4>목표 역량 대비 현재 나의 역량 </h4>
+          <div class="container3">
+            <h4>목표 역량 대비 현재 나의 역량</h4>
             <v-select
-            :v-model="this.wantToGo"
-            :items="this.companyItems"
-            label="희망 기업을 고르시오"
-            dense
-            style="margin-right: 2%; width: 40%; margin-top: 5%"
-            v-on:change="ChangeCompany"
-            ></v-select>
+              :v-model="this.wantToGo"
+              :items="this.companyItems"
+              label="희망 기업을 선택하세요."
+              dense
+              style="margin-left: 25%; width: 50%; margin-top: 3%"
+              v-on:change="ChangeCompany"></v-select>
             토익<span class="pull-right strong">{{ this.eventsCompany.companyToeicScore }}</span>
             <div class="progress">
               <div
@@ -461,7 +466,12 @@
                 {{
                   Math.floor(
                     (parseFloat(this.events[0].mySchoolScore) / parseFloat(this.eventsCompany.companySchoolScore)) * 100
-                  )
+                  ) > 100
+                    ? 100
+                    : Math.floor(
+                        (parseFloat(this.events[0].mySchoolScore) / parseFloat(this.eventsCompany.companySchoolScore)) *
+                          100
+                      )
                 }}%
               </div>
               <!-- <span class="pull-right strong">{{this.events[0].mySchoolScore }}</span> -->
@@ -479,7 +489,12 @@
                   Math.floor(
                     (parseFloat(this.events[0].myCertification) / parseFloat(this.eventsCompany.companyCertification)) *
                       100
-                  )
+                  ) > 100
+                    ? 100
+                    : Math.floor(
+                        (parseFloat(this.events[0].myCertification) / parseFloat(this.eventsCompany.companyCertification)) *
+                          100
+                      )
                 }}%
               </div>
             </div>
@@ -497,7 +512,12 @@
                 {{
                   Math.floor(
                     (parseFloat(this.events[0].myForeign) / parseFloat(this.eventsCompany.companyForeign)) * 100
-                  )
+                  ) > 100
+                    ? 100
+                    : Math.floor(
+                        (parseFloat(this.events[0].myForeign) / parseFloat(this.eventsCompany.companyForeign)) *
+                          100
+                      )
                 }}%
               </div>
             </div>
@@ -517,7 +537,12 @@
                     (parseFloat(this.events[0].myToeicSpeakingScore) /
                       parseFloat(this.eventsCompany.companyToeicSpeakingScore)) *
                       100
-                  )
+                  ) > 100
+                    ? 100
+                    : Math.floor(
+                        (parseFloat(this.events[0].myToeicSpeakingScore) / parseFloat(this.eventsCompany.companyToeicSpeakingScore)) *
+                          100
+                      )
                 }}%
               </div>
             </div>
@@ -537,7 +562,12 @@
                     (parseFloat(this.OpicState[this.events[0].myOpicScore]) /
                       parseFloat(this.OpicState[this.eventsCompany.companyOpicScore])) *
                       100
-                  )
+                  ) > 100
+                    ? 100
+                    : Math.floor(
+                        (parseFloat(this.OpicState[this.events[0].myOpicScore]) / parseFloat(this.OpicState[this.eventsCompany.companyOpicScore])) *
+                          100
+                      )
                 }}%
               </div>
             </div>
@@ -555,7 +585,12 @@
                 {{
                   Math.floor(
                     (parseFloat(this.events[0].myTravel) / parseFloat(this.eventsCompany.companyTravel)) * 100
-                  )
+                  ) > 100
+                    ? 100
+                    : Math.floor(
+                        (parseFloat(this.events[0].myTravel) / parseFloat(this.eventsCompany.companyTravel)) *
+                          100
+                      )
                 }}%
               </div>
             </div>
@@ -573,7 +608,12 @@
                 {{
                   Math.floor(
                     (parseFloat(this.events[0].myIntern) / parseFloat(this.eventsCompany.companyIntern)) * 100
-                  )
+                  ) > 100
+                    ? 100
+                    : Math.floor(
+                        (parseFloat(this.events[0].myIntern) / parseFloat(this.eventsCompany.companyIntern)) *
+                          100
+                      )
                 }}%
               </div>
             </div>
@@ -591,15 +631,47 @@
                 {{
                   Math.floor(
                     (parseFloat(this.events[0].myContest) / parseFloat(this.eventsCompany.companyContest)) * 100
-                  )
+                  ) > 100
+                    ? 100
+                    : Math.floor(
+                        (parseFloat(this.events[0].myContest) / parseFloat(this.eventsCompany.companyContest)) *
+                          100
+                      )
                 }}%
               </div>
             </div>
           </div>
         </div>
       </div>
-      <v-text-field v-model="tempStudyTime" type="text" label="하루 공부시간(hour)"></v-text-field>
-      <v-btn @click="DialogCheckEvent">검사받기</v-btn>
+      <div class="footer">
+        <v-text-field
+          v-model="tempStudyTime"
+          type="text"
+          label="한번에 가능한 최대 집중 시간(hour)"
+          style="
+            font-size: 25px;
+            position: relative;
+            top: 10px;
+            width: 300px;
+            left: 54px;
+            margin-top: 10px;
+            display: inline-block;
+          "></v-text-field>
+          <v-text-field
+          v-model="tempSoon"
+          type="text"
+          label="수능 영어 등급"
+          style="
+            font-size: 25px;
+            position: relative;
+            top: 10px;
+            width: 300px;
+            left: 54px;
+            margin-top: 10px;
+            display: inline-block;
+          "></v-text-field>
+        <v-btn @click="DialogCheckEvent" style="position: relative; left: 40%">검사받기</v-btn>
+      </div>
     </div>
   </div>
 </template>
@@ -658,6 +730,7 @@ export default {
     mySex: '',
     myEnglishTest: '',
     myStudyTime: '',
+    mySoon: '',
     companyToeicScore: '',
     companyToeicSpeakingScore: '',
     companyOpicScore: '',
@@ -685,6 +758,7 @@ export default {
     loading: false,
     randomNumber: 2,
     tempStudyTime: '',
+    tempSoon: '',
     OpicState: { NL: 1, NM: 2, NH: 3, IL: 4, IM1: 5, IM2: 6, IM3: 7, AL: 8 },
   }),
   computed: {
@@ -695,7 +769,7 @@ export default {
       ).toString();
     },
     ToeicPercentage() {
-      return { width: this.ToeicScore + '%' };
+      return { width: (parseInt(this.ToeicScore) > 100 ? 100:this.ToeicScore) + '%' };
     },
     ToeicProgressBar() {
       let temp = this.ToeicScore;
@@ -713,7 +787,7 @@ export default {
       ).toString();
     },
     SchoolPercentage() {
-      return { width: this.SchoolScore + '%' };
+      return { width: (parseInt(this.SchoolScore) > 100 ? 100:this.SchoolScore) + '%' };
     },
     SchoolProgressBar() {
       let temp = this.SchoolScore;
@@ -731,7 +805,7 @@ export default {
       ).toString();
     },
     CertificationPercentage() {
-      return { width: this.CertificationScore + '%' };
+      return { width: (parseInt(this.CertificationScore) > 100 ? 100:this.CertificationScore)+ '%' };
     },
     CertificationProgressBar() {
       let temp = this.CertificationScore;
@@ -749,7 +823,7 @@ export default {
       ).toString();
     },
     ForeignPercentage() {
-      return { width: this.ForeignScore + '%' };
+      return { width: (parseInt(this.ForeignScore) > 100 ? 100:this.ForeignScore) + '%' };
     },
     ForeignProgressBar() {
       let temp = this.ForeignScore;
@@ -768,7 +842,7 @@ export default {
       ).toString();
     },
     ToeicSpeakingScorePercentage() {
-      return { width: this.ToeicSpeakingScoreScore + '%' };
+      return { width: (parseInt(this.ToeicSpeakingScoreScore) > 100 ? 100:this.ToeicSpeakingScoreScore) + '%' };
     },
     ToeicSpeakingScoreProgressBar() {
       let temp = this.ToeicSpeakingScoreScore;
@@ -788,7 +862,7 @@ export default {
       ).toString();
     },
     OpicScorePercentage() {
-      return { width: this.OpicScoreScore + '%' };
+      return { width: (parseInt(this.OpicScoreScore) > 100 ? 100:this.OpicScoreScore)+ '%' };
     },
     OpicScoreProgressBar() {
       let temp = this.OpicScoreScore;
@@ -806,7 +880,7 @@ export default {
       ).toString();
     },
     TravelPercentage() {
-      return { width: this.TravelScore + '%' };
+      return { width: (parseInt(this.TravelScore) > 100 ? 100:this.TravelScore) + '%' };
     },
     TravelProgressBar() {
       let temp = this.TravelScore;
@@ -824,7 +898,7 @@ export default {
       ).toString();
     },
     InternPercentage() {
-      return { width: this.InternScore + '%' };
+      return { width: (parseInt(this.InternScore) > 100 ? 100:this.InternScore) + '%' };
     },
     InternProgressBar() {
       let temp = this.InternScore;
@@ -842,7 +916,7 @@ export default {
       ).toString();
     },
     ContestPercentage() {
-      return { width: this.ContestScore + '%' };
+      return { width: (parseInt(this.ContestScore) > 100 ? 100:this.ContestScore) + '%' };
     },
     ContestProgressBar() {
       let temp = this.ContestScore;
@@ -882,6 +956,8 @@ export default {
       this.myAge = events[0].myAge;
       this.mySex = events[0].mySex;
       this.myStudyTime = events[0].myStudyTime;
+      this.mySoon = events[0].mySoon;
+      this.tempSoon = events[0].mySoon;
       this.tempStudyTime = events[0].myStudyTime;
       this.myToeicSpeakingScore = events[0].myToeicSpeakingScore;
       this.myOpicScore = events[0].myOpicScore;
@@ -938,9 +1014,10 @@ export default {
       this.eventsTexts = events;
     },
     InitalData() {
-      
       this.wantToGo = this.events[0].wantToGo;
+
       this.myToeicScore = this.events[0].myToeicScore;
+
       this.mySchoolScore = this.events[0].mySchoolScore;
       this.myCertification = this.events[0].myCertification;
       this.myForeign = this.events[0].myForeign;
@@ -1003,26 +1080,30 @@ export default {
     async DialogCheckEvent() {
       await db.collection('user').doc('KEPC').update({
         myStudyTime: this.tempStudyTime,
+        mySoon: this.tempSoon,
       });
       this.getEvents();
       this.dialogCheck = true;
       this.isLoading = true;
       this.loading = true;
       this.myStudyTime = this.tempStudyTime;
+      this.mySoon = this.tempSoon;
       setTimeout(() => {
         this.loading = false;
-      }, 0);
+      }, 1000);
       this.getCheckEvents();
     },
     async buttonClicked() {
       await db.collection('user').doc('KEPC').update({
         myStudyTime: this.tempStudyTime,
+        mySoon: this.tempSoon,
       });
       this.loading = true;
       this.myStudyTime = this.tempStudyTime;
+      this.mySoon = this.tempSoon;
       setTimeout(() => {
         this.loading = false;
-      }, 2000);
+      }, 1000);
       this.getCheckEvents();
     },
     async consoleGo(item) {
@@ -1074,99 +1155,254 @@ export default {
       this.dialogContest = false;
       this.RandomNumber();
     },
-    MathforToeic(){
-      let ToeicScore = 4
-      let grade = (parseInt(this.ToeicScore) > 800 ? 1: (parseInt(this.ToeicScore) > 600 ? 2 : (parseInt(this.ToeicScore) > 400 ? 3 : (parseInt(this.ToeicScore) > 1 ? 4 : 5))));
-      let multiply = 1
-      multiply *= this.mySex == "남자" ? 0.6 : 0.3;
+    MathforToeic() {
+      let ToeicScore = 4;
+      let grade =
+        parseInt(this.ToeicScore) > 800
+          ? 1
+          : parseInt(this.ToeicScore) > 600
+          ? 2
+          : parseInt(this.ToeicScore) > 400
+          ? 3
+          : parseInt(this.ToeicScore) > 1
+          ? 4
+          : 5;
+      let multiply = 1;
+      multiply *= this.mySex == '남자' ? 0.6 : 0.3;
       multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
       multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
-      let changed = (this.companyToeicScore - this.myToeicScore);
-      let result = changed * grade * multiply * ToeicScore;      
+      let changed = this.companyToeicScore - this.myToeicScore;
+      let result = changed * grade * multiply * ToeicScore;
       return Math.ceil(result / parseInt(this.myStudyTime));
     },
-    MathforCertification(){
-      let Certification = 250
-      let grade = (parseInt(this.myCertification) > 4 ? 1: (parseInt(this.myCertification) > 3 ? 2 : (parseInt(this.myCertification) > 2 ? 3 : (parseInt(this.myCertification) > 1 ? 4 : 5))));
-      let multiply = 1
-      multiply *= this.mySex == "남자" ? 0.6 : 0.3;
+    MathforCertification() {
+      let Certification = 250;
+      let grade =
+        parseInt(this.myCertification) > 4
+          ? 1
+          : parseInt(this.myCertification) > 3
+          ? 2
+          : parseInt(this.myCertification) > 2
+          ? 3
+          : parseInt(this.myCertification) > 1
+          ? 4
+          : 5;
+      let multiply = 1;
+      multiply *= this.mySex == '남자' ? 0.6 : 0.3;
       multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
       multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
-      let changed = (this.companyCertification - this.myCertification);
-      let result = changed * grade * multiply * Certification;     
+      let changed = this.companyCertification - this.myCertification;
+      let result = changed * grade * multiply * Certification;
       return Math.ceil(result / parseInt(this.myStudyTime));
     },
-    MathforForeign(){
-      let Foreign = 500
-      let grade = (parseInt(this.myForeign) > 4 ? 1: (parseInt(this.myForeign) > 3 ? 2 : (parseInt(this.myForeign) > 2 ? 3 : (parseInt(this.myForeign) > 1 ? 4 : 5))));
-      let multiply = 1
-      multiply *= this.mySex == "남자" ? 0.6 : 0.3;
+    MathforForeign() {
+      let Foreign = 500;
+      let grade =
+        parseInt(this.myForeign) > 4
+          ? 1
+          : parseInt(this.myForeign) > 3
+          ? 2
+          : parseInt(this.myForeign) > 2
+          ? 3
+          : parseInt(this.myForeign) > 1
+          ? 4
+          : 5;
+      let multiply = 1;
+      multiply *= this.mySex == '남자' ? 0.6 : 0.3;
       multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
       multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
-      let changed = (this.companyForeign - this.myForeign);
-      let result = changed * grade * multiply * Foreign;      
+      let changed = this.companyForeign - this.myForeign;
+      let result = changed * grade * multiply * Foreign;
       return Math.ceil(result / parseInt(this.myStudyTime));
     },
-    MathforToeicSpeakingScore(){
-      let ToeicSpeakingScore = 500
-      let grade = (parseInt(this.myToeicSpeakingScore) > 6 ? 1: (parseInt(this.myToeicSpeakingScore) > 4 ? 2 : (parseInt(this.myToeicSpeakingScore) > 2 ? 3 : (parseInt(this.myToeicSpeakingScore) > 1 ? 4 : 5))));
-      let multiply = 1
-      multiply *= this.mySex == "남자" ? 0.6 : 0.3;
+    MathforToeicSpeakingScore() {
+      let ToeicSpeakingScore = 500;
+      let grade =
+        parseInt(this.myToeicSpeakingScore) > 6
+          ? 1
+          : parseInt(this.myToeicSpeakingScore) > 4
+          ? 2
+          : parseInt(this.myToeicSpeakingScore) > 2
+          ? 3
+          : parseInt(this.myToeicSpeakingScore) > 1
+          ? 4
+          : 5;
+      let multiply = 1;
+      multiply *= this.mySex == '남자' ? 0.6 : 0.3;
       multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
       multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
-      let changed = (this.companyToeicSpeakingScore - this.myToeicSpeakingScore);
-      let result = changed * grade * multiply * ToeicSpeakingScore;      
+      let changed = this.companyToeicSpeakingScore - this.myToeicSpeakingScore;
+      let result = changed * grade * multiply * ToeicSpeakingScore;
       return Math.ceil(result / parseInt(this.myStudyTime));
     },
-    MathforOpicScore(){
-      let OpicScore = 500
-      let grade = ((this.OpicState[this.myOpicScore]) > 6 ? 1: ((this.OpicState[this.myOpicScore]) > 4 ? 2 : ((this.OpicState[this.myOpicScore]) > 2 ? 3 : ((this.OpicState[this.myOpicScore]) > 1 ? 4 : 5))));
-      let multiply = 1
-      multiply *= this.mySex == "남자" ? 0.6 : 0.3;
+    MathforOpicScore() {
+      if (parseInt(this.myOpicScore) == 0 && parseInt(this.myToeicSpeakingScore) == 0 && parseInt(this.myToeicScore) == 0){
+      if (parseInt(this.mySoon) == 1 && parseInt(this.myStudyTime) > 1){
+        return 11+20;
+      }
+      else if (parseInt(this.mySoon) == 1 && parseInt(this.myStudyTime) == 1){
+        return 31+20;
+      }
+      else if (parseInt(this.mySoon) == 2 && parseInt(this.myStudyTime) > 3){
+        return 11+20;
+      }
+      else if (parseInt(this.mySoon) == 2 && parseInt(this.myStudyTime) > 0){
+        return 31+20
+      }
+      else if (parseInt(this.mySoon) == 3 && parseInt(this.myStudyTime) > 5){
+        return 11+20
+      }
+      else if (parseInt(this.mySoon) == 3 && parseInt(this.myStudyTime) > 3){
+        return 31+20
+      }
+      else if (parseInt(this.mySoon) == 3 && parseInt(this.myStudyTime) > 0){
+        return 58+20
+      }
+      else if (parseInt(this.mySoon) == 4 && parseInt(this.myStudyTime) > 5 ){
+        return 31+20
+      }
+      else if (parseInt(this.mySoon) == 4 && parseInt(this.myStudyTime) > 1){
+        return 58+20
+      }
+      else if (parseInt(this.mySoon) == 4 && parseInt(this.myStudyTime) == 0){
+        return 77+20
+      }
+      else if (parseInt(this.mySoon) == 5 && parseInt(this.myStudyTime) > 3){
+        return 58+20
+      }
+      else if (parseInt(this.mySoon) == 5 && parseInt(this.myStudyTime) > 0){
+        return 77+20
+      }
+      else if (parseInt(this.mySoon) == 6 && parseInt(this.myStudyTime) > 5){
+        return 58+20
+      }
+      else if (parseInt(this.mySoon) == 6 && parseInt(this.myStudyTime) > 2){
+        return 77+20
+      }
+      else if (parseInt(this.mySoon) == 6 && parseInt(this.myStudyTime) > 0){
+        return 12+204
+      }
+      else if (parseInt(this.mySoon) == 7 && parseInt(this.myStudyTime) > 0){
+        return 12+204
+      }
+      else if (parseInt(this.mySoon) == 8 && parseInt(this.myStudyTime) > 0){
+        return 12+204
+      }
+      else if (parseInt(this.mySoon) == 9 && parseInt(this.myStudyTime) > 0){
+        return 12+204
+      }}
+      else{
+        if (parseInt(this.mySoon) == 1 && parseInt(this.myStudyTime) > 1){
+        return 11;
+      }
+      else if (parseInt(this.mySoon) == 1 && parseInt(this.myStudyTime) == 1){
+        return 31;
+      }
+      else if (parseInt(this.mySoon) == 2 && parseInt(this.myStudyTime) > 3){
+        return 11;
+      }
+      else if (parseInt(this.mySoon) == 2 && parseInt(this.myStudyTime) > 0){
+        return 31
+      }
+      else if (parseInt(this.mySoon) == 3 && parseInt(this.myStudyTime) > 5){
+        return 11
+      }
+      else if (parseInt(this.mySoon) == 3 && parseInt(this.myStudyTime) > 3){
+        return 31
+      }
+      else if (parseInt(this.mySoon) == 3 && parseInt(this.myStudyTime) > 0){
+        return 58
+      }
+      else if (parseInt(this.mySoon) == 4 && parseInt(this.myStudyTime) > 5 ){
+        return 31
+      }
+      else if (parseInt(this.mySoon) == 4 && parseInt(this.myStudyTime) > 1){
+        return 58
+      }
+      else if (parseInt(this.mySoon) == 4 && parseInt(this.myStudyTime) == 0){
+        return 77
+      }
+      else if (parseInt(this.mySoon) == 5 && parseInt(this.myStudyTime) > 3){
+        return 58
+      }
+      else if (parseInt(this.mySoon) == 5 && parseInt(this.myStudyTime) > 0){
+        return 77
+      }
+      else if (parseInt(this.mySoon) == 6 && parseInt(this.myStudyTime) > 5){
+        return 58
+      }
+      else if (parseInt(this.mySoon) == 6 && parseInt(this.myStudyTime) > 2){
+        return 77
+      }
+      else if (parseInt(this.mySoon) == 6 && parseInt(this.myStudyTime) > 0){
+        return 124
+      }
+      else if (parseInt(this.mySoon) == 7 && parseInt(this.myStudyTime) > 0){
+        return 124
+      }
+      else if (parseInt(this.mySoon) == 8 && parseInt(this.myStudyTime) > 0){
+        return 124
+      }
+      else if (parseInt(this.mySoon) == 9 && parseInt(this.myStudyTime) > 0){
+        return 124
+      }
+      }
+    },
+    MathforTravel() {
+      let Travel = 500;
+      let grade =
+        parseInt(this.myTravel) > 4
+          ? 1
+          : parseInt(this.myTravel) > 3
+          ? 2
+          : parseInt(this.myTravel) > 2
+          ? 3
+          : parseInt(this.myTravel) > 1
+          ? 4
+          : 5;
+      let multiply = 1;
+      multiply *= this.mySex == '남자' ? 0.6 : 0.3;
       multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
       multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
-      let changed = (this.OpicState[this.companyOpicScore] - this.OpicState[this.myOpicScore]);
-      let result = changed * grade * multiply * OpicScore;      
+      let changed = this.companyTravel - this.myTravel;
+      let result = changed * grade * multiply * Travel;
       return Math.ceil(result / parseInt(this.myStudyTime));
     },
-    MathforTravel(){
-      let Travel = 500
-      let grade = (parseInt(this.myTravel) > 4 ? 1: (parseInt(this.myTravel) > 3 ? 2 : (parseInt(this.myTravel) > 2 ? 3 : (parseInt(this.myTravel) > 1 ? 4 : 5))));
-      let multiply = 1
-      multiply *= this.mySex == "남자" ? 0.6 : 0.3;
+    MathforContest() {
+      let Contest = 500;
+      let grade =
+        parseInt(this.myContest) > 4
+          ? 1
+          : parseInt(this.myContest) > 3
+          ? 2
+          : parseInt(this.myContest) > 2
+          ? 3
+          : parseInt(this.myContest) > 1
+          ? 4
+          : 5;
+      let multiply = 1;
+      multiply *= this.mySex == '남자' ? 0.6 : 0.3;
       multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
       multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
-      let changed = (this.companyTravel - this.myTravel);
-      let result = changed * grade * multiply * Travel;      
+      let changed = this.companyContest - this.myContest;
+      let result = changed * grade * multiply * Contest;
       return Math.ceil(result / parseInt(this.myStudyTime));
     },
-    MathforContest(){
-      let Contest = 500
-      let grade = (parseInt(this.myContest) > 4 ? 1: (parseInt(this.myContest) > 3 ? 2 : (parseInt(this.myContest) > 2 ? 3 : (parseInt(this.myContest) > 1 ? 4 : 5))));
-      let multiply = 1
-      multiply *= this.mySex == "남자" ? 0.6 : 0.3;
-      multiply *= parseInt(this.myTravel) > 0 ? 0.4 : 0.8;
-      multiply *= parseInt(this.myCertification) > 0 ? 0.3 : 0.7;
-      let changed = (this.companyContest - this.myContest);
-      let result = changed * grade * multiply * Contest;      
-      return Math.ceil(result / parseInt(this.myStudyTime));
-    },
-    CompanyItems(){
-      for (let i = 0; i < this.events.length;i++){
+    CompanyItems() {
+      for (let i = 0; i < this.events.length; i++) {
         this.companyItems.push(this.events[i].id);
       }
     },
-    async ChangeCompany(a){
-      console.log(a);
+    async ChangeCompany(a) {
       this.wantToGo = a;
-      
+
       await db.collection('user').doc('KEPC').update({
         wantToGo: this.wantToGo,
-      })
+      });
       this.getEvents();
     },
-    },
-  };
+  },
+};
 </script>
 
 <style lang="scss">
@@ -1175,7 +1411,25 @@ export default {
   width: 110%;
   top: -1rem;
 }
+.row h4 {
+  width: 50%;
+  position: relative;
+  left: 25%;
+  margin-top: 10px;
+  text-align: center;
+  padding-top: 10px;
+  display: inline-block;
+  font-weight: bolder;
+  font-size: 20px;
+  font-family: 'Musinsa', sans-serif !important;
+  border-bottom-width: 1.5px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(0, 0, 0);
+  padding-bottom: 14px;
+  background-color: #adaaaa;
+}
 .row1 h6 {
+  width: 100%;
   margin-top: 10px;
   display: inline-block;
   font-weight: bolder;
@@ -1188,32 +1442,130 @@ export default {
   background-color: #d6d5d2;
 }
 .container-info-main {
-  font-size: 1vh;
+  font-size: 2vw;
   font-family: 'Musinsa', sans-serif !important;
   border-bottom-width: 3px;
   border-bottom-style: solid;
   border-bottom-color: rgb(0, 0, 0);
-  font-weight: bolder;
+  font-weight: 400;
   position: relative;
   top: 20px;
-  right: 15%;
+
   text-align: center;
 }
 
 .bar {
   background-color: #fcc46a;
   width: 140px;
-  margin-left: 15px;
+  margin-left: 20px;
+  font-weight: bolder;
+  font-size: 2vw;
+  font-family: 'Musinsa', sans-serif !important;
 }
 .form-group {
-  width: 800px;
+  margin: none;
 }
+.form-group1 {
+  margin: none;
+  width: 700px;
+  position: relative;
+  left: 100px;
+}
+
 .value {
   width: 25%;
 }
 .Username {
   width: 160px;
-
+  font-family: 'Musinsa', sans-serif !important;
   text-align: center;
+  font-weight: bolder;
+}
+
+.navbar-menu {
+  position: relative;
+}
+.container {
+  width: 100%;
+}
+.col {
+  position: relative;
+
+  top: 10px;
+}
+.keys {
+  width: 300px;
+  font-size: 25px;
+  font-weight: bolder;
+  margin: 15px;
+  text-align: center;
+}
+.results {
+  width: 150px;
+}
+
+.target {
+  position: relative;
+  font-size: 24px;
+  margin-top: 14px;
+  text-align: center;
+}
+.navbar-brand {
+  margin: 10px 10px 10px 50px;
+  margin-top: 10px;
+  display: inline-block;
+  font-weight: bolder;
+  font-size: 24px;
+  font-family: 'Musinsa', sans-serif !important;
+}
+
+.btn {
+  position: relative;
+  left: 85%;
+  bottom: 39px;
+  margin-bottom: 10px;
+}
+.footer {
+  position: relative;
+
+  font-weight: bolder;
+  font-family: 'Musinsa', sans-serif !important;
+}
+.container2 {
+  position: relative;
+  top: 10px;
+  width: 680px;
+  left: 10.4%;
+  margin-top: 10px;
+  display: inline-block;
+  font-weight: bolder;
+  font-size: 24px;
+  font-family: 'Musinsa', sans-serif !important;
+  border-bottom-width: 3px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(0, 0, 0);
+  padding-bottom: 14px;
+  background-color: #d6d5d2;
+}
+.container3 {
+  position: relative;
+  top: 10px;
+  width: 680px;
+  left: 54px;
+  margin-top: 10px;
+  display: inline-block;
+  font-weight: bolder;
+  font-size: 20px;
+  font-family: 'Musinsa', sans-serif !important;
+  border-bottom-width: 3px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(0, 0, 0);
+  padding-bottom: 14px;
+  background-color: #d6d5d2;
+}
+.spinner-div {
+  width: 200px;
+  position: relative;
+  font-size: 21px;
 }
 </style>

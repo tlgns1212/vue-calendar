@@ -45,8 +45,9 @@ export default {
 
 <style lang="scss" scoped>
 .loading-button {
-  position: relative;
-  width: 470px;
+  position: absolute;
+  left: 474px;
+  bottom: 13px;
 }
 
 .loading .text {
@@ -65,5 +66,8 @@ export default {
 .spinner {
   width: 20px;
   height: 20px;
+}
+.footer {
+  font-size: 20px;
 }
 </style>

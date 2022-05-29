@@ -252,9 +252,10 @@ export default {
         .then(res => {
           this.events = res;
         });
-        await db.collection('keyword').add({
-          name: this.keyword,
-        });
+      await db.collection('keyword').add({
+        name: this.keyword,
+      });
+      console.log(this.keyword);
     },
 
     changeColor() {

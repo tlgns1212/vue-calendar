@@ -38,8 +38,27 @@
         </li>
       </ul>
     </div>
-    <div>
-      <div v-for="item in Object.keys(this.sortable)" :key="item">{{ item }}</div>
+    <div class="container">
+      <div
+        class="header"
+        style="
+          background-color: #ccc;
+          font-weight: bolder;
+          font-size: 24px;
+          font-family: 'Musinsa', sans-serif !important;
+        ">
+        사용자 검색로그 TOP5
+      </div>
+      <div v-for="item in Object.keys(this.sortable)" :key="item">
+        <div class="key">
+          {{ item }}
+        </div>
+      </div>
+      <div v-for="item in this.sortable" :key="item">
+        <div class="value">
+          {{ item }}
+        </div>
+      </div>
     </div>
 
     <div class="listWrap">
@@ -251,16 +270,18 @@ export default {
       for (let i = 0; i < this.eventsKey.length; i++) {
         this.tempKey.push(this.eventsKey[i].name);
       }
-      this.tempKey.forEach((x)=>{
-        result[x] = (result[x] || 0)+1;
+      this.tempKey.forEach(x => {
+        result[x] = (result[x] || 0) + 1;
       });
-      
-      const sortable = Object.entries(result).sort(([,a],[,b]) => b-a).reduce((r,[k,v]) => ({ ...r,[k]:v}), {});
+
+      const sortable = Object.entries(result)
+        .sort(([, a], [, b]) => b - a)
+        .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
       this.sortable = sortable;
       console.log(Object.keys(this.sortable));
-      },
     },
-  };
+  },
+};
 </script>
 
 <style lang="scss">
@@ -349,6 +370,26 @@ export default {
 .clicked {
   color: #c7f9ff;
   background-color: #1976d2;
+}
+.container {
+  text-align: center;
+  font-size: 2vw;
+  font-weight: bolder;
+  position: relative;
+  margin-bottom: 10px;
+  height: 120px;
+  border: 1.5px solid #01022e;
+  border-radius: 15px;
+}
+.key {
+  width: 20%;
+  position: relative;
+  float: left;
+}
+.value {
+  width: 20%;
+  position: relative;
+  float: left;
 }
 
 @media (min-width: 992px) {

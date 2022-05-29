@@ -1,6 +1,5 @@
 <template>
   <div>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
     <div class="header-wrap">
       <ul class="menu1" style="list-style: none">
         <li class="menu">
@@ -22,7 +21,7 @@
         <p style="width: 5%"></p>
         <li class="menu">
           <router-link
-            to="/CustomAnnoun"
+            to="/CustomAnnounce"
             style="
               text-decoration: none;
               box-sizing: border-box;
@@ -70,6 +69,7 @@
           margin-bottom: 10px;
           position: relative;
           left: 70%;
+          top: 0px;
           font-weight: bolder;
           width: 20%;
         "
@@ -235,7 +235,7 @@ export default {
       this.getEvents();
     },
 
-    fnSearch() {
+    async fnSearch() {
       this.job_mid_cd = this.job_mid_cd.substr(1, 2);
       if (this.job_mid_cd[1] == ')') {
         this.job_mid_cd = this.job_mid_cd.substr(0, 1);
@@ -253,6 +253,10 @@ export default {
         .then(res => {
           this.events = res;
         });
+      await db.collection('keyword').add({
+        name: this.keyword,
+      });
+      console.log(this.keyword);
     },
 
     changeColor() {
