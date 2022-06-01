@@ -12,7 +12,7 @@
           <v-btn fab text small color="grey darken-2" @click="next" class="mr-4">
             <v-icon small> mdi-chevron-right </v-icon>
           </v-btn>
-          <v-toolbar-title v-if="$refs.calendar"> {{ $refs.calendar.title }} </v-toolbar-title>>
+          <v-toolbar-title v-if="$refs.calendar"> {{ $refs.calendar.title }} </v-toolbar-title><v-btn @click="dialogOpicData = true"></v-btn>
 
           <v-spacer></v-spacer>
           <v-menu bottom right>
@@ -56,6 +56,30 @@
               <v-text-field v-model="name" type="text" label="event name (required)" value="type"></v-text-field>
               <v-text-field v-model="details" type="text" label="detail" value=""></v-text-field>
               <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog = false"> Create Event </v-btn>
+            </v-form>
+          </v-container>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="dialogOpicData" max-width="500">
+        <v-card>
+          <v-container>
+            <v-form @submit.prevent="EndDialogOpic">
+               <v-select
+            v-model="OpicSuccess"
+            :items="this.OpicSuccessed"
+            label="합격 여부를 고르시오"
+            dense
+            style="margin-right: 2%; width: 40%"></v-select>
+            <v-select 
+            v-if="this.OpicSuccess == '합격'"
+            v-model="OpicType"
+            :items="this.OpicTypes"
+            label="취득한 자격증의 등급을 고르시오"
+            dense
+            style="margin-right: 2%; width: 40%"></v-select>
+              <v-text-field v-if="this.OpicType != ''" v-model="OpicTakenTime" type="text" label="공부한 시간(일)을 작성하시오"></v-text-field>
+              <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialogOpicData = false"> 저장하기 </v-btn>
             </v-form>
           </v-container>
         </v-card>
@@ -150,6 +174,7 @@ export default {
     selectedOpen: false,
     events: [],
     dialog: false,
+    dialogOpicData: false,
     value: '',
     ready: false,
     startEndDrag: '',
@@ -160,6 +185,12 @@ export default {
     createEvent: null,
     createStart: null,
     extendOriginal: null,
+    OpicSuccess: '',
+    OpicSuccessed: ['합격', '불합격'],
+    OpicType: '',
+    OpicTypes: ['AL','IH','IM3','IM2','IM1','IL','NH','NM','NL'],
+    OpicTakenTime: '',
+
   }),
   computed: {
     // 달력 제목 (주 단위 경우 5~6월 사이면 표시하기)
@@ -273,10 +304,19 @@ export default {
     },
     // 데ㅐ이터를 삭제
     async deleteEvent(ev) {
+      if (ev.details == "오픽Opic 합격자 발표일"){
       await db.collection('calEvent').doc(ev).delete();
 
       this.selectedOpen = false;
       this.getEvents();
+      this.dialogOpicData = true;
+      }
+      else{
+        await db.collection('calEvent').doc(ev).delete();
+
+      this.selectedOpen = false;
+      this.getEvents();
+      }
     },
     getEventColor(ev) {
       return ev.color;
@@ -445,6 +485,13 @@ export default {
       this.dialog = true;
       this.endEndDrag = '';
     },
+    EndDialogOpic(){
+      this.dialogOpicData = false;
+      this.OpicSuccess = '';
+      this.OpicType = '';
+      this.OpicTakenTime = '';
+    },
+    
   },
 };
 </script>

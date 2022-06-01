@@ -6,11 +6,6 @@
       /></router-link>
     </h1>
     <div class="header-wrap">
-      <ul class="menu">
-        <li><router-link to="/Home">Home</router-link></li>
-        <li><router-link to="/Announce">채용공고</router-link></li>
-        <li><router-link to="/MyPage">MyPage</router-link></li>
-      </ul>
       <ul class="login" style="list-style: none"></ul>
     </div>
   </header>
@@ -24,11 +19,12 @@ export default {};
 header {
   width: 100%;
   text-align: center;
-  position: relative;
-  top: -16px;
+  position: fixed;
+  top: 1090px;
   height: 100px;
   border-bottom: 1px solid #35495e;
   background-color: #29ddf2;
+  bottom: 0;
 }
 header h1 {
   position: absolute;
@@ -50,11 +46,11 @@ header ul.menu {
 header ul.menu li a {
   float: left;
   margin-right: 10px;
-  padding: 0px 10px;
+  padding: 10px 10px;
   list-style: none;
-  font-size: 30px;
+  font-size: 2.3vh;
   font-weight: bolder;
-  width: 30%;
+  width: 23%;
   color: aliceblue;
 
   border-radius: 15px;

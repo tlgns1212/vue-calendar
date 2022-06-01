@@ -193,9 +193,11 @@ export default {
   },
   methods: {
     async getEvents() {
-      this.$axios.get('api/announcements?keywords=개발&job_type=1&edu_lv=0&loc_cd=101010&job_mid_cd=2').then(res => {
-        this.events = res;
-      });
+      this.$axios
+        .get('api/announcements?keywords=개발&job_type=1&edu_lv=0&loc_cd=101010&job_mid_cd=2&count=50')
+        .then(res => {
+          this.events = res;
+        });
     },
     UnixToDate(t) {
       const date = new Date(t * 1000);
@@ -245,7 +247,7 @@ export default {
             this.keyword +
             '&job_type=1&edu_lv=0&loc_cd=' +
             this.loc_cd.substr(3, 6) +
-            '&job_mid_cd=' +
+            '&count=50&job_mid_cd=' +
             this.job_mid_cd +
             ''
         )

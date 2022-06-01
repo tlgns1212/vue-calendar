@@ -16,7 +16,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 Vue.prototype.$axios = axios;
 
 Vue.config.productionTip = true;
-Vue.use(VueTextareaAutoSize);
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCCvHD3yaNS-UXKmddWQpaCrLVcy7EVYsY',
@@ -28,9 +27,7 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
 export const db = firebase.firestore();
-
 new Vue({
   render: h => h(App),
   vuetify,

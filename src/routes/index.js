@@ -19,11 +19,7 @@ export default new VueRouter({
     },
     {
       path: '/Announce',
-      component: () => import('@/views/Announce/SearchAnnounce.vue'),
-    },
-    {
-      path: '/CustomAnnounce',
-      component: () => import('@/views/Announce/CustomAnnounce.vue'),
+      component: () => import('@/views/Announce.vue'),
     },
     {
       path: '/MyPage',
@@ -32,6 +28,14 @@ export default new VueRouter({
     {
       path: '/Login',
       component: () => import('@/views/Login.vue'),
+    },
+    {
+      path: '/SearchAnnounce',
+      component: () => import('@/views/Announce/SearchAnnounce.vue'),
+    },
+    {
+      path: '/CustomAnnounce',
+      component: () => import('@/views/Announce/CustomAnnounce.vue'),
     },
   ],
   mode: 'history',

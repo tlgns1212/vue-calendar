@@ -196,7 +196,7 @@ export default {
         .get(
           'api/announcements?keywords=' +
             Object.keys(this.sortable)[0] +
-            '&job_type=1&edu_lv=0&loc_cd=101010&job_mid_cd=2'
+            '&job_type=1&edu_lv=0&loc_cd=101010&job_mid_cd=2&count=50'
         )
         .then(res => {
           this.events = res;
@@ -250,7 +250,7 @@ export default {
             this.keyword +
             '&job_type=1&edu_lv=0&loc_cd=' +
             this.loc_cd.substr(3, 6) +
-            '&job_mid_cd=' +
+            '&count=50&job_mid_cd=' +
             this.job_mid_cd +
             ''
         )
