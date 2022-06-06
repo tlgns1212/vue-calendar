@@ -193,9 +193,11 @@ export default {
     this.getEvents();
   },
   methods: {
-    async getEvents() {
+    getEvents() {
       this.$axios
-        .get('api/announcements?keywords=개발&job_type=1&edu_lv=0&loc_cd=101010&job_mid_cd=2&count=50')
+        .get('api/announcements?keywords=개발&job_type=1&edu_lv=0&loc_cd=101010&job_mid_cd=2', {
+          withCredentials: true,
+        })
         .then(res => {
           this.events = res;
         });
@@ -242,13 +244,14 @@ export default {
       if (this.job_mid_cd[1] == ')') {
         this.job_mid_cd = this.job_mid_cd.substr(0, 1);
       }
+
       this.$axios
         .get(
           'api/announcements?keywords=' +
             this.keyword +
-            '&job_type=1&count=50&edu_lv=0&loc_cd=' +
+            '&job_type=1&edu_lv=0&loc_cd=' +
             this.loc_cd.substr(3, 6) +
-            '&job_mid_cd=' +
+            '&count=50&job_mid_cd=' +
             this.job_mid_cd +
             ''
         )
@@ -258,7 +261,6 @@ export default {
       await db.collection('keyword').add({
         name: this.keyword,
       });
-      console.log(this.keyword);
     },
 
     changeColor() {

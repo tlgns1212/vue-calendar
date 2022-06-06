@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="header-wrap">
-      <ul class="menu1">
-        <ul class="menu">
+      <ul class="menu1" style="list-style: none">
+        <li class="menu">
           <router-link
             to="/Announce"
             style="
@@ -17,9 +17,9 @@
             ">
             채용공고 검색</router-link
           >
-        </ul>
+        </li>
         <p style="width: 5%"></p>
-        <ul class="menu">
+        <li class="menu">
           <router-link
             to="/CustomAnnounce"
             style="
@@ -35,31 +35,56 @@
             onclick="colorchange()">
             맞춤 채용공고</router-link
           >
-        </ul>
+        </li>
       </ul>
     </div>
-    <div class="container5">
-      <div
-        class="header"
+    <div>
+      <v-row align="center">
+        <v-col class="d-flex" style="position: relative; left: 8%; width: 100%; margin-right: 15%">
+          <v-text-field
+            label="키워드를 검색하시오"
+            v-model="keyword"
+            dense
+            style="position: relative; font-size: 1vh; margin-right: 2%; width: 40%"></v-text-field>
+          <v-select
+            v-model="job_mid_cd"
+            :items="this.jobMidCD"
+            label="희망 직군을 고르시오"
+            dense
+            style="margin-right: 2%; width: 40%"></v-select>
+          <v-select
+            v-model="loc_cd"
+            :items="this.locStates"
+            label="희망 지역을 고르시오"
+            dense
+            style="width: 40%"></v-select>
+        </v-col>
+      </v-row>
+      <a
+        href="javascript:;"
+        @click="fnSearch"
+        class="btnSearch btn"
         style="
-          background-color: #ccc;
+          background-color: #c7f9ff;
+          margin-bottom: 10px;
+          position: relative;
+          left: 70%;
           font-weight: bolder;
-          font-size: 24px;
-          font-family: 'Musinsa', sans-serif !important;
-          border-radius: 15px;
-        ">
-        사용자 검색로그 TOP5
-      </div>
-      <div v-for="item in Object.keys(this.sortable)" :key="item">
-        <div class="key">
-          {{ item }}
-        </div>
-      </div>
-      <div v-for="item in this.sortable" :key="item">
-        <div class="value" style="width:20%">
-          {{ item }}
-        </div>
-      </div>
+          width: 20%;
+        "
+        >검색</a
+      >
+    </div>
+    <div>
+      <v-btn @click="DeleteAllJob">모두 삭제하려면 여기를 누르시오</v-btn>
+      
+      <v-btn @click="AddAllJob1">모두 저장하려면 여기를 누르시오</v-btn>
+      <p>{{this.events.data.jobs.job}}</p>
+      <!-- <div v-for="item in this.events.data" :key="item.id">
+        <p>{{item.job}}</p>
+        <v-btn @click="AddAllJob(item.job)">Hello Click Me To Add Up Data</v-btn>
+        <p>hi</p>
+      </div> -->
     </div>
 
     <div class="listWrap">
@@ -107,14 +132,10 @@ export default {
     end: '',
     color: 'red',
     events: [],
-    keyword: '',
-    eventsKey: [],
-    tempKey: [],
-    showKey: [],
-    keywordKey: '',
+    eventsJob: [],
+    keyword: '개발',
     loc_cd: '',
     job_mid_cd: '',
-    sortable: [],
     jobMidCD: [
       '(16)기획·전략',
       '(14)마케팅·홍보·조사',
@@ -178,45 +199,47 @@ export default {
       false,
       false,
     ],
-    eventsJob: [],
+    Numbers: 2,
+    Item:[],
   }),
   mounted() {
     this.getEvents();
   },
+  computed: {
+    async AddAllJob2(item){
+      for (let i = this.Numbers; i < this.Numbers+50; i++){ // 여기 범위는 내가 정해야함
+        await db.collection('job').doc(i.toString()).set({
+          title: item[i].position.title,
+          url: item[i].url,
+          name: item[i].company.detail.name,
+          expire: item[i]['expiration-timestamp'],
+          open: item[i]['opening-timestamp'],
+          keyword: this.keyword,
+        });
+      }
+      this.Numbers += 50;
+    },
+  },
   methods: {
     async getEvents() {
-      let snapshot = await db.collection('keyword').get();
-      let events = [];
-      snapshot.forEach(doc => {
-        let appData = doc.data();
-        appData.id = doc.id;
-        events.push(appData);
+      this.$axios.get('api/announcements?keywords=' + this.keyword + '&job_type=1&edu_lv=0&loc_cd=101010&job_mid_cd=2&count=50').then(res => {
+        this.events = res;
       });
-      this.eventsKey = events;
-      this.GetKeyNum();
-      snapshot = await db.collection('job').get();
-      events = [];
+      
+      // db에 저장된 걸 가져와서
+      let snapshot = await db.collection('job').get();
+      let events = [];
       // 모든 data에 대하여
       snapshot.forEach(doc => {
         let appData = doc.data();
         // events에 넣어주고
         appData.id = doc.id;
-        // console.log(appData);
-        if(Object.keys(this.sortable)[0] == appData.keyword){
-          events.push(appData);
-        }
+        events.push(appData);
       });
       // 이벤트를 위에 있는 data()의 events에 넣어준다.
       this.eventsJob = events;
-      if (this.eventsJob.length == 0){
-        snapshot.forEach(doc => {
-        let appData = doc.data();
-        // events에 넣어주고
-        appData.id = doc.id;
-        events.push(appData);
-      });
-      this.eventsJob = events;
-      }
+      this.Numbers = this.eventsJob[0].num;
+      this.Item = this.events.data.jobs.job;
     },
     UnixToDate(t) {
       const date = new Date(t * 1000);
@@ -255,7 +278,30 @@ export default {
       this.getEvents();
     },
 
-    fnSearch() {
+    // async fnSearch() {
+    //   this.job_mid_cd = this.job_mid_cd.substr(1, 2);
+    //   if (this.job_mid_cd[1] == ')') {
+    //     this.job_mid_cd = this.job_mid_cd.substr(0, 1);
+    //   }
+    //   this.$axios
+    //     .get(
+    //       'api/announcements?keywords=' +
+    //         this.keyword +
+    //         '&job_type=1&count=50&edu_lv=0&loc_cd=' +
+    //         this.loc_cd.substr(3, 6) +
+    //         '&job_mid_cd=' +
+    //         this.job_mid_cd +
+    //         ''
+    //     )
+    //     .then(res => {
+    //       this.events = res;
+    //     });
+    //   await db.collection('keyword').add({
+    //     name: this.keyword,
+    //   });
+    //   console.log(this.keyword);
+    // },
+    async fnSearch() {
       this.job_mid_cd = this.job_mid_cd.substr(1, 2);
       if (this.job_mid_cd[1] == ')') {
         this.job_mid_cd = this.job_mid_cd.substr(0, 1);
@@ -264,16 +310,42 @@ export default {
         .get(
           'api/announcements?keywords=' +
             this.keyword +
-            '&job_type=1&edu_lv=0&loc_cd=' +
+            '&loc_cd=' +
             this.loc_cd.substr(3, 6) +
-            '&job_mid_cd=' +
+            '&count=50&job_mid_cd=' +
             this.job_mid_cd +
             ''
         )
         .then(res => {
           this.events = res;
         });
+      let snapshot = await db.collection('job').get();
+      let events = [];
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        if(this.keyword == appData.keyword){
+          events.push(appData);
+        }
+      });
+      // 이벤트를 위에 있는 data()의 events에 넣어준다.
+      this.eventsJob = events;
+      if (this.eventsJob.length == 0){
+        snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
+      });
+      this.eventsJob = events;
+      }
+      await db.collection('keyword').add({
+        name: this.keyword,
+      });
     },
+    
 
     changeColor() {
       this.$('li').click(function () {
@@ -281,19 +353,46 @@ export default {
         $(this).addClass('on');
       });
     },
-    GetKeyNum() {
-      const result = {};
-      for (let i = 0; i < this.eventsKey.length; i++) {
-        this.tempKey.push(this.eventsKey[i].name);
-      }
-      this.tempKey.forEach(x => {
-        result[x] = (result[x] || 0) + 1;
+    async AddToDataBase(item){
+      
+      await db.collection('job').doc(this.Numbers.toString()).set({
+        title: item.position.title,
+        url: item.url,
+        name: item.company.detail.name,
+        expire: item['expiration-timestamp'],
+        open: item['opening-timestamp'],
+        keyword: this.keyword,
       });
-
-      const sortable = Object.entries(result)
-        .sort(([, a], [, b]) => b - a)
-        .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
-      this.sortable = sortable;
+      this.Numbers += 1;
+      
+      await db.collection('job').doc("1").update({
+        num: this.Numbers,
+      });
+      this.getEvents();
+    },
+    async DeleteAllJob(){
+      for (let i = 32; i < 49; i++){ // 여기 범위는 내가 정해야함
+        await db.collection('job').doc(i.toString()).delete();
+      }
+      
+    },
+    async AddAllJob1(){
+      let items = this.Item;
+      for (let i = 0; i < 50; i++){ // 여기 범위는 내가 정해야함
+        await db.collection('job').doc((i+this.Numbers).toString()).set({
+          title: items[i].position.title,
+          url: items[i].url,
+          name: items[i].company.detail.name,
+          expire: items[i]['expiration-timestamp'],
+          open: items[i]['opening-timestamp'],
+          keyword: this.keyword,
+        });
+      }
+      this.Numbers += 50;
+      await db.collection('job').doc("1").update({
+        num: this.Numbers,
+      });
+      this.getEvents();
     },
   },
 };
@@ -302,15 +401,14 @@ export default {
 <style lang="scss">
 .header-wrap {
   font-weight: bold;
+  .menu1 {
+    display: flex;
+    justify-content: center;
+    padding: 0 20px;
+    font-size: 1.3em;
+    margin-top: 10px;
+  }
 }
-.menu1 {
-  display: flex;
-  justify-content: center;
-  padding: 0 20px;
-  font-size: 1.3em;
-  margin-top: 10px;
-}
-
 .searchWrap {
   border: 1px solid #888;
   border-radius: 5px;
@@ -386,26 +484,6 @@ export default {
 .clicked {
   color: #c7f9ff;
   background-color: #1976d2;
-}
-.container5 {
-  text-align: center;
-  font-size: 2vw;
-  font-weight: bolder;
-  position: relative;
-  margin-bottom: 10px;
-  height: 120px;
-  border: 1.5px solid #01022e;
-  border-radius: 15px;
-}
-.key {
-  width: 20%;
-  position: relative;
-  float: left;
-}
-.value {
-  width: 20%;
-  position: relative;
-  float: left;
 }
 
 @media (min-width: 992px) {

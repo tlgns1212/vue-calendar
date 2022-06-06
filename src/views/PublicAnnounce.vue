@@ -1,243 +1,431 @@
 <template>
-  <v-row class="fill-height">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
-    <v-col>
-      <v-sheet height="64">
-        <v-toolbar flat>
-          <v-btn color="primary" class="mr-4" @click="StartNewEvent"> New Event </v-btn>
-          <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday"> Today </v-btn>
-          <v-btn fab text small color="grey darken-2" @click="prev">
-            <v-icon small> mdi-chevron-left </v-icon>
-          </v-btn>
-          <v-btn fab text small color="grey darken-2" @click="next" class="mr-4">
-            <v-icon small> mdi-chevron-right </v-icon>
-          </v-btn>
-          <v-toolbar-title v-if="$refs.calendar"> {{ $refs.calendar.title }} </v-toolbar-title><v-btn @click="dialogOpicData = true"></v-btn>
+  <div class="StoreWrap">
+    <header>
+      <div class="store">
+        <div class="container col-10" style="width: 100%">
+          <div class="row1">
+            <h6 class="text-center col-12 mb-0">마일리지 상점</h6>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="products">
+      <a href="#" @click="dialogOne = true">
+        <img src="@/assets/s1.png" />
+        <p>스타벅스 아이스 아메리카노</p>
+        <p class="price">4,000</p>
+      </a>
+      <a href="#" @click="dialogTwo = true">
+        <img src="@/assets/s2.png" />
+        <p>스타벅스 카페라떼</p>
+        <p class="price">4,500</p>
+      </a>
+      <a href="#" @click="dialogThree = true">
+        <img src="@/assets/s3.png" />
+        <p>스타벅스 콜드블루</p>
+        <p class="price">4,500</p>
+      </a>
+      <a href="#" @click="dialogFour = true">
+        <img src="@/assets/s4.png" />
+        <p>스타벅스 플라스틱 텀블러</p>
+        <p class="price">14,000</p>
+      </a>
+      <a href="#" @click="dialogFive = true">
+        <img src="@/assets/s5.png" />
+        <p>스타벅스 텀블러</p>
+        <p class="price">16,000</p>
+      </a>
+      <a href="#" @click="dialogSix = true">
+        <img src="@/assets/s6.png" />
+        <p>스타벅스 텀블러 선물세트</p>
+        <p class="price">30,000</p>
+      </a>
 
-          <v-spacer></v-spacer>
-          <v-menu bottom right>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
-                <span>{{ typeToLabel[type] }}</span>
-                <v-icon right> mdi-menu-down </v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item @click="type = 'month'">
-                <v-list-item-title>Month</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'week'">
-                <v-list-item-title>Week</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = '4day'">
-                <v-list-item-title>4 days</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'day'">
-                <v-list-item-title>Day</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </v-toolbar>
-      </v-sheet>
-
-      <!--Add Event Dialog-->
-      <v-dialog v-model="dialog" max-width="500">
-        <v-card>
-          <v-container>
-            <v-form @submit.prevent="addEvent" v-if="this.endEndDrag === ''">
-              <v-text-field v-model="name" type="text" label="event name (required)"></v-text-field>
-              <v-text-field v-model="details" type="text" label="detail"></v-text-field>
-              <v-text-field v-model="start" type="datetime-local" label="start (required)"></v-text-field>
-              <v-text-field v-model="end" type="datetime-local" label="end (required)"></v-text-field>
-              <v-text-field v-model="color" type="color" label="color (click to open color menu)"></v-text-field>
-              <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog = false"> Create Event </v-btn>
-            </v-form>
-            <v-form @submit.prevent="addEventDrag" v-else>
-              <v-text-field v-model="name" type="text" label="event name (required)" value="type"></v-text-field>
-              <v-text-field v-model="details" type="text" label="detail" value=""></v-text-field>
-              <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog = false"> Create Event </v-btn>
-            </v-form>
-          </v-container>
-        </v-card>
-      </v-dialog>
-
-      <v-dialog v-model="dialogOpicData" max-width="500">
-        <v-card>
-          <v-container>
-            <v-form @submit.prevent="EndDialogOpic">
-               <v-select
-            v-model="OpicSuccess"
-            :items="this.OpicSuccessed"
-            label="합격 여부를 고르시오"
-            dense
-            style="margin-right: 2%; width: 40%"></v-select>
-            <v-select 
-            v-if="this.OpicSuccess == '합격'"
-            v-model="OpicType"
-            :items="this.OpicTypes"
-            label="취득한 자격증의 등급을 고르시오"
-            dense
-            style="margin-right: 2%; width: 40%"></v-select>
-              <v-text-field v-if="this.OpicType != ''" v-model="OpicTakenTime" type="text" label="공부한 시간(일)을 작성하시오"></v-text-field>
-              <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialogOpicData = false"> 저장하기 </v-btn>
-            </v-form>
-          </v-container>
-        </v-card>
-      </v-dialog>
-
-      <v-sheet height="600">
-        <v-calendar
-          ref="calendar"
-          v-model="focus"
-          color="primary"
-          :events="events"
-          :event-color="getEventColor"
-          :type="type"
-          :event-ripple="false"
-          @click:event="showEvent"
-          @click:more="viewDay"
-          @click:date="viewDay"
-          @mousedown:time="startTime"
-          @touchstart:time="startTime"
-          @touchmove:time="mouseMove"
-          @mousemove:time="mouseMove"
-          @touchend:time="endDrag"
-          @mouseup:time="endDrag"
-          @mouseleave.native="cancelDrag">
-          <template v-slot:event="{ event, timed, eventSummary }">
-            <div class="v-event-draggable" v-html="eventSummary()"></div>
-            <div v-if="timed" class="v-event-drag-bottom" @mousedown.stop="extendBottom(event)"></div>
-          </template>
-        </v-calendar>
-
-        <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
-          <v-card color="grey lighten-4" min-width="350px" flat>
-            <v-toolbar :color="selectedEvent.color" dark>
-              <v-btn @click="deleteEvent(selectedEvent.id)" icon>
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-              <v-spacer></v-spacer>
-            </v-toolbar>
-            <v-card-text>
-              <form v-if="currentlyEditing !== selectedEvent.id">
-                {{ selectedEvent.details }}
-              </form>
-              <form v-else>
-                <textarea-autosize
-                  v-model="selectedEvent.details"
-                  type="text"
-                  style="width: 100%"
-                  :min-height="100"
-                  placeholder="add note">
-                </textarea-autosize>
-              </form>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn text color="secondary" @click="selectedOpen = false"> Close </v-btn>
-              <v-btn text v-if="currentlyEditing !== selectedEvent.id" @click.prevent="editEvent(selectedEvent)">
-                Edit
-              </v-btn>
-              <v-btn text v-else @click.prevent="updateEvent(selectedEvent)"> Save </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-menu>
-      </v-sheet>
-    </v-col>
-  </v-row>
+      <div class="clearfix"></div>
+    </div>
+    <v-dialog v-model="dialogLess" max-width="500">
+      <v-card class="pop-up">
+        <v-container>
+          <v-form @submit.prevent="dialogLess = false">
+            <div class="management">
+              <p>마일리지 포인트가 부족해서 구매를 할 수 없습니다!</p>
+              <p>마일리지를 더 쌓고 교환을 하세요!!!</p>
+            </div>
+            <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialogLess = false"> 확인 </v-btn>
+          </v-form>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogBought" max-width="500">
+      <v-card class="pop-up">
+        <v-container>
+          <v-form @submit.prevent="dialogBought = false">
+            <div class="management">
+              <p>구매 완료되었습니다. 문자로 쿠폰을 발송해드리도록 하겠습니다!</p>
+              <p>상품을 즐기시면서 취업 준비 열심히 하세요~</p>
+            </div>
+            <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialogBought = false"> 확인 </v-btn>
+          </v-form>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogOne" max-width="500">
+      <v-card class="pop-up">
+        <v-container>
+          <v-form @submit.prevent="dialogOne = false">
+            <div class="management">
+              <p>스타벅스 아이스 아메리카노를 4,000 마일리지로 구매하시겠습니까?</p>
+            </div>
+            <v-btn type="submit" color="primary" class="mr-4" @click="BuyAA" @click.stop="dialogOne = false">
+              구매
+            </v-btn>
+            <v-btn type="submit" color="red" class="mr-4" @click.stop="dialogOne = false"> 취소 </v-btn>
+          </v-form>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogTwo" max-width="500">
+      <v-card class="pop-up">
+        <v-container>
+          <v-form @submit.prevent="dialogTwo = false">
+            <div class="management">
+              <p>스타벅스 카페라테를 4,500 마일리지로 구매하시겠습니까?</p>
+            </div>
+            <v-btn type="submit" color="primary" class="mr-4" @click="BuyAA" @click.stop="dialogTwo = false">
+              구매
+            </v-btn>
+            <v-btn type="submit" color="red" class="mr-4" @click.stop="dialogTwo = false"> 취소 </v-btn>
+          </v-form>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogThree" max-width="500">
+      <v-card class="pop-up">
+        <v-container>
+          <v-form @submit.prevent="dialogThree = false">
+            <div class="management">
+              <p>스타벅스 콜드브루를 4,500 마일리지로 구매하시겠습니까?</p>
+            </div>
+            <v-btn type="submit" color="primary" class="mr-4" @click="BuyAA" @click.stop="dialogThree = false">
+              구매
+            </v-btn>
+            <v-btn type="submit" color="red" class="mr-4" @click.stop="dialogThree = false"> 취소 </v-btn>
+          </v-form>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogFour" max-width="500">
+      <v-card class="pop-up">
+        <v-container>
+          <v-form @submit.prevent="dialogFour = false">
+            <div class="management">
+              <p>스타벅스 플라스틱 텀블러를 14,000 마일리지로 구매하시겠습니까?</p>
+            </div>
+            <v-btn type="submit" color="primary" class="mr-4" @click="BuyAA" @click.stop="dialogFour = false">
+              구매
+            </v-btn>
+            <v-btn type="submit" color="red" class="mr-4" @click.stop="dialogFour = false"> 취소 </v-btn>
+          </v-form>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogFive" max-width="500">
+      <v-card class="pop-up">
+        <v-container>
+          <v-form @submit.prevent="dialogFive = false">
+            <div class="management">
+              <p>스타벅스 텀블러를 16,000 마일리지로 구매하시겠습니까?</p>
+            </div>
+            <v-btn type="submit" color="primary" class="mr-4" @click="BuyAA" @click.stop="dialogFive = false">
+              구매
+            </v-btn>
+            <v-btn type="submit" color="red" class="mr-4" @click.stop="dialogFive = false"> 취소 </v-btn>
+          </v-form>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogSix" max-width="500">
+      <v-card class="pop-up">
+        <v-container>
+          <v-form @submit.prevent="dialogSix = false">
+            <div class="management">
+              <p>스타벅스 텀블러 선물세트를 30,000 마일리지로 구매하시겠습니까?</p>
+            </div>
+            <v-btn type="submit" color="primary" class="mr-4" @click="BuyAA" @click.stop="dialogSix = false">
+              구매
+            </v-btn>
+            <v-btn type="submit" color="red" class="mr-4" @click.stop="dialogSix = false"> 취소 </v-btn>
+          </v-form>
+        </v-container>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
 import { db } from '@/main';
+import { mapState } from 'vuex';
+import LoadingButton from './LoadingButton';
 
+function displayMessage() {
+  alert('메시지 출력 테스트');
+  const html = document.querySelector('html');
+
+  const panel = document.createElement('div');
+  panel.setAttribute('class', 'msgBox');
+  html.appendChild(panel);
+
+  const msg = document.createElement('p');
+  msg.textContent = 'This is a message box';
+  panel.appendChild(msg);
+
+  const closeBtn = document.createElement('button');
+  closeBtn.textContent = 'x';
+  panel.appendChild(closeBtn);
+
+  closeBtn.onclick = function () {
+    panel.parentNode.removeChild(panel);
+  };
+}
 export default {
+  components: {
+    LoadingButton,
+  },
+  name: 'mypage',
+
   data: () => ({
-    today: new Date().toISOString().substr(0, 10),
-    focus: new Date().toISOString().substr(0, 10),
-    type: 'month',
-    typeToLabel: {
-      month: 'Month',
-      week: 'Week',
-      day: 'Day',
-      '4day': '4 Days',
-    },
-    name: null,
-    details: null,
-    start: null,
-    end: null,
-    color: '#1936D2',
-    colors: ['#2196F3', '#3F51B5', '#673AB7', '#00BCD4', '#4CAF50', '#FF9800', '#757575'],
-    names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
+    events: [],
+    eventsCompany: [],
+    eventsToeic: [],
+    eventsToeicSpeaking: [],
+    eventsOpic: [],
+    eventsTexts: [],
+    eventsPoint: [],
+    eventNameCompany: 'KF1tl1R42f9NurZ7bl9c',
+    wantToGo: '',
+    myToeicScore: '',
+    myToeicSpeakingScore: '',
+    myOpicScore: '',
+    mySchoolScore: '',
+    myCertification: '',
+    myForeign: '',
+    myTravel: '',
+    myIntern: '',
+    myContest: '',
+    myAge: '',
+    mySex: '',
+    myEnglishTest: '',
+    myStudyTime: '',
+    companyToeicScore: '',
+    companyToeicSpeakingScore: '',
+    companyOpicScore: '',
+    companySchoolScore: '',
+    companyCertification: '',
+    companyForeign: '',
+    companyTravel: '',
+    companyIntern: '',
+    companyContest: '',
+    isLoading: false,
+    dialog: false,
+    dialogLess: false,
+    dialogBought: false,
+    dialogOne: false,
+    dialogTwo: false,
+    dialogThree: false,
+    dialogFour: false,
+    dialogFive: false,
+    dialogSix: false,
+    dialogOpic: false,
+    dialogTravel: false,
+    dialogIntern: false,
+    dialogContest: false,
+    dialogCal: false,
     currentlyEditing: null,
     selectedEvent: {},
-    selectedElement: null,
-    selectedOpen: false,
-    events: [],
-    dialog: false,
-    dialogOpicData: false,
-    value: '',
-    ready: false,
-    startEndDrag: '',
-    endEndDrag: '',
-
-    dragEvent: null,
-    dragStart: null,
-    createEvent: null,
-    createStart: null,
-    extendOriginal: null,
-    OpicSuccess: '',
-    OpicSuccessed: ['합격', '불합격'],
-    OpicType: '',
-    OpicTypes: ['AL','IH','IM3','IM2','IM1','IL','NH','NM','NL'],
-    OpicTakenTime: '',
-
+    loading: false,
+    randomNumber: 2,
+    tempStudyTime: '',
+    OpicState: { NL: 1, NM: 2, NH: 3, IL: 4, IM1: 5, IM2: 6, IM3: 7, AL: 8 },
+    moneyPoint: 0,
   }),
   computed: {
-    // 달력 제목 (주 단위 경우 5~6월 사이면 표시하기)
-    title() {
-      const { start, end } = this;
-      if (!start || !end) {
-        return '';
-      }
-      const startMonth = this.monthFormatter(start);
-      const endMonth = this.monthFormatter(end);
-      const suffixMonth = startMonth === endMonth ? '' : endMonth;
-
-      const startYear = start.year;
-      const endYear = end.year;
-      const suffixYear = startYear === endYear ? '' : endYear;
-
-      const startDay = start.day + this.nth(start.day);
-      const endDay = end.day + this.nth(end.day);
-
-      switch (this.type) {
-        case 'month':
-          return `${startMonth} ${startYear}`;
-        case 'week':
-        case '4day':
-          return `${startMonth} ${startDay} ${startYear} - ${suffixMonth} ${endDay} ${suffixYear}`;
-        case 'day':
-          return `${startMonth} ${startDay} ${startYear}`;
-      }
-      return '';
+    ...mapState(['userInfo']),
+    ToeicScore() {
+      return Math.floor(
+        (parseFloat(this.events[0].myToeicScore) / parseFloat(this.eventsCompany.companyToeicScore)) * 100
+      ).toString();
     },
-    monthFormatter() {
-      return this.$refs.calendar.getFormatter({
-        timeZone: 'UTC',
-        month: 'long',
-      });
+    ToeicPercentage() {
+      return { width: this.ToeicScore + '%' };
+    },
+    ToeicProgressBar() {
+      let temp = this.ToeicScore;
+      if (parseInt(temp) < 40) {
+        return 'progress-bar progress-bar-danger';
+      } else if (parseInt(temp) < 90) {
+        return 'progress-bar progress-bar-warning';
+      } else {
+        return 'progress-bar progress-bar-success';
+      }
+    },
+    SchoolScore() {
+      return Math.floor(
+        (parseFloat(this.events[0].mySchoolScore) / parseFloat(this.eventsCompany.companySchoolScore)) * 100
+      ).toString();
+    },
+    SchoolPercentage() {
+      return { width: this.SchoolScore + '%' };
+    },
+    SchoolProgressBar() {
+      let temp = this.SchoolScore;
+      if (parseInt(temp) < 40) {
+        return 'progress-bar progress-bar-danger';
+      } else if (parseInt(temp) < 90) {
+        return 'progress-bar progress-bar-warning';
+      } else {
+        return 'progress-bar progress-bar-success';
+      }
+    },
+    CertificationScore() {
+      return Math.floor(
+        (parseFloat(this.events[0].myCertification) / parseFloat(this.eventsCompany.companyCertification)) * 100
+      ).toString();
+    },
+    CertificationPercentage() {
+      return { width: this.CertificationScore + '%' };
+    },
+    CertificationProgressBar() {
+      let temp = this.CertificationScore;
+      if (parseInt(temp) < 40) {
+        return 'progress-bar progress-bar-danger';
+      } else if (parseInt(temp) < 90) {
+        return 'progress-bar progress-bar-warning';
+      } else {
+        return 'progress-bar progress-bar-success';
+      }
+    },
+    ForeignScore() {
+      return Math.floor(
+        (parseFloat(this.events[0].myForeign) / parseFloat(this.eventsCompany.companyForeign)) * 100
+      ).toString();
+    },
+    ForeignPercentage() {
+      return { width: this.ForeignScore + '%' };
+    },
+    ForeignProgressBar() {
+      let temp = this.ForeignScore;
+      if (parseInt(temp) < 40) {
+        return 'progress-bar progress-bar-danger';
+      } else if (parseInt(temp) < 90) {
+        return 'progress-bar progress-bar-warning';
+      } else {
+        return 'progress-bar progress-bar-success';
+      }
+    },
+    ToeicSpeakingScoreScore() {
+      return Math.floor(
+        (parseFloat(this.events[0].myToeicSpeakingScore) / parseFloat(this.eventsCompany.companyToeicSpeakingScore)) *
+          100
+      ).toString();
+    },
+    ToeicSpeakingScorePercentage() {
+      return { width: this.ToeicSpeakingScoreScore + '%' };
+    },
+    ToeicSpeakingScoreProgressBar() {
+      let temp = this.ToeicSpeakingScoreScore;
+      if (parseInt(temp) < 40) {
+        return 'progress-bar progress-bar-danger';
+      } else if (parseInt(temp) < 90) {
+        return 'progress-bar progress-bar-warning';
+      } else {
+        return 'progress-bar progress-bar-success';
+      }
+    },
+    OpicScoreScore() {
+      return Math.floor(
+        (parseFloat(this.OpicState[this.events[0].myOpicScore]) /
+          parseFloat(this.OpicState[this.eventsCompany.companyOpicScore])) *
+          100
+      ).toString();
+    },
+    OpicScorePercentage() {
+      return { width: this.OpicScoreScore + '%' };
+    },
+    OpicScoreProgressBar() {
+      let temp = this.OpicScoreScore;
+      if (parseInt(temp) < 40) {
+        return 'progress-bar progress-bar-danger';
+      } else if (parseInt(temp) < 90) {
+        return 'progress-bar progress-bar-warning';
+      } else {
+        return 'progress-bar progress-bar-success';
+      }
+    },
+    TravelScore() {
+      return Math.floor(
+        (parseFloat(this.events[0].myTravel) / parseFloat(this.eventsCompany.companyTravel)) * 100
+      ).toString();
+    },
+    TravelPercentage() {
+      return { width: this.TravelScore + '%' };
+    },
+    TravelProgressBar() {
+      let temp = this.TravelScore;
+      if (parseInt(temp) < 40) {
+        return 'progress-bar progress-bar-danger';
+      } else if (parseInt(temp) < 90) {
+        return 'progress-bar progress-bar-warning';
+      } else {
+        return 'progress-bar progress-bar-success';
+      }
+    },
+    InternScore() {
+      return Math.floor(
+        (parseFloat(this.events[0].myIntern) / parseFloat(this.eventsCompany.companyIntern)) * 100
+      ).toString();
+    },
+    InternPercentage() {
+      return { width: this.InternScore + '%' };
+    },
+    InternProgressBar() {
+      let temp = this.InternScore;
+      if (parseInt(temp) < 40) {
+        return 'progress-bar progress-bar-danger';
+      } else if (parseInt(temp) < 90) {
+        return 'progress-bar progress-bar-warning';
+      } else {
+        return 'progress-bar progress-bar-success';
+      }
+    },
+    ContestScore() {
+      return Math.floor(
+        (parseFloat(this.events[0].myContest) / parseFloat(this.eventsCompany.companyContest)) * 100
+      ).toString();
+    },
+    ContestPercentage() {
+      return { width: this.ContestScore + '%' };
+    },
+    ContestProgressBar() {
+      let temp = this.ContestScore;
+      if (parseInt(temp) < 40) {
+        return 'progress-bar progress-bar-danger';
+      } else if (parseInt(temp) < 90) {
+        return 'progress-bar progress-bar-warning';
+      } else {
+        return 'progress-bar progress-bar-success';
+      }
     },
   },
-
   mounted() {
     this.getEvents();
-    this.$axios.get('/api/0').then(res => {});
+    this.getCheckEvents();
+    // this.InitalData();
   },
   methods: {
     // 여기가 이벤트를 이벤트로 받아주는곳
     async getEvents() {
       // db에 저장된 걸 가져와서
-      let snapshot = await db.collection('calEvent').get();
+      let snapshot = await db.collection('user').get();
       let events = [];
       // 모든 data에 대하여
       snapshot.forEach(doc => {
@@ -248,286 +436,316 @@ export default {
       });
       // 이벤트를 위에 있는 data()의 events에 넣어준다.
       this.events = events;
+
+      this.wantToGo = events[0].wantToGo;
+      this.myToeicScore = events[0].myToeicScore;
+      this.mySchoolScore = events[0].mySchoolScore;
+      this.myCertification = events[0].myCertification;
+      this.myForeign = events[0].myForeign;
+      this.myAge = events[0].myAge;
+      this.mySex = events[0].mySex;
+      this.myStudyTime = events[0].myStudyTime;
+      this.tempStudyTime = events[0].myStudyTime;
+      this.myToeicSpeakingScore = events[0].myToeicSpeakingScore;
+      this.myOpicScore = events[0].myOpicScore;
+      this.myContest = events[0].myContest;
+      this.myIntern = events[0].myIntern;
+      this.myTravel = events[0].myTravel;
+      this.isCompanyName();
+      snapshot = await db.collection('point').get();
+      events = [];
+
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
+      });
+      // 이벤트를 위에 있는 data()의 events에 넣어준다.
+      this.eventsPoint = events;
+      this.moneyPoint = events[0].num;
+    },
+    async getCheckEvents() {
+      let snapshot = await db.collection('toeic').get();
+      let events = [];
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
+      });
+      this.eventsToeic = events;
+
+      snapshot = await db.collection('toeicSpeaking').get();
+      events = [];
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
+      });
+      this.eventsToeicSpeaking = events;
+
+      snapshot = await db.collection('opic').get();
+      events = [];
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
+      });
+      this.eventsOpic = events;
+
+      snapshot = await db.collection('texts').get();
+      events = [];
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
+      });
+      this.eventsTexts = events;
+    },
+    InitalData() {
+      this.wantToGo = this.events[0].wantToGo;
+
+      this.myToeicScore = this.events[0].myToeicScore;
+      this.mySchoolScore = this.events[0].mySchoolScore;
+      this.myCertification = this.events[0].myCertification;
+      this.myForeign = this.events[0].myForeign;
+      this.companyToeicScore = this.eventsCompany.companyToeicScore;
+      this.companySchoolScore = this.eventsCompany.companySchoolScore;
+      this.companyCertification = this.eventsCompany.companyCertification;
+      this.companyForeign = this.eventsCompany.companyForeign;
     },
     // 데이터를 추가
     async addEvent() {
-      if (this.name && this.start && this.end) {
-        await db.collection('calEvent').add({
-          name: this.name,
-          details: this.details,
-          start: this.start,
-          end: this.end,
-          color: this.color,
+      if (this.id && this.password) {
+        await db.collection('user').add({
+          id: this.id,
+          password: this.password,
         });
         this.getEvents();
-        this.name = '';
-        this.details = '';
-        this.endEndDrag = '';
-        this.startEndDrag = '';
-        this.start = '';
-        this.end = '';
-        this.color = '#1936D2';
+        this.id = '';
       } else {
         alert('Name, Start and End date are required');
       }
     },
 
-    async addEventDrag() {
-      if (this.name) {
-        await db.collection('calEvent').add({
-          name: this.name,
-          details: this.details,
-          start: this.startEndDrag,
-          end: this.endEndDrag,
-          color: this.color,
-        });
-        this.getEvents();
-        this.name = '';
-        this.details = '';
-        this.endEndDrag = '';
-        this.startEndDrag = '';
-        this.start = '';
-        this.end = '';
-        this.color = '#1936D2';
-      } else {
-        alert('Name is required');
-      }
-    },
-
     // 데이터를 firebase에 업데이트
     async updateEvent(ev) {
-      await db.collection('calEvent').doc(this.currentlyEditing).update({
-        details: ev.details,
+      await db.collection('user').doc('KF1tl1R42f9NurZ7bl9c').update({
+        myToeicScore: this.myToeicScore,
+        mySchoolScore: this.mySchoolScore,
+        myCertification: this.myCertification,
+        myForeign: this.myForeign,
       });
-      this.selectedOpen = false;
-      this.currentlyEditing = null;
+      this.getEvents();
     },
-    // 데ㅐ이터를 삭제
+    // 데이터를 삭제
     async deleteEvent(ev) {
-      if (ev.details == "오픽 결과 발표일"){
       await db.collection('calEvent').doc(ev).delete();
 
       this.selectedOpen = false;
       this.getEvents();
-      this.dialogOpicData = true;
-      }
-      else{
-        await db.collection('calEvent').doc(ev).delete();
-
-      this.selectedOpen = false;
+    },
+    async DialogEvent() {
+      await db.collection('user').doc('KF1tl1R42f9NurZ7bl9c').update({
+        wantToGo: this.wantToGo,
+        myToeicScore: this.myToeicScore,
+        mySchoolScore: this.mySchoolScore,
+        myCertification: this.myCertification,
+        myForeign: this.myForeign,
+      });
       this.getEvents();
-      }
+      this.dialog = false;
     },
-    async EndDialogOpic(){
-      this.dialogOpicData = false;
-      this.OpicSuccess = '';
-      this.OpicType = '';
-      this.OpicTakenTime = '';
-    },
-    getEventColor(ev) {
-      return ev.color;
-    },
-    viewDay({ date }) {
-      this.focus = date;
-      this.type = 'day';
-    },
-    setToday() {
-      this.focus = '';
-    },
-    prev() {
-      this.$refs.calendar.prev();
-    },
-    next() {
-      this.$refs.calendar.next();
-    },
-    // 수정
-    editEvent(ev) {
-      this.currentlyEditing = ev.id;
-    },
-
-    showEvent({ nativeEvent, event }) {
-      const open = () => {
-        this.selectedEvent = event;
-        this.selectedElement = nativeEvent.target;
-        requestAnimationFrame(() => requestAnimationFrame(() => (this.selectedOpen = true)));
-      };
-
-      if (this.selectedOpen) {
-        this.selectedOpen = false;
-        requestAnimationFrame(() => requestAnimationFrame(() => open()));
+    isCompanyName() {
+      if (this.events[0].wantToGo == 'Nexon') {
+        this.eventsCompany = this.events[2];
+      } else if (this.events[0].wantToGo == 'Netmarble') {
+        this.eventsCompany = this.events[1];
       } else {
-        open();
+        this.eventsCompany = this.events[0];
       }
-
-      nativeEvent.stopPropagation();
     },
-    updateRange({ start, end }) {
-      const events = [];
-
-      const min = new Date(`${start.date}T00:00:00`);
-      const max = new Date(`${end.date}T23:59:59`);
-      const days = (max.getTime() - min.getTime()) / 86400000;
-      const eventCount = this.rnd(days, days + 20);
-
-      for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0;
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime());
-        const first = new Date(firstTimestamp - (firstTimestamp % 900000));
-        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
-        const second = new Date(first.getTime() + secondTimestamp);
-
-        events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
-          start: first,
-          end: second,
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay,
+    DialogCheckEvent() {
+      this.dialogCheck = true;
+      this.isLoading = true;
+      this.loading = true;
+      this.myStudyTime = this.tempStudyTime;
+      setTimeout(() => {
+        this.loading = false;
+      }, 0);
+    },
+    buttonClicked() {
+      this.loading = true;
+      this.myStudyTime = this.tempStudyTime;
+      setTimeout(() => {
+        this.loading = false;
+      }, 2000);
+      this.getCheckEvents();
+    },
+    async consoleGo(item) {
+      await db.collection('calEvent').add({
+        name: item.detail1,
+        details: item.name + item.detail1,
+        start: item.end,
+        end: item.end,
+        color: 'orange',
+      });
+      await db.collection('calEvent').add({
+        name: item.detail2,
+        details: item.name + item.detail2,
+        start: item.test,
+        end: item.test,
+        color: 'green',
+      });
+      this.getEvents();
+      this.AddedToCal();
+      // this.dialogToeic = false;
+      // this.dialogSchool = false;
+      // this.dialogCheck = false;
+      // this.dialogCertification= false;
+      // this.dialogForeign= false;
+      // this.dialogToeicSpeaking= false;
+      // this.dialogOpic= false;
+      // this.dialogTravel= false;
+      // this.dialogIntern= false;
+      // this.dialogContest= false;
+    },
+    AddedToCal() {
+      this.dialogCal = true;
+    },
+    GetOutFromAddedCal() {
+      this.dialogCal = false;
+    },
+    RandomNumber() {
+      this.randomNumber = Math.floor(Math.random() * 13);
+    },
+    AllDialogFalseAndRandom() {
+      this.dialogToeic = false;
+      this.dialogSchool = false;
+      this.dialogCertification = false;
+      this.dialogForeign = false;
+      this.dialogToeicSpeaking = false;
+      this.dialogOpic = false;
+      this.dialogTravel = false;
+      this.dialogIntern = false;
+      this.dialogContest = false;
+      this.RandomNumber();
+    },
+    async updateEventPoint(ev) {
+      await db
+        .collection('point')
+        .doc('TEqv65ToxZjOIeH1dThM')
+        .update({
+          num: this.moneyPoint - ev,
         });
+      this.getEvents();
+    },
+    BuyAA() {
+      if (this.dialogOne == true && this.moneyPoint < 4000) {
+        this.dialogLess = true;
+      } else if (this.dialogTwo == true && this.moneyPoint < 4500) {
+        this.dialogLess = true;
+      } else if (this.dialogThree == true && this.moneyPoint < 4500) {
+        this.dialogLess = true;
+      } else if (this.dialogFour == true && this.moneyPoint < 14000) {
+        this.dialogLess = true;
+      } else if (this.dialogFive == true && this.moneyPoint < 16000) {
+        this.dialogLess = true;
+      } else if (this.dialogSix == true && this.moneyPoint < 30000) {
+        this.dialogLess = true;
+      } else if (this.dialogOne == true) {
+        this.dialogOne = false;
+        this.updateEventPoint(4000);
+        this.dialogBought = true;
+      } else if (this.dialogTwo == true) {
+        this.dialogTwo = false;
+        this.updateEventPoint(4500);
+        this.dialogBought = true;
+      } else if (this.dialogThree == true) {
+        this.dialogThree = false;
+        this.updateEventPoint(4500);
+        this.dialogBought = true;
+      } else if (this.dialogFour == true) {
+        this.dialogFour = false;
+        this.updateEventPoint(14000);
+        this.dialogBought = true;
+      } else if (this.dialogFive == true) {
+        this.dialogFive = false;
+        this.updateEventPoint(16000);
+        this.dialogBought = true;
+      } else if (this.dialogSix == true) {
+        this.dialogSix = false;
+        this.updateEventPoint(30000);
+        this.dialogBought = true;
       }
-
-      this.events = events;
-    },
-    rnd(a, b) {
-      return Math.floor((b - a + 1) * Math.random()) + a;
-    },
-    rndElement(arr) {
-      return arr[this.rnd(0, arr.length - 1)];
-    },
-    startDrag({ event, timed }) {
-      if (event && timed) {
-        this.dragEvent = event;
-        this.dragTime = null;
-        this.extendOriginal = null;
-      }
-    },
-    startTime(tms) {
-      const mouse = this.toTime(tms);
-      this.startEndDrag = tms.date + 'T' + tms.time;
-      if (this.dragEvent && this.dragTime === null) {
-        const start = this.dragEvent.start;
-
-        this.dragTime = mouse - start;
-      } else {
-        this.createStart = this.roundTime(mouse);
-        this.createEvent = {
-          name: `Event #${this.events.length}`,
-          color: this.rndElement(this.colors),
-          start: this.createStart,
-          end: this.createStart,
-          timed: true,
-        };
-        this.isDown = true;
-
-        this.events.push(this.createEvent);
-      }
-    },
-    extendBottom(event) {
-      this.createEvent = event;
-      this.createStart = event.start;
-      this.extendOriginal = event.end;
-    },
-    mouseMove(tms) {
-      const mouse = this.toTime(tms);
-      if (this.dragEvent && this.dragTime !== null) {
-        const start = this.dragEvent.start;
-        const end = this.dragEvent.end;
-        const duration = end - start;
-        const newStartTime = mouse - this.dragTime;
-        const newStart = this.roundTime(newStartTime);
-        const newEnd = newStart + duration;
-
-        this.dragEvent.start = newStart;
-        this.dragEvent.end = newEnd;
-      } else if (this.createEvent && this.createStart !== null) {
-        const mouseRounded = this.roundTime(mouse, false);
-        const min = Math.min(mouseRounded, this.createStart);
-        const max = Math.max(mouseRounded, this.createStart);
-
-        this.createEvent.start = min;
-        this.createEvent.end = max;
-      }
-    },
-    endDrag(tms) {
-      if (this.isDown == true) {
-        this.isDown = false;
-        this.dialog = true;
-        this.endEndDrag = tms.date + 'T' + tms.time;
-        this.color = this.createEvent.color;
-      }
-      this.events.pop();
-      this.dragTime = null;
-      this.dragEvent = null;
-      this.createEvent = null;
-      this.createStart = null;
-      this.extendOriginal = null;
-    },
-    cancelDrag() {
-      if (this.createEvent) {
-        if (this.extendOriginal) {
-          this.createEvent.end = this.extendOriginal;
-        } else {
-          const i = this.events.indexOf(this.createEvent);
-          if (i !== -1) {
-            this.events.splice(i, 1);
-          }
-        }
-      }
-
-      this.createEvent = null;
-      this.createStart = null;
-      this.dragTime = null;
-      this.dragEvent = null;
-    },
-    roundTime(time, down = true) {
-      const roundTo = 5; // minutes
-      const roundDownTime = roundTo * 60 * 1000;
-
-      return down ? time - (time % roundDownTime) : time + (roundDownTime - (time % roundDownTime));
-    },
-    toTime(tms) {
-      return new Date(tms.year, tms.month - 1, tms.day, tms.hour, tms.minute).getTime();
-    },
-    StartNewEvent() {
-      this.dialog = true;
-      this.endEndDrag = '';
     },
   },
 };
 </script>
-
 <style lang="scss">
-.v-event-draggable {
-  padding-left: 6px;
+.products {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  width: 740px;
+  text-align: center;
 }
 
-.v-event-timed {
-  user-select: none;
-  -webkit-user-select: none;
+.products img {
+  width: 225px;
+  height: 225px;
+  margin-right: 20px;
+  margin-bottom: 20px;
 }
 
-.v-event-drag-bottom {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 4px;
-  height: 4px;
-  cursor: ns-resize;
+.products a {
+  text-decoration: none;
+  color: black;
+  float: left;
+  font-size: 20px;
+  font-weight: bolder;
+}
 
-  &::after {
-    display: none;
-    position: absolute;
-    left: 50%;
-    height: 4px;
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
-    width: 16px;
-    margin-left: -8px;
-    opacity: 0.8;
-    content: '';
-  }
+.price {
+  margin-top: 4px;
+  margin-bottom: 80px;
+}
 
-  &:hover::after {
-    display: block;
-  }
+.clearfix {
+  clear: both;
+}
+
+.footer {
+  text-align: center;
+}
+
+.footer img {
+  margin-top: 40px;
+  height: 20px;
+  margin-bottom: 80px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.row1 h6 {
+  width: 100%;
+  margin-top: 10px;
+  display: inline-block;
+  font-weight: bolder;
+  font-size: 24px;
+  font-family: 'Musinsa', sans-serif !important;
+  border-bottom-width: 3px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(0, 0, 0);
+  padding-bottom: 14px;
+  background-color: #d6d5d2;
 }
 </style>

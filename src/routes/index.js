@@ -14,12 +14,12 @@ export default new VueRouter({
       component: () => import('@/views/Home.vue'),
     },
     {
-      path: '/PublicAnnounce',
+      path: '/Public',
       component: () => import('@/views/PublicAnnounce.vue'),
     },
     {
       path: '/Announce',
-      component: () => import('@/views/Announce.vue'),
+      component: () => import('@/views/Announce/SearchAnnounce.vue'),
     },
     {
       path: '/MyPage',

@@ -1,5 +1,5 @@
 <template>
-  <v-row class="fill-height">
+  <v-row class="fill-height" scroll="no">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
     <v-col>
       <v-sheet height="64">
@@ -12,7 +12,12 @@
           <v-btn fab text small color="grey darken-2" @click="next" class="mr-4">
             <v-icon small> mdi-chevron-right </v-icon>
           </v-btn>
-          <v-toolbar-title v-if="$refs.calendar"> {{ $refs.calendar.title }} </v-toolbar-title><v-btn @click="dialogOpicData = true"></v-btn>
+          <v-toolbar-title v-if="$refs.calendar"> {{ $refs.calendar.title }} </v-toolbar-title
+          ><v-btn
+            @click="dialogOpicData = true"
+            style="position: relative; left: 50px; font-weight: bolder; font-size: 17px"
+            >합격 정보 추가하기</v-btn
+          >
 
           <v-spacer></v-spacer>
           <v-menu bottom right>
@@ -41,7 +46,7 @@
       </v-sheet>
 
       <!--Add Event Dialog-->
-      <v-dialog v-model="dialog" max-width="500">
+      <v-dialog v-model="dialog">
         <v-card>
           <v-container>
             <v-form @submit.prevent="addEvent" v-if="this.endEndDrag === ''">
@@ -61,31 +66,63 @@
         </v-card>
       </v-dialog>
 
-      <v-dialog v-model="dialogOpicData" max-width="500">
+      <v-dialog v-model="dialogOpicData">
         <v-card>
           <v-container>
             <v-form @submit.prevent="EndDialogOpic">
-               <v-select
-            v-model="OpicSuccess"
-            :items="this.OpicSuccessed"
-            label="합격 여부를 고르시오"
-            dense
-            style="margin-right: 2%; width: 40%"></v-select>
-            <v-select 
-            v-if="this.OpicSuccess == '합격'"
-            v-model="OpicType"
-            :items="this.OpicTypes"
-            label="취득한 자격증의 등급을 고르시오"
-            dense
-            style="margin-right: 2%; width: 40%"></v-select>
-              <v-text-field v-if="this.OpicType != ''" v-model="OpicTakenTime" type="text" label="공부한 시간(일)을 작성하시오"></v-text-field>
+              <div
+                style="
+                  background-color: #29ddf2;
+                  text-align: center;
+                  color: white;
+                  font-weight: bolder;
+                  padding: 10px 10px 10px 10px;
+                  border-radius: 20px;
+                  font-size: 19px;
+                  margin-bottom: 30px;
+                ">
+                <ul>
+                  ! 합격정보를 제공해주셔서 감사합니다 !
+                </ul>
+                <ul>
+                  ! 마일리지 500점이 제공됩니다 !
+                </ul>
+                <ul>
+                  ! 마일리지는 다양한 상품과 교환할 수 있습니다 !
+                </ul>
+              </div>
+              <v-select
+                v-model="OpicSuccess"
+                :items="this.OpicSuccessed"
+                label="합격 여부를 고르시오"
+                dense
+                style="margin-right: 2%; width: 100%"></v-select>
+              <v-select
+                v-if="this.OpicSuccess == '합격'"
+                v-model="OpicType"
+                :items="this.OpicTypes"
+                label="취득한 자격증의 등급을 고르시오"
+                dense
+                style="margin-right: 2%; width: 100%"></v-select>
+              <v-select
+                v-if="this.OpicSuccess == '합격'"
+                v-model="OpicType2"
+                :items="this.OpicTypes2"
+                label="기존에 이미 취득한 자격증이 있다면 선택 해주세요."
+                dense
+                style="margin-right: 2%; width: 100%"></v-select>
+              <v-text-field
+                v-if="this.OpicType != ''"
+                v-model="OpicTakenTime"
+                type="text"
+                label="공부한 전체시간(일)을 작성하시오(숫자만)"></v-text-field>
               <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialogOpicData = false"> 저장하기 </v-btn>
             </v-form>
           </v-container>
         </v-card>
       </v-dialog>
 
-      <v-sheet height="600">
+      <v-sheet height="700">
         <v-calendar
           ref="calendar"
           v-model="focus"
@@ -149,6 +186,7 @@
 
 <script>
 import { db } from '@/main';
+import MainHeader from '../components/MainHeader.vue';
 
 export default {
   data: () => ({
@@ -173,6 +211,8 @@ export default {
     selectedElement: null,
     selectedOpen: false,
     events: [],
+    eventsPoint: [],
+    moneyPoint: 0,
     dialog: false,
     dialogOpicData: false,
     value: '',
@@ -188,9 +228,10 @@ export default {
     OpicSuccess: '',
     OpicSuccessed: ['합격', '불합격'],
     OpicType: '',
-    OpicTypes: ['AL','IH','IM3','IM2','IM1','IL','NH','NM','NL'],
+    OpicType2: '',
+    OpicTypes: ['AL', 'IH', 'IM3', 'IM2', 'IM1', 'IL', 'NH', 'NM', 'NL'],
+    OpicTypes2: ['없음', 'AL', 'IH', 'IM3', 'IM2', 'IM1', 'IL', 'NH', 'NM', 'NL'],
     OpicTakenTime: '',
-
   }),
   computed: {
     // 달력 제목 (주 단위 경우 5~6월 사이면 표시하기)
@@ -248,6 +289,19 @@ export default {
       });
       // 이벤트를 위에 있는 data()의 events에 넣어준다.
       this.events = events;
+
+      snapshot = await db.collection('point').get();
+      events = [];
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
+      });
+      // 이벤트를 위에 있는 data()의 events에 넣어준다.
+      this.eventsPoint = events;
+      this.moneyPoint = events[0].num;
     },
     // 데이터를 추가
     async addEvent() {
@@ -302,20 +356,29 @@ export default {
       this.selectedOpen = false;
       this.currentlyEditing = null;
     },
+
+    async updateEventPoint(ev) {
+      await db
+        .collection('point')
+        .doc('TEqv65ToxZjOIeH1dThM')
+        .update({
+          num: this.moneyPoint + 500,
+        });
+      this.getEvents();
+    },
     // 데ㅐ이터를 삭제
     async deleteEvent(ev) {
-      if (ev.details == "오픽Opic 합격자 발표일"){
-      await db.collection('calEvent').doc(ev).delete();
-
-      this.selectedOpen = false;
-      this.getEvents();
-      this.dialogOpicData = true;
-      }
-      else{
+      if (ev.details == '오픽Opic 합격자 발표일') {
         await db.collection('calEvent').doc(ev).delete();
 
-      this.selectedOpen = false;
-      this.getEvents();
+        this.selectedOpen = false;
+        this.getEvents();
+        this.dialogOpicData = true;
+      } else {
+        await db.collection('calEvent').doc(ev).delete();
+
+        this.selectedOpen = false;
+        this.getEvents();
       }
     },
     getEventColor(ev) {
@@ -485,13 +548,13 @@ export default {
       this.dialog = true;
       this.endEndDrag = '';
     },
-    EndDialogOpic(){
+    async EndDialogOpic() {
       this.dialogOpicData = false;
       this.OpicSuccess = '';
       this.OpicType = '';
       this.OpicTakenTime = '';
+      this.updateEventPoint();
     },
-    
   },
 };
 </script>

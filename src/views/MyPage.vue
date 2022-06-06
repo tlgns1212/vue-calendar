@@ -107,13 +107,13 @@
             <v-text-field v-model="wantToGo" type="text" label="목표 기업"></v-text-field>
             <v-text-field v-model="myToeicScore" type="text" label="토익 점수"></v-text-field>
             <v-text-field v-model="myToeicSpeakingScore" type="text" label="토익 스피킹 점수"></v-text-field>
-            <v-text-field v-model="myOpicScore" type="text" label="오픽 등급"></v-text-field>
-            <v-select 
-            v-model="myOpicScore"
-            :items="this.OpicTypes"
-            label="오픽 등급"
-            dense
-            style="margin-right: 2%; width: 40%"></v-select>
+            
+            <v-select
+              v-model="myOpicScore"
+              :items="this.OpicTypes"
+              label="오픽 등급"
+              dense
+              style="margin-right: 2%; width: 40%"></v-select>
             <v-text-field v-model="mySchoolScore" type="text" label="학점"></v-text-field>
             <v-text-field v-model="myCertification" type="text" label="자격증 개수"></v-text-field>
             <v-text-field v-model="myContest" type="text" label="대회 수상 경력"></v-text-field>
@@ -121,7 +121,7 @@
             <v-text-field v-model="myIntern" type="text" label="인턴 경험 횟수"></v-text-field>
             <v-text-field v-model="myTravel" type="text" label="해외 경험 횟수"></v-text-field>
 
-            <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog = false"> Create Event </v-btn>
+            <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog = false"> 저장하기 </v-btn>
           </v-form>
         </v-container>
       </v-card>
@@ -228,13 +228,17 @@
       <v-card>
         <v-container>
           <v-form v-for="item in this.eventsOpic" :key="item.id">
-            <div v-if="IsDate  > (parseInt(item.test.substr(5,2))*30 + parseInt(item.test.substr(8,2)) - 10) && IsDate  < (parseInt(item.test.substr(5,2))*30 + parseInt(item.test.substr(8,2)) + 10) ">
-            <p>{{ item.name }} 접수마감일 : {{ item.end.substr(0, 10) }} 시험일 : {{ item.test.substr(0, 10) }}</p>
-            <v-btn @click="consoleGo(item)">추가하기</v-btn>
-            <v-btn
-              :href="'https://www.opic.or.kr/opics/servlet/controller.opic.site.receipt.ExamReceiptServlet?p_process=select-list&p_nav=1_1'"
-              >접수하러가기</v-btn
-            >
+            <div
+              v-if="
+                IsDate > parseInt(item.test.substr(5, 2)) * 30 + parseInt(item.test.substr(8, 2)) - 10 &&
+                IsDate < parseInt(item.test.substr(5, 2)) * 30 + parseInt(item.test.substr(8, 2)) + 10
+              ">
+              <p>{{ item.name }} 접수마감일 : {{ item.end.substr(0, 10) }} 시험일 : {{ item.test.substr(0, 10) }}</p>
+              <v-btn @click="consoleGo(item)">추가하기</v-btn>
+              <v-btn
+                :href="'https://www.opic.or.kr/opics/servlet/controller.opic.site.receipt.ExamReceiptServlet?p_process=select-list&p_nav=1_1'"
+                >접수하러가기</v-btn
+              >
             </div>
           </v-form>
         </v-container>
@@ -278,74 +282,15 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="dialogCheck">
+    <v-dialog v-model="dialogCheck" style="width: 70%">
       <v-card>
         <v-container>
           <v-form @submit.prevent="DialogCheckEvent">
             <div class="spinner-div" v-if="loading == false">
+              <div>
+                <img src="@/assets/clust.png" style="width: 750px; position: relative; right: 50px" />
+              </div>
               <q-spinner-cube color="primary" size="5em" />
-              <!-- <div class="form-group1 row align-items-center">
-                <label for="targetCompany" class="keys"
-                  >토익 {{ this.events[0].myToeicScore }} -> {{ this.eventsCompany.companyToeicScore }}</label
-                >
-                <div class="results">
-                  <div class="input-group">
-                    <div class="UserName">
-                      <v-btn @click="dialogToeic = true"> {{ this.MathforToeic() }} 일</v-btn>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group1 row align-items-center">
-                <label for="targetCompany" class="keys"
-                  >학점 {{ this.events[0].mySchoolScore }} -> {{ this.eventsCompany.companySchoolScore }}</label
-                >
-                <div class="results">
-                  <div class="input-group">
-                    <div class="UserName">
-                      <div class="UserName"><v-btn @click="dialogSchool = true"> 不可</v-btn></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group1 row align-items-center">
-                <label for="targetCompany" class="keys"
-                  >자격증 개수 {{ this.events[0].myCertification }} ->
-                  {{ this.eventsCompany.companyCertification }}</label
-                >
-                <div class="results">
-                  <div class="input-group">
-                    <div class="UserName">
-                      <v-btn @click="dialogCertification = true"> {{ this.MathforCertification() }} 일</v-btn>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group1 row align-items-center">
-                <label for="targetCompany" class="keys"
-                  >사용 가능 언어 {{ this.events[0].myForeign }} -> {{ this.eventsCompany.companyForeign }}</label
-                >
-                <div class="results">
-                  <div class="input-group">
-                    <div class="UserName">
-                      <v-btn @click="dialogForeign = true"> {{ this.MathforForeign() }} 일</v-btn>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group1 row align-items-center">
-                <label for="targetCompany" class="keys"
-                  >토익 스피킹 {{ this.events[0].myToeicSpeakingScore }} ->
-                  {{ this.eventsCompany.companyToeicSpeakingScore }}</label
-                >
-                <div class="results">
-                  <div class="input-group">
-                    <div class="UserName">
-                      <v-btn @click="dialogToeicSpeaking = true"> {{ this.MathforToeicSpeakingScore() }} 일</v-btn>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
               <div class="form-group1 row align-items-center">
                 <label for="targetCompany" class="keys"
                   >오픽 {{ this.events[0].myOpicScore }} -> {{ this.eventsCompany.companyOpicScore }}</label
@@ -364,13 +309,13 @@
               <v-text-field
                 v-model="tempStudyTime"
                 type="text"
-                label="한 번에 가능한 최대 집중 시간(hour)"
-                style="position: relative; font-size: 30px; width: 500px"></v-text-field>
+                label="하루 평균 공부시간(hour)"
+                style="position: relative; font-size: 25px; width: 500px"></v-text-field>
               <v-text-field
                 v-model="tempSoon"
                 type="text"
                 label="수능 영어 등급"
-                style="font-size: 30px; width: 400px"></v-text-field>
+                style="font-size: 25px; width: 400px;"></v-text-field>
 
               <LoadingButton
                 ref="button"
@@ -380,7 +325,20 @@
                 다시 검색
               </LoadingButton>
             </div>
-
+            <div class="management" v-if="this.managementGroup1.substr(0,1) == '최' || parseInt(this.managementTime.substr(0,1)) >= 6">
+              <p>사용자는 현재 비슷한 실력의 사용자들에 비해 많은 노력을 하고 있습니다.</p>
+              <p>현재 상태를 유지하면서 다른 스펙도 쌓아서</p>
+              <p>취업에 성공하시길 바라겠습니다!!!!</p>
+              
+            </div>
+            <div  class="management" v-else>
+              <p>사용자는 현재 {{ this.managementGroup1 }}</p>
+              <p>하루 평균 공부시간을 {{ this.managementTime }}으로 끌어올려 보세요 !</p>
+              <p>
+                {{ this.managementGroup2 }} 번째 군집의 사용자들에 해당해 준비기간을 {{ this.managementDay }} 일로 줄일
+                수 있습니다!
+              </p>
+            </div>
             <!-- <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog = false"> Create Event </v-btn>
              -->
           </v-form>
@@ -388,7 +346,7 @@
       </v-card>
     </v-dialog>
     <v-row class="container2">
-      <div class="container-fluid">
+      <div class="contain-target">
         <div class="navbar-header" style="height: 40px">
           <div class="target">나의 목표 역량</div>
           <button class="btn btn-success btn-md pull-right" @click="dialog = true" style="margin-top: 5px">
@@ -399,7 +357,7 @@
     </v-row>
     <div class="container-fluid">
       <div class="col">
-        <div class="row">
+        <div class="row2">
           <div class="container3">
             <h4>목표 역량 대비 현재 나의 역량</h4>
             <v-select
@@ -409,7 +367,9 @@
               dense
               style="margin-left: 25%; width: 50%; margin-top: 3%"
               v-on:change="ChangeCompany"></v-select>
-            토익<span class="pull-right strong">{{ this.eventsCompany.companyToeicScore }}</span>
+
+            토익 ->
+            <span class="pull-right strong" style="margin-left: 5px">{{ this.eventsCompany.companyToeicScore }}</span>
             <div class="progress">
               <div
                 :class="ToeicProgressBar"
@@ -429,9 +389,11 @@
                       )
                 }}%
               </div>
-              <!-- <span class="pull-right strong">{{this.events[0].myToeicScore}}</span> -->
             </div>
-            학점<span class="pull-right strong">{{ this.eventsCompany.companySchoolScore }}</span>
+
+            학점 -><span class="pull-right strong" style="margin-left: 5px">{{
+              this.eventsCompany.companySchoolScore
+            }}</span>
             <div class="progress">
               <div
                 :class="SchoolProgressBar"
@@ -453,7 +415,9 @@
               </div>
               <!-- <span class="pull-right strong">{{this.events[0].mySchoolScore }}</span> -->
             </div>
-            자격증 개수<span class="pull-right strong">{{ this.eventsCompany.companyCertification }}</span>
+            자격증 개수 -><span class="pull-right strong" style="margin-left: 5px">{{
+              this.eventsCompany.companyCertification
+            }}</span>
             <div class="progress">
               <div
                 :class="CertificationProgressBar"
@@ -476,7 +440,7 @@
                 }}%
               </div>
             </div>
-            외국어(기타)<span class="pull-right strong" style="font-weight: bold">{{
+            외국어(기타) -><span class="pull-right strong" style="margin-left: 5px">{{
               this.eventsCompany.companyForeign
             }}</span>
             <div class="progress" style="text-align: right">
@@ -498,7 +462,7 @@
                 }}%
               </div>
             </div>
-            토익 스피킹<span class="pull-right strong" style="font-weight: bold">{{
+            토익 스피킹 -><span class="pull-right strong" style="margin-left: 5px">{{
               this.eventsCompany.companyToeicSpeakingScore
             }}</span>
             <div class="progress" style="text-align: right">
@@ -524,7 +488,7 @@
                 }}%
               </div>
             </div>
-            오픽<span class="pull-right strong" style="font-weight: bold">{{
+            오픽 -><span class="pull-right strong" style="margin-left: 5px">{{
               this.eventsCompany.companyOpicScore
             }}</span>
             <div class="progress" style="text-align: right">
@@ -550,7 +514,7 @@
                 }}%
               </div>
             </div>
-            해외 경험<span class="pull-right strong" style="font-weight: bold">{{
+            해외 경험 -><span class="pull-right strong" style="margin-left: 5px">{{
               this.eventsCompany.companyTravel
             }}</span>
             <div class="progress" style="text-align: right">
@@ -572,7 +536,7 @@
                 }}%
               </div>
             </div>
-            인턴 경험<span class="pull-right strong" style="font-weight: bold">{{
+            인턴 경험 -><span class="pull-right strong" style="margin-left: 5px">{{
               this.eventsCompany.companyIntern
             }}</span>
             <div class="progress" style="text-align: right">
@@ -594,7 +558,7 @@
                 }}%
               </div>
             </div>
-            수상내역<span class="pull-right strong" style="font-weight: bold">{{
+            수상내역 -><span class="pull-right strong" style="margin-left: 5px">{{
               this.eventsCompany.companyContest
             }}</span>
             <div class="progress" style="text-align: right">
@@ -619,17 +583,16 @@
           </div>
         </div>
       </div>
-      <div class="footer">
+      <div class="footer1">
         <v-text-field
           v-model="tempStudyTime"
           type="text"
-          label="한번에 가능한 최대 집중 시간(hour)"
+          label="하루 평균 공부시간(hour)"
           style="
             font-size: 25px;
             position: relative;
             top: 10px;
-            width: 300px;
-            left: 54px;
+            width: 250px;
             margin-top: 10px;
             display: inline-block;
           "></v-text-field>
@@ -641,12 +604,12 @@
             font-size: 25px;
             position: relative;
             top: 10px;
-            width: 300px;
-            left: 54px;
+            width: 250px;
+            left: 50px;
             margin-top: 10px;
             display: inline-block;
           "></v-text-field>
-        <v-btn @click="DialogCheckEvent" style="position: relative; left: 5%">검사받기</v-btn>
+        <v-btn @click="DialogCheckEvent" style="position: relative; left: 8%">검사받기</v-btn>
       </div>
     </div>
   </div>
@@ -735,18 +698,20 @@ export default {
     randomNumber: 2,
     tempStudyTime: '',
     tempSoon: '',
-    OpicState: { NL: 1, NM: 2, NH: 3, IL: 4, IM1: 5, IM2: 6, IM3: 7, AL: 8 },
+    OpicState: { 없음: 0, NL: 1, NM: 2, NH: 3, IL: 4, IM1: 5, IM2: 6, IM3: 7, AL: 8 },
     OpicType: '',
-    OpicTypes: ['AL','IH','IM3','IM2','IM1','IL','NH','NM','NL'],
+    OpicTypes: ['AL', 'IH', 'IM3', 'IM2', 'IM1', 'IL', 'NH', 'NM', 'NL','없음'],
+    managementGroup1: 0,
+    managementGroup2: 0,
+    managementTime: 0,
+    managementDay: 0,
   }),
   computed: {
     ...mapState(['userInfo']),
-    IsDate(){
+    IsDate() {
       const today = this.getToday();
-      const thatDay = this.getDates2(today,this.MathforOpicScore());
-      console.log(thatDay);
-      const thatsDay = parseInt(thatDay.substr(5,2)*30) + parseInt(thatDay.substr(8,2));
-      console.log(thatsDay);
+      const thatDay = this.getDates2(today, this.MathforOpicScore());
+      const thatsDay = parseInt(thatDay.substr(5, 2) * 30) + parseInt(thatDay.substr(8, 2));
       return thatsDay;
     },
     ToeicScore() {
@@ -760,11 +725,11 @@ export default {
     ToeicProgressBar() {
       let temp = this.ToeicScore;
       if (parseInt(temp) < 40) {
-        return 'progress-bar progress-bar-danger';
+        return 'progress-bar-danger';
       } else if (parseInt(temp) < 90) {
-        return 'progress-bar progress-bar-warning';
+        return 'progress-bar-warning';
       } else {
-        return 'progress-bar progress-bar-success';
+        return 'progress-bar-success';
       }
     },
     SchoolScore() {
@@ -778,11 +743,11 @@ export default {
     SchoolProgressBar() {
       let temp = this.SchoolScore;
       if (parseInt(temp) < 40) {
-        return 'progress-bar progress-bar-danger';
+        return 'progress-bar-danger';
       } else if (parseInt(temp) < 90) {
-        return 'progress-bar progress-bar-warning';
+        return 'progress-bar-warning';
       } else {
-        return 'progress-bar progress-bar-success';
+        return 'progress-bar-success';
       }
     },
     CertificationScore() {
@@ -796,11 +761,11 @@ export default {
     CertificationProgressBar() {
       let temp = this.CertificationScore;
       if (parseInt(temp) < 40) {
-        return 'progress-bar progress-bar-danger';
+        return 'progress-bar-danger';
       } else if (parseInt(temp) < 90) {
-        return 'progress-bar progress-bar-warning';
+        return 'progress-bar-warning';
       } else {
-        return 'progress-bar progress-bar-success';
+        return 'progress-bar-success';
       }
     },
     ForeignScore() {
@@ -814,11 +779,11 @@ export default {
     ForeignProgressBar() {
       let temp = this.ForeignScore;
       if (parseInt(temp) < 40) {
-        return 'progress-bar progress-bar-danger';
+        return 'progress-bar-danger';
       } else if (parseInt(temp) < 90) {
-        return 'progress-bar progress-bar-warning';
+        return 'progress-bar-warning';
       } else {
-        return 'progress-bar progress-bar-success';
+        return 'progress-bar-success';
       }
     },
     ToeicSpeakingScoreScore() {
@@ -833,11 +798,11 @@ export default {
     ToeicSpeakingScoreProgressBar() {
       let temp = this.ToeicSpeakingScoreScore;
       if (parseInt(temp) < 40) {
-        return 'progress-bar progress-bar-danger';
-      } else if (parseInt(temp) < 90) {
-        return 'progress-bar progress-bar-warning';
+        return 'progress-bar-danger';
+      } else if (parseInt(temp) < 0) {
+        return 'progress-bar-warning';
       } else {
-        return 'progress-bar progress-bar-success';
+        return 'progress-bar-success';
       }
     },
     OpicScoreScore() {
@@ -853,11 +818,11 @@ export default {
     OpicScoreProgressBar() {
       let temp = this.OpicScoreScore;
       if (parseInt(temp) < 40) {
-        return 'progress-bar progress-bar-danger';
+        return 'progress-bar-danger';
       } else if (parseInt(temp) < 90) {
-        return 'progress-bar progress-bar-warning';
+        return 'progress-bar-warning';
       } else {
-        return 'progress-bar progress-bar-success';
+        return 'progress-bar-success';
       }
     },
     TravelScore() {
@@ -871,11 +836,11 @@ export default {
     TravelProgressBar() {
       let temp = this.TravelScore;
       if (parseInt(temp) < 40) {
-        return 'progress-bar progress-bar-danger';
+        return 'progress-bar-danger';
       } else if (parseInt(temp) < 90) {
-        return 'progress-bar progress-bar-warning';
+        return 'progress-bar-warning';
       } else {
-        return 'progress-bar progress-bar-success';
+        return 'progress-bar-success';
       }
     },
     InternScore() {
@@ -889,11 +854,11 @@ export default {
     InternProgressBar() {
       let temp = this.InternScore;
       if (parseInt(temp) < 40) {
-        return 'progress-bar progress-bar-danger';
+        return 'progress-bar-danger';
       } else if (parseInt(temp) < 90) {
-        return 'progress-bar progress-bar-warning';
+        return 'progress-bar-warning';
       } else {
-        return 'progress-bar progress-bar-success';
+        return 'progress-bar-success';
       }
     },
     ContestScore() {
@@ -907,11 +872,11 @@ export default {
     ContestProgressBar() {
       let temp = this.ContestScore;
       if (parseInt(temp) < 40) {
-        return 'progress-bar progress-bar-danger';
+        return 'progress-bar-danger';
       } else if (parseInt(temp) < 90) {
-        return 'progress-bar progress-bar-warning';
+        return 'progress-bar-warning';
       } else {
-        return 'progress-bar progress-bar-success';
+        return 'progress-bar-success';
       }
     },
   },
@@ -987,12 +952,11 @@ export default {
         events.push(appData);
       });
       let a3 = events;
-      a3.sort(function(a,b){
-        let a1 = (a.end.substr(5,2) + a.end.substr(8,2));
-        let b1 = (b.end.substr(5,2) + b.end.substr(8,2));
-        // console.log(b1);
-        return a1>b1 ? 1: a1<b1 ? -1:0;
-      })
+      a3.sort(function (a, b) {
+        let a1 = a.end.substr(5, 2) + a.end.substr(8, 2);
+        let b1 = b.end.substr(5, 2) + b.end.substr(8, 2);
+        return a1 > b1 ? 1 : a1 < b1 ? -1 : 0;
+      });
       this.eventsOpic = a3;
 
       snapshot = await db.collection('texts').get();
@@ -1120,8 +1084,8 @@ export default {
         color: 'green',
       });
       await db.collection('calEvent').add({
-        name: "OPIc 합격자 발표일",
-        details: "오픽Opic 합격자 발표일",
+        name: 'OPIc 합격자 발표일',
+        details: '오픽Opic 합격자 발표일',
         start: this.getDates(item.end),
         end: this.getDates(item.end),
         color: 'blue',
@@ -1252,6 +1216,8 @@ export default {
           return 31 + 20;
         } else if (parseInt(this.mySoon) == 2 && parseInt(this.myStudyTime) > 3) {
           return 11 + 20;
+        } else if (parseInt(this.mySoon) == 2 && parseInt(this.myStudyTime) > 3) {
+          return 11 + 20;
         } else if (parseInt(this.mySoon) == 2 && parseInt(this.myStudyTime) > 0) {
           return 31 + 20;
         } else if (parseInt(this.mySoon) == 3 && parseInt(this.myStudyTime) > 5) {
@@ -1275,51 +1241,97 @@ export default {
         } else if (parseInt(this.mySoon) == 6 && parseInt(this.myStudyTime) > 2) {
           return 77 + 20;
         } else if (parseInt(this.mySoon) == 6 && parseInt(this.myStudyTime) > 0) {
-          return 12 + 204;
+          return 12 + 20;
         } else if (parseInt(this.mySoon) == 7 && parseInt(this.myStudyTime) > 0) {
-          return 12 + 204;
+          return 12 + 20;
         } else if (parseInt(this.mySoon) == 8 && parseInt(this.myStudyTime) > 0) {
-          return 12 + 204;
+          return 12 + 20;
         } else if (parseInt(this.mySoon) == 9 && parseInt(this.myStudyTime) > 0) {
-          return 12 + 204;
+          return 12 + 20;
         }
       } else {
-        if (parseInt(this.mySoon) == 1 && parseInt(this.myStudyTime) > 1) {
+        if (parseInt(this.mySoon) < 3 && parseInt(this.myStudyTime) < 3) {
+          this.managementGroup1 = '2 번째 집단에 속합니다.';
+          this.managementGroup2 = 1;
+          this.managementTime = '3시간 이상';
+          this.managementDay = 11; //변화될 일수
+          return 31;
+        } else if (parseInt(this.mySoon) < 3 && parseInt(this.myStudyTime) < 5 && parseInt(this.myStudyTime) >= 3) {
+          this.managementGroup1 = '최상위 집단에 속합니다.'; //현재 군집
+          this.managementGroup2 = 1; //변화될 군집
+          this.managementTime = '4시간 이상'; //증가할 최대 집중 공부시간
+          this.managementDay = 11; //변화될 일수
           return 11;
-        } else if (parseInt(this.mySoon) == 1 && parseInt(this.myStudyTime) == 1) {
-          return 31;
-        } else if (parseInt(this.mySoon) == 2 && parseInt(this.myStudyTime) > 3) {
+        } else if (parseInt(this.mySoon) < 3 && parseInt(this.myStudyTime) > 4) {
+          this.managementGroup1 = '최상위 집단에 속합니다.'; //현재 군집
+          this.managementGroup2 = 1; //변화될 군집
+          this.managementTime = 4; //증가할 최대 집중 공부시간
+          this.managementDay = 11; //변화될 일수
           return 11;
-        } else if (parseInt(this.mySoon) == 2 && parseInt(this.myStudyTime) > 0) {
+        } else if (parseInt(this.mySoon) >= 3 && parseInt(this.mySoon) < 5 && parseInt(this.myStudyTime) < 3) {
+          this.managementGroup1 = '3 번째 집단에 속합니다.'; //현재 군집
+          this.managementGroup2 = 2; //변화될 군집
+          this.managementTime = '3시간 이상'; //증가할 최대 집중 공부시간
+          this.managementDay = 31; //변화될 일수
+          return 58;
+        } else if (
+          parseInt(this.mySoon) >= 3 &&
+          parseInt(this.mySoon) < 5 &&
+          parseInt(this.myStudyTime) < 5 &&
+          parseInt(this.myStudyTime) >= 3
+        ) {
+          this.managementGroup1 = '2 번째 집단에 속합니다.'; //현재 군집
+          this.managementGroup2 = 1; //변화될 군집
+          this.managementTime = '5시간 이상'; //증가할 최대 집중 공부시간
+          this.managementDay = 11; //변화될 일수
           return 31;
-        } else if (parseInt(this.mySoon) == 3 && parseInt(this.myStudyTime) > 5) {
+        } else if (parseInt(this.mySoon) >= 3 && parseInt(this.mySoon) < 5 && parseInt(this.myStudyTime) > 4) {
+          this.managementGroup1 = '최상위 집단에 속합니다.'; //현재 군집
+          this.managementGroup2 = 1; //변화될 군집
+          this.managementTime = '4시간 이상'; //증가할 최대 집중 공부시간
+          this.managementDay = 11; //변화될 일수
           return 11;
-        } else if (parseInt(this.mySoon) == 3 && parseInt(this.myStudyTime) > 3) {
+        } else if (parseInt(this.mySoon) >= 5 && parseInt(this.mySoon) < 8 && parseInt(this.myStudyTime) < 3) {
+          this.managementGroup1 = '4 번째 집단에 속합니다.'; //현재 군집
+          this.managementGroup2 = 3; //변화될 군집
+          this.managementTime = '3시간 이상'; //증가할 최대 집중 공부시간
+          this.managementDay = 58; //변화될 일수
+          return 77;
+        } else if (
+          parseInt(this.mySoon) >= 5 &&
+          parseInt(this.mySoon) < 8 &&
+          parseInt(this.myStudyTime) < 5 &&
+          parseInt(this.myStudyTime) >= 3
+        ) {
+          this.managementGroup1 = '3 번째 집단에 속합니다.'; //현재 군집
+          this.managementGroup2 = 2; //변화될 군집
+          this.managementTime = '5시간 이상'; //증가할 최대 집중 공부시간
+          this.managementDay = 31; //변화될 일수
+          return 58;
+        } else if (parseInt(this.mySoon) >= 5 && parseInt(this.mySoon) < 8 && parseInt(this.myStudyTime) > 4) {
+          this.managementGroup1 = '3 번째 집단에 속합니다.'; //현재 군집
+          this.managementGroup2 = 2; //변화될 군집
+          this.managementTime = '6시간 이상'; //증가할 최대 집중 공부시간
+          this.managementDay = 31; //변화될 일수
           return 31;
-        } else if (parseInt(this.mySoon) == 3 && parseInt(this.myStudyTime) > 0) {
-          return 58;
-        } else if (parseInt(this.mySoon) == 4 && parseInt(this.myStudyTime) > 5) {
-          return 31;
-        } else if (parseInt(this.mySoon) == 4 && parseInt(this.myStudyTime) >= 1) {
-          return 58;
-        } else if (parseInt(this.mySoon) == 4 && parseInt(this.myStudyTime) == 0) {
+        } else if (parseInt(this.mySoon) >= 7 && parseInt(this.myStudyTime) < 3) {
+          this.managementGroup1 = '5 번째 집단에 속합니다.'; //현재 군집
+          this.managementGroup2 = 4; //변화될 군집
+          this.managementTime = '3시간 이상'; //증가할 최대 집중 공부시간
+          this.managementDay = 77; //변화될 일수
+          return 124;
+        } else if (parseInt(this.mySoon) >= 7 && parseInt(this.myStudyTime) < 5 && parseInt(this.myStudyTime) >= 3) {
+          this.managementGroup1 = '4 번째 집단에 속합니다.'; //현재 군집
+          this.managementGroup2 = 3; //변화될 군집
+          this.managementTime = '5시간 이상'; //증가할 최대 집중 공부시간
+          this.managementDay = 58; //변화될 일수
           return 77;
-        } else if (parseInt(this.mySoon) == 5 && parseInt(this.myStudyTime) > 3) {
+        } else if (parseInt(this.mySoon) >= 7 && parseInt(this.myStudyTime) > 4) {
+          this.managementGroup1 = '3 번째 집단에 속합니다.'; //현재 군집
+          this.managementGroup2 = 2; //변화될 군집
+          this.managementTime = '7시간 이상'; //증가할 최대 집중 공부시간
+          this.managementDay = 31; //변화될 일수
           return 58;
-        } else if (parseInt(this.mySoon) == 5 && parseInt(this.myStudyTime) > 0) {
-          return 77;
-        } else if (parseInt(this.mySoon) == 6 && parseInt(this.myStudyTime) > 5) {
-          return 58;
-        } else if (parseInt(this.mySoon) == 6 && parseInt(this.myStudyTime) > 2) {
-          return 77;
-        } else if (parseInt(this.mySoon) == 6 && parseInt(this.myStudyTime) > 0) {
-          return 124;
-        } else if (parseInt(this.mySoon) == 7 && parseInt(this.myStudyTime) > 0) {
-          return 124;
-        } else if (parseInt(this.mySoon) == 8 && parseInt(this.myStudyTime) > 0) {
-          return 124;
-        } else if (parseInt(this.mySoon) == 9 && parseInt(this.myStudyTime) > 0) {
-          return 124;
         }
       }
     },
@@ -1376,12 +1388,12 @@ export default {
       });
       this.getEvents();
     },
-    getDates(date){
+    getDates(date) {
       let A = new Date(date);
       A.setDate(A.getDate() + 7);
       return this.UnixToDate(A.getTime());
     },
-    getDates2(date,addDate){
+    getDates2(date, addDate) {
       let A = new Date(date);
       A.setDate(A.getDate() + addDate);
       return this.UnixToDate(A.getTime());
@@ -1391,33 +1403,28 @@ export default {
       const year = date.getFullYear();
       const month = date.getMonth() + 1;
       const dt = date.getDate();
-      let formattedTime= '';
-      if (month < 10 && dt < 10){
+      let formattedTime = '';
+      if (month < 10 && dt < 10) {
         formattedTime = `${year}-0${month}-0${dt}`;
-      }
-      else if (month < 10){
+      } else if (month < 10) {
         formattedTime = `${year}-0${month}-${dt}`;
-      }
-      else if (dt < 10){
+      } else if (dt < 10) {
         formattedTime = `${year}-${month}-0${dt}`;
-      }
-      else{
+      } else {
         formattedTime = `${year}-${month}-${dt}`;
       }
       return formattedTime;
     },
-    getToday(){
+    getToday() {
       const today = new Date();
       const year = today.getFullYear();
       const month = ('0' + (today.getMonth() + 1)).slice(-2);
       const day = ('0' + today.getDate()).slice(-2);
-
       return year + '-' + month + '-' + day;
     },
     // IsDate(){
     //   const today = this.getToday();
     //   const thatDay = this.getDates2(today,this.MathforOpicScore());
-    //   console.log(thatDay);
     //   return true;
     // }
   },
@@ -1447,6 +1454,9 @@ export default {
   padding-bottom: 14px;
   background-color: #adaaaa;
 }
+.row {
+  margin-bottom: 10px;
+}
 .row1 h6 {
   width: 100%;
   margin-top: 10px;
@@ -1474,7 +1484,7 @@ export default {
 }
 
 .bar {
-  background-color: #fcc46a;
+  background-color: #a0f4fa;
   width: 140px;
   margin-left: 20px;
   font-weight: bolder;
@@ -1483,6 +1493,7 @@ export default {
 }
 .form-group {
   margin: none;
+  font-weight: bolder;
 }
 
 .value {
@@ -1501,11 +1512,7 @@ export default {
 .container {
   width: 100%;
 }
-.col {
-  position: relative;
 
-  top: 10px;
-}
 .keys {
   width: 300px;
   font-size: 25px;
@@ -1515,6 +1522,10 @@ export default {
 }
 .results {
   width: 150px;
+}
+
+.full-right {
+  margin-left: 20px;
 }
 
 .target {
@@ -1538,16 +1549,17 @@ export default {
   bottom: 39px;
   margin-bottom: 10px;
 }
-.footer {
+.footer1 {
   position: relative;
-
+  left: 13px;
+  margin-bottom: 500px;
   font-weight: bolder;
   font-family: 'Musinsa', sans-serif !important;
 }
 .container2 {
   position: relative;
-  top: 10px;
-  width: 680px;
+  top: 50px;
+  width: 83%;
   left: 10.4%;
   margin-top: 10px;
   display: inline-block;
@@ -1560,12 +1572,17 @@ export default {
   padding-bottom: 14px;
   background-color: #d6d5d2;
 }
+.container-fluid {
+  position: relative;
+  top: 30px;
+  width: 100%;
+  left: 5.7%;
+}
 .container3 {
   position: relative;
   top: 10px;
-  width: 680px;
-  left: 54px;
-  margin-top: 10px;
+  width: 87%;
+  margin: 20px 0px 0px 0px;
   display: inline-block;
   font-weight: bolder;
   font-size: 20px;
@@ -1575,6 +1592,13 @@ export default {
   border-bottom-color: rgb(0, 0, 0);
   padding-bottom: 14px;
   background-color: #d6d5d2;
+  text-align: center;
+}
+.container3 h4 {
+  font-weight: bolder;
+  font-size: 25px;
+  font-family: 'Musinsa', sans-serif !important;
+  margin-top: 15px;
 }
 .spinner-div {
   width: 200px;
@@ -1585,5 +1609,48 @@ export default {
   margin: none;
   width: 700px;
   position: relative;
+
+}
+.progress {
+  font-weight: bolder;
+}
+.progress-bar-warning {
+  background-color: orange;
+  font-family: 'Musinsa', sans-serif !important;
+  padding: 0px 10px;
+  font-size: 13px;
+  font-weight: bolder;
+  text-align: right;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+.progress-bar-success {
+  background-color: #02e670;
+  font-family: 'Musinsa', sans-serif !important;
+  padding: 0px 10px;
+  font-size: 13px;
+  text-align: right;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+.progress-bar-danger {
+  background-color: #fa4137;
+  font-family: 'Musinsa', sans-serif !important;
+  padding: 0px 10px;
+  font-size: 13px;
+  text-align: right;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+.management {
+  margin: 20px 0px 30px 0px;
+  display: inline-block;
+  font-weight: bolder;
+  font-size: 20px;
+  font-family: 'Musinsa', sans-serif !important;
+
+  padding-bottom: 14px;
+  background-color: #d6d5d2;
+  text-align: center;
 }
 </style>

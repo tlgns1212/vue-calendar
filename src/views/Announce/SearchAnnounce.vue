@@ -69,11 +69,19 @@
           margin-bottom: 10px;
           position: relative;
           left: 70%;
+          bottom:20px;
           font-weight: bolder;
           width: 20%;
         "
         >검색</a
       >
+    </div>
+    <div>
+      <!-- <div v-for="item in this.events.data" :key="item.id">
+        <p>{{item.job}}</p>
+        <v-btn @click="AddAllJob(item.job)">Hello Click Me To Add Up Data</v-btn>
+        <p>hi</p>
+      </div> -->
     </div>
 
     <div class="listWrap">
@@ -90,18 +98,18 @@
           <th>아이디</th>
           <th>날짜</th>
         </tr>
-        <tr v-for="(item, i) in this.events.data.jobs.job" :key="item.id">
-          <td style="text-align: center">{{ i + 1 }}</td>
+        <tr v-for="(item, i) in this.eventsJob" :key="item.id">
+          <td v-if="i > 0" style="text-align: center">{{ i  }}</td>
 
-          <td class="txt_left">
-            <p>{{ item.position.title }}</p>
+          <td v-if="i > 0"  class="txt_left">
+            <p>{{ item.title }}</p>
             <v-btn :href="item.url">자세히 보기</v-btn>
             <v-btn @click="consoleGo(item)">일정에 추가</v-btn>
           </td>
 
-          <td>{{ item.company.detail.name }}</td>
-          <td v-if="item['expiration-timestamp'] > 1700000000">상시 채용</td>
-          <td v-else>{{ UnixToDate(item['opening-timestamp']) }} ~ {{ UnixToDate(item['expiration-timestamp']) }}</td>
+          <td v-if="i > 0" >{{ item.name }}</td>
+          <td v-if="item.expire > 1700000000 && i > 0">상시 채용</td>
+          <td v-if="item.expire <= 1700000000 && i > 0">{{ UnixToDate(item.open) }} ~ {{ UnixToDate(item.expire) }}</td>
         </tr>
         <tr v-if="1 == 0">
           <td colspan="4">데이터가 없습니다.</td>
@@ -121,7 +129,8 @@ export default {
     end: '',
     color: 'red',
     events: [],
-    keyword: '',
+    eventsJob: [],
+    keyword: '개발',
     loc_cd: '',
     job_mid_cd: '',
     jobMidCD: [
@@ -187,17 +196,59 @@ export default {
       false,
       false,
     ],
+    Numbers: 2,
+    Item:[],
   }),
   mounted() {
     this.getEvents();
   },
+  computed: {
+    async AddAllJob2(item){
+      for (let i = this.Numbers; i < this.Numbers+50; i++){ // 여기 범위는 내가 정해야함
+        await db.collection('job').doc(i.toString()).set({
+          title: item[i].position.title,
+          url: item[i].url,
+          name: item[i].company.detail.name,
+          expire: item[i]['expiration-timestamp'],
+          open: item[i]['opening-timestamp'],
+          keyword: this.keyword,
+        });
+      }
+      this.Numbers += 50;
+    },
+  },
   methods: {
     async getEvents() {
-      this.$axios
-        .get('api/announcements?keywords=개발&job_type=1&edu_lv=0&loc_cd=101010&job_mid_cd=2&count=50')
-        .then(res => {
-          this.events = res;
-        });
+      
+      // db에 저장된 걸 가져와서
+      let snapshot = await db.collection('job').get();
+      let events = [];
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        // console.log(appData);
+        if(this.keyword == appData.keyword){
+          events.push(appData);
+        }
+      });
+      // 이벤트를 위에 있는 data()의 events에 넣어준다.
+      this.eventsJob = events;
+      if (this.eventsJob.length == 0){
+        snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
+      });
+      this.eventsJob = events;
+      }
+      await db.collection('keyword').add({
+        name: this.keyword,
+      });
+      this.Numbers = this.eventsJob[0].num;
+      this.Item = this.events.data.jobs.job;
     },
     UnixToDate(t) {
       const date = new Date(t * 1000);
@@ -208,27 +259,27 @@ export default {
       return formattedTime;
     },
     async consoleGo(item) {
-      if (item['expiration-timestamp'] > 1700000000) {
+      if (item.expire > 1700000000) {
         await db.collection('calEvent').add({
-          name: item.company.detail.name + ' [상시 모집]',
-          details: item.position.title,
-          start: this.UnixToDate(item['opening-timestamp']),
-          end: this.UnixToDate(item['opening-timestamp']),
+          name: item.name + ' [상시 모집]',
+          details: item.title,
+          start: this.UnixToDate(item.open),
+          end: this.UnixToDate(item.open),
           color: 'red',
         });
       } else {
         await db.collection('calEvent').add({
-          name: item.company.detail.name + ' [모집 시작일]',
-          details: item.position.title,
-          start: this.UnixToDate(item['opening-timestamp']),
-          end: this.UnixToDate(item['opening-timestamp']),
+          name: item.name + ' [모집 시작일]',
+          details: item.title,
+          start: this.UnixToDate(item.open),
+          end: this.UnixToDate(item.open),
           color: 'green',
         });
         await db.collection('calEvent').add({
-          name: item.company.detail.name + ' [모집 마감일]',
-          details: item.position.title,
-          start: this.UnixToDate(item['expiration-timestamp']),
-          end: this.UnixToDate(item['expiration-timestamp']),
+          name: item.name + ' [모집 마감일]',
+          details: item.title,
+          start: this.UnixToDate(item.expire),
+          end: this.UnixToDate(item.expire),
           color: 'red',
         });
       }
@@ -236,35 +287,101 @@ export default {
       this.getEvents();
     },
 
+    // async fnSearch() {
+    //   this.job_mid_cd = this.job_mid_cd.substr(1, 2);
+    //   if (this.job_mid_cd[1] == ')') {
+    //     this.job_mid_cd = this.job_mid_cd.substr(0, 1);
+    //   }
+    //   this.$axios
+    //     .get(
+    //       'api/announcements?keywords=' +
+    //         this.keyword +
+    //         '&job_type=1&count=50&edu_lv=0&loc_cd=' +
+    //         this.loc_cd.substr(3, 6) +
+    //         '&job_mid_cd=' +
+    //         this.job_mid_cd +
+    //         ''
+    //     )
+    //     .then(res => {
+    //       this.events = res;
+    //     });
+    //   await db.collection('keyword').add({
+    //     name: this.keyword,
+    //   });
+    //   console.log(this.keyword);
+    // },
     async fnSearch() {
-      this.job_mid_cd = this.job_mid_cd.substr(1, 2);
-      if (this.job_mid_cd[1] == ')') {
-        this.job_mid_cd = this.job_mid_cd.substr(0, 1);
+      let snapshot = await db.collection('job').get();
+      let events = [];
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        // console.log(appData);
+        if(this.keyword == appData.keyword){
+          events.push(appData);
+        }
+      });
+      // 이벤트를 위에 있는 data()의 events에 넣어준다.
+      this.eventsJob = events;
+      if (this.eventsJob.length == 0){
+        snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
+      });
+      this.eventsJob = events;
       }
-      this.$axios
-        .get(
-          'api/announcements?keywords=' +
-            this.keyword +
-            '&job_type=1&edu_lv=0&loc_cd=' +
-            this.loc_cd.substr(3, 6) +
-            '&count=50&job_mid_cd=' +
-            this.job_mid_cd +
-            ''
-        )
-        .then(res => {
-          this.events = res;
-        });
       await db.collection('keyword').add({
         name: this.keyword,
       });
-      console.log(this.keyword);
     },
+    
 
     changeColor() {
       this.$('li').click(function () {
         $('li').removeClass();
         $(this).addClass('on');
       });
+    },
+    async AddToDataBase(item){
+      
+      await db.collection('job').doc(this.Numbers.toString()).set({
+        title: item.position.title,
+        url: item.url,
+        name: item.company.detail.name,
+        expire: item['expiration-timestamp'],
+        open: item['opening-timestamp'],
+        keyword: this.keyword,
+      });
+      this.Numbers += 1;
+      
+      await db.collection('job').doc("1").update({
+        num: this.Numbers,
+      });
+      this.getEvents();
+    },
+    async DeleteAllJob(){
+      for (let i = 32; i < 49; i++){ // 여기 범위는 내가 정해야함
+        await db.collection('job').doc(i.toString()).delete();
+      }
+      
+    },
+    async AddAllJob1(){
+      let items = this.Item;
+      for (let i = 0; i < 50; i++){ // 여기 범위는 내가 정해야함
+        await db.collection('job').doc((i+this.Numbers).toString()).set({
+          title: items[i].position.title,
+          url: items[i].url,
+          name: items[i].company.detail.name,
+          expire: items[i]['expiration-timestamp'],
+          open: items[i]['opening-timestamp'],
+          keyword: this.keyword,
+        });
+      }
+      this.Numbers += 50;
     },
   },
 };
