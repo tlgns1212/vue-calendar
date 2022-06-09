@@ -79,6 +79,9 @@
       <v-btn @click="DeleteAllJob">모두 삭제하려면 여기를 누르시오</v-btn>
       
       <v-btn @click="AddAllJob1">모두 저장하려면 여기를 누르시오</v-btn>
+       <div>
+      {{this.eventsKeyword}}
+    </div>
       <p>{{this.events.data.jobs.job}}</p>
       <!-- <div v-for="item in this.events.data" :key="item.id">
         <p>{{item.job}}</p>
@@ -86,6 +89,7 @@
         <p>hi</p>
       </div> -->
     </div>
+   
 
     <div class="listWrap">
       <table class="tbList">
@@ -133,6 +137,7 @@ export default {
     color: 'red',
     events: [],
     eventsJob: [],
+    eventsKeyword:[],
     keyword: '개발',
     loc_cd: '',
     job_mid_cd: '',
@@ -222,10 +227,9 @@ export default {
   },
   methods: {
     async getEvents() {
-      this.$axios.get('api/announcements?keywords=' + this.keyword + '&job_type=1&edu_lv=0&loc_cd=101010&job_mid_cd=2&count=50').then(res => {
+      this.$axios.get('api/announcements?keywords=' + this.keyword + '&job_type=1&loc_cd=101010&&count=50').then(res => {
         this.events = res;
       });
-      
       // db에 저장된 걸 가져와서
       let snapshot = await db.collection('job').get();
       let events = [];
@@ -240,6 +244,18 @@ export default {
       this.eventsJob = events;
       this.Numbers = this.eventsJob[0].num;
       this.Item = this.events.data.jobs.job;
+
+      snapshot = await db.collection('keyword').get();
+      events = [];
+      // 모든 data에 대하여
+      snapshot.forEach(doc => {
+        let appData = doc.data();
+        // events에 넣어주고
+        appData.id = doc.id;
+        events.push(appData);
+      });
+      // 이벤트를 위에 있는 data()의 events에 넣어준다.
+      this.eventsKeyword = events;
     },
     UnixToDate(t) {
       const date = new Date(t * 1000);
@@ -371,10 +387,9 @@ export default {
       this.getEvents();
     },
     async DeleteAllJob(){
-      for (let i = 32; i < 49; i++){ // 여기 범위는 내가 정해야함
+      for (let i = 51; i < 101; i++){ // 여기 범위는 내가 정해야함
         await db.collection('job').doc(i.toString()).delete();
       }
-      
     },
     async AddAllJob1(){
       let items = this.Item;

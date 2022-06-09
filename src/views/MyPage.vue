@@ -29,11 +29,11 @@
               <div class="form-group row align-items-center">
                 <label for="targetCompany" class="bar">성별</label>
                 <div class="value">
-                  <div class="UserName">{{ this.events[0].mySex }}</div>
+                  <div class="UserName">{{ this.events[1].mySex }}</div>
                 </div>
                 <label for="targetCompany" class="bar">나이</label>
                 <div class="value">
-                  <div class="UserName">{{ this.events[0].myAge }}</div>
+                  <div class="UserName">{{ this.events[1].myAge }}</div>
                 </div>
               </div>
 
@@ -44,53 +44,53 @@
                 </div>
                 <label for="targetCompany" class="bar">학점</label>
                 <div class="value">
-                  <div class="UserName">{{ this.events[0].mySchoolScore }}</div>
+                  <div class="UserName">{{ this.events[1].mySchoolScore }}</div>
                 </div>
               </div>
 
               <div class="form-group row align-items-center">
                 <label for="targetCompany" class="bar">토익 점수</label>
                 <div class="value">
-                  <div class="UserName">{{ this.events[0].myToeicScore }}</div>
+                  <div class="UserName">{{ this.events[1].myToeicScore }}</div>
                 </div>
 
                 <label for="targetCompany" class="bar">토익 스피킹</label>
                 <div class="value">
-                  <div class="UserName">{{ this.events[0].myToeicSpeakingScore }}</div>
+                  <div class="UserName">{{ this.events[1].myToeicSpeakingScore }}</div>
                 </div>
               </div>
 
               <div class="form-group row align-items-center">
                 <label for="targetCompany" class="bar">오픽</label>
                 <div class="value">
-                  <div class="UserName">{{ this.events[0].myOpicScore }}</div>
+                  <div class="UserName">{{ this.events[1].myOpicScore }}</div>
                 </div>
 
                 <label for="targetCompany" class="bar">수상경력</label>
                 <div class="value">
-                  <div class="UserName">{{ this.events[0].myContest }}</div>
+                  <div class="UserName">{{ this.events[1].myContest }}</div>
                 </div>
               </div>
 
               <div class="form-group row align-items-center">
                 <label for="targetCompany" class="bar">자격증</label>
                 <div class="value">
-                  <div class="UserName">{{ this.events[0].myCertification }}</div>
+                  <div class="UserName">{{ this.events[1].myCertification }}</div>
                 </div>
                 <label for="targetCompany" class="bar">사용가능 언어</label>
                 <div class="value">
-                  <div class="UserName">{{ this.events[0].myForeign }}</div>
+                  <div class="UserName">{{ this.events[1].myForeign }}</div>
                 </div>
               </div>
 
               <div class="form-group row align-items-center">
                 <label for="targetCompany" class="bar">인턴 경험</label>
                 <div class="value">
-                  <div class="UserName">{{ this.events[0].myIntern }}</div>
+                  <div class="UserName">{{ this.events[1].myIntern }}</div>
                 </div>
                 <label for="targetCompany" class="bar">해외 경험</label>
                 <div class="value">
-                  <div class="UserName">{{ this.events[0].myTravel }}</div>
+                  <div class="UserName">{{ this.events[1].myTravel }}</div>
                 </div>
               </div>
             </div>
@@ -293,7 +293,7 @@
               <q-spinner-cube color="primary" size="5em" />
               <div class="form-group1 row align-items-center">
                 <label for="targetCompany" class="keys"
-                  >오픽 {{ this.events[0].myOpicScore }} -> {{ this.eventsCompany.companyOpicScore }}</label
+                  >오픽 {{ this.events[1].myOpicScore }} -> {{ this.eventsCompany.companyOpicScore }}</label
                 >
                 <div class="results">
                   <div class="input-group">
@@ -380,11 +380,11 @@
                 :style="ToeicPercentage">
                 {{
                   Math.floor(
-                    (parseFloat(this.events[0].myToeicScore) / parseFloat(this.eventsCompany.companyToeicScore)) * 100
+                    (parseFloat(this.events[1].myToeicScore) / parseFloat(this.eventsCompany.companyToeicScore)) * 100
                   ) > 100
                     ? 100
                     : Math.floor(
-                        (parseFloat(this.events[0].myToeicScore) / parseFloat(this.eventsCompany.companyToeicScore)) *
+                        (parseFloat(this.events[1].myToeicScore) / parseFloat(this.eventsCompany.companyToeicScore)) *
                           100
                       )
                 }}%
@@ -404,16 +404,16 @@
                 :style="SchoolPercentage">
                 {{
                   Math.floor(
-                    (parseFloat(this.events[0].mySchoolScore) / parseFloat(this.eventsCompany.companySchoolScore)) * 100
+                    (parseFloat(this.events[1].mySchoolScore) / parseFloat(this.eventsCompany.companySchoolScore)) * 100
                   ) > 100
                     ? 100
                     : Math.floor(
-                        (parseFloat(this.events[0].mySchoolScore) / parseFloat(this.eventsCompany.companySchoolScore)) *
+                        (parseFloat(this.events[1].mySchoolScore) / parseFloat(this.eventsCompany.companySchoolScore)) *
                           100
                       )
                 }}%
               </div>
-              <!-- <span class="pull-right strong">{{this.events[0].mySchoolScore }}</span> -->
+              <!-- <span class="pull-right strong">{{this.events[1].mySchoolScore }}</span> -->
             </div>
             자격증 개수 -><span class="pull-right strong" style="margin-left: 5px">{{
               this.eventsCompany.companyCertification
@@ -428,12 +428,12 @@
                 :style="CertificationPercentage">
                 {{
                   Math.floor(
-                    (parseFloat(this.events[0].myCertification) / parseFloat(this.eventsCompany.companyCertification)) *
+                    (parseFloat(this.events[1].myCertification) / parseFloat(this.eventsCompany.companyCertification)) *
                       100
                   ) > 100
                     ? 100
                     : Math.floor(
-                        (parseFloat(this.events[0].myCertification) /
+                        (parseFloat(this.events[1].myCertification) /
                           parseFloat(this.eventsCompany.companyCertification)) *
                           100
                       )
@@ -453,11 +453,11 @@
                 :style="ForeignPercentage">
                 {{
                   Math.floor(
-                    (parseFloat(this.events[0].myForeign) / parseFloat(this.eventsCompany.companyForeign)) * 100
+                    (parseFloat(this.events[1].myForeign) / parseFloat(this.eventsCompany.companyForeign)) * 100
                   ) > 100
                     ? 100
                     : Math.floor(
-                        (parseFloat(this.events[0].myForeign) / parseFloat(this.eventsCompany.companyForeign)) * 100
+                        (parseFloat(this.events[1].myForeign) / parseFloat(this.eventsCompany.companyForeign)) * 100
                       )
                 }}%
               </div>
@@ -475,13 +475,13 @@
                 :style="ToeicSpeakingScorePercentage">
                 {{
                   Math.floor(
-                    (parseFloat(this.events[0].myToeicSpeakingScore) /
+                    (parseFloat(this.events[1].myToeicSpeakingScore) /
                       parseFloat(this.eventsCompany.companyToeicSpeakingScore)) *
                       100
                   ) > 100
                     ? 100
                     : Math.floor(
-                        (parseFloat(this.events[0].myToeicSpeakingScore) /
+                        (parseFloat(this.events[1].myToeicSpeakingScore) /
                           parseFloat(this.eventsCompany.companyToeicSpeakingScore)) *
                           100
                       )
@@ -501,13 +501,13 @@
                 :style="OpicScorePercentage">
                 {{
                   Math.floor(
-                    (parseFloat(this.OpicState[this.events[0].myOpicScore]) /
+                    (parseFloat(this.OpicState[this.events[1].myOpicScore]) /
                       parseFloat(this.OpicState[this.eventsCompany.companyOpicScore])) *
                       100
                   ) > 100
                     ? 100
                     : Math.floor(
-                        (parseFloat(this.OpicState[this.events[0].myOpicScore]) /
+                        (parseFloat(this.OpicState[this.events[1].myOpicScore]) /
                           parseFloat(this.OpicState[this.eventsCompany.companyOpicScore])) *
                           100
                       )
@@ -527,11 +527,11 @@
                 :style="TravelPercentage">
                 {{
                   Math.floor(
-                    (parseFloat(this.events[0].myTravel) / parseFloat(this.eventsCompany.companyTravel)) * 100
+                    (parseFloat(this.events[1].myTravel) / parseFloat(this.eventsCompany.companyTravel)) * 100
                   ) > 100
                     ? 100
                     : Math.floor(
-                        (parseFloat(this.events[0].myTravel) / parseFloat(this.eventsCompany.companyTravel)) * 100
+                        (parseFloat(this.events[1].myTravel) / parseFloat(this.eventsCompany.companyTravel)) * 100
                       )
                 }}%
               </div>
@@ -549,11 +549,11 @@
                 :style="InternPercentage">
                 {{
                   Math.floor(
-                    (parseFloat(this.events[0].myIntern) / parseFloat(this.eventsCompany.companyIntern)) * 100
+                    (parseFloat(this.events[1].myIntern) / parseFloat(this.eventsCompany.companyIntern)) * 100
                   ) > 100
                     ? 100
                     : Math.floor(
-                        (parseFloat(this.events[0].myIntern) / parseFloat(this.eventsCompany.companyIntern)) * 100
+                        (parseFloat(this.events[1].myIntern) / parseFloat(this.eventsCompany.companyIntern)) * 100
                       )
                 }}%
               </div>
@@ -571,11 +571,11 @@
                 :style="ContestPercentage">
                 {{
                   Math.floor(
-                    (parseFloat(this.events[0].myContest) / parseFloat(this.eventsCompany.companyContest)) * 100
+                    (parseFloat(this.events[1].myContest) / parseFloat(this.eventsCompany.companyContest)) * 100
                   ) > 100
                     ? 100
                     : Math.floor(
-                        (parseFloat(this.events[0].myContest) / parseFloat(this.eventsCompany.companyContest)) * 100
+                        (parseFloat(this.events[1].myContest) / parseFloat(this.eventsCompany.companyContest)) * 100
                       )
                 }}%
               </div>
@@ -716,7 +716,7 @@ export default {
     },
     ToeicScore() {
       return Math.floor(
-        (parseFloat(this.events[0].myToeicScore) / parseFloat(this.eventsCompany.companyToeicScore)) * 100
+        (parseFloat(this.events[1].myToeicScore) / parseFloat(this.eventsCompany.companyToeicScore)) * 100
       ).toString();
     },
     ToeicPercentage() {
@@ -734,7 +734,7 @@ export default {
     },
     SchoolScore() {
       return Math.floor(
-        (parseFloat(this.events[0].mySchoolScore) / parseFloat(this.eventsCompany.companySchoolScore)) * 100
+        (parseFloat(this.events[1].mySchoolScore) / parseFloat(this.eventsCompany.companySchoolScore)) * 100
       ).toString();
     },
     SchoolPercentage() {
@@ -752,7 +752,7 @@ export default {
     },
     CertificationScore() {
       return Math.floor(
-        (parseFloat(this.events[0].myCertification) / parseFloat(this.eventsCompany.companyCertification)) * 100
+        (parseFloat(this.events[1].myCertification) / parseFloat(this.eventsCompany.companyCertification)) * 100
       ).toString();
     },
     CertificationPercentage() {
@@ -770,7 +770,7 @@ export default {
     },
     ForeignScore() {
       return Math.floor(
-        (parseFloat(this.events[0].myForeign) / parseFloat(this.eventsCompany.companyForeign)) * 100
+        (parseFloat(this.events[1].myForeign) / parseFloat(this.eventsCompany.companyForeign)) * 100
       ).toString();
     },
     ForeignPercentage() {
@@ -788,7 +788,7 @@ export default {
     },
     ToeicSpeakingScoreScore() {
       return Math.floor(
-        (parseFloat(this.events[0].myToeicSpeakingScore) / parseFloat(this.eventsCompany.companyToeicSpeakingScore)) *
+        (parseFloat(this.events[1].myToeicSpeakingScore) / parseFloat(this.eventsCompany.companyToeicSpeakingScore)) *
           100
       ).toString();
     },
@@ -807,7 +807,7 @@ export default {
     },
     OpicScoreScore() {
       return Math.floor(
-        (parseFloat(this.OpicState[this.events[0].myOpicScore]) /
+        (parseFloat(this.OpicState[this.events[1].myOpicScore]) /
           parseFloat(this.OpicState[this.eventsCompany.companyOpicScore])) *
           100
       ).toString();
@@ -827,7 +827,7 @@ export default {
     },
     TravelScore() {
       return Math.floor(
-        (parseFloat(this.events[0].myTravel) / parseFloat(this.eventsCompany.companyTravel)) * 100
+        (parseFloat(this.events[1].myTravel) / parseFloat(this.eventsCompany.companyTravel)) * 100
       ).toString();
     },
     TravelPercentage() {
@@ -845,7 +845,7 @@ export default {
     },
     InternScore() {
       return Math.floor(
-        (parseFloat(this.events[0].myIntern) / parseFloat(this.eventsCompany.companyIntern)) * 100
+        (parseFloat(this.events[1].myIntern) / parseFloat(this.eventsCompany.companyIntern)) * 100
       ).toString();
     },
     InternPercentage() {
@@ -863,7 +863,7 @@ export default {
     },
     ContestScore() {
       return Math.floor(
-        (parseFloat(this.events[0].myContest) / parseFloat(this.eventsCompany.companyContest)) * 100
+        (parseFloat(this.events[1].myContest) / parseFloat(this.eventsCompany.companyContest)) * 100
       ).toString();
     },
     ContestPercentage() {
@@ -899,22 +899,22 @@ export default {
       });
       // 이벤트를 위에 있는 data()의 events에 넣어준다.
       this.events = events;
-      this.wantToGo = events[0].wantToGo;
-      this.myToeicScore = events[0].myToeicScore;
-      this.mySchoolScore = events[0].mySchoolScore;
-      this.myCertification = events[0].myCertification;
-      this.myForeign = events[0].myForeign;
-      this.myAge = events[0].myAge;
-      this.mySex = events[0].mySex;
-      this.myStudyTime = events[0].myStudyTime;
-      this.mySoon = events[0].mySoon;
-      this.tempSoon = events[0].mySoon;
-      this.tempStudyTime = events[0].myStudyTime;
-      this.myToeicSpeakingScore = events[0].myToeicSpeakingScore;
-      this.myOpicScore = events[0].myOpicScore;
-      this.myContest = events[0].myContest;
-      this.myIntern = events[0].myIntern;
-      this.myTravel = events[0].myTravel;
+      this.wantToGo = events[1].wantToGo;
+      this.myToeicScore = events[1].myToeicScore;
+      this.mySchoolScore = events[1].mySchoolScore;
+      this.myCertification = events[1].myCertification;
+      this.myForeign = events[1].myForeign;
+      this.myAge = events[1].myAge;
+      this.mySex = events[1].mySex;
+      this.myStudyTime = events[1].myStudyTime;
+      this.mySoon = events[1].mySoon;
+      this.tempSoon = events[1].mySoon;
+      this.tempStudyTime = events[1].myStudyTime;
+      this.myToeicSpeakingScore = events[1].myToeicSpeakingScore;
+      this.myOpicScore = events[1].myOpicScore;
+      this.myContest = events[1].myContest;
+      this.myIntern = events[1].myIntern;
+      this.myTravel = events[1].myTravel;
       this.isCompanyName();
       this.InitalData();
       this.CompanyItems();
@@ -971,13 +971,13 @@ export default {
       this.eventsTexts = events;
     },
     InitalData() {
-      this.wantToGo = this.events[0].wantToGo;
+      this.wantToGo = this.events[1].wantToGo;
 
-      this.myToeicScore = this.events[0].myToeicScore;
+      this.myToeicScore = this.events[1].myToeicScore;
 
-      this.mySchoolScore = this.events[0].mySchoolScore;
-      this.myCertification = this.events[0].myCertification;
-      this.myForeign = this.events[0].myForeign;
+      this.mySchoolScore = this.events[1].mySchoolScore;
+      this.myCertification = this.events[1].myCertification;
+      this.myForeign = this.events[1].myForeign;
       this.companyToeicScore = this.eventsCompany.companyToeicScore;
       this.companySchoolScore = this.eventsCompany.companySchoolScore;
       this.companyCertification = this.eventsCompany.companyCertification;
@@ -1031,12 +1031,27 @@ export default {
       this.dialog = false;
     },
     isCompanyName() {
-      if (this.events[0].wantToGo == 'Nexon') {
-        this.eventsCompany = this.events[2];
-      } else if (this.events[0].wantToGo == 'Netmarble') {
-        this.eventsCompany = this.events[1];
-      } else {
+      if (this.events[1].wantToGo == 'Coupang') {
         this.eventsCompany = this.events[0];
+      } else if (this.events[1].wantToGo == 'KEPC') {
+        this.eventsCompany = this.events[1];
+      }
+        else if (this.events[1].wantToGo == 'Kakao') {
+        this.eventsCompany = this.events[2];
+      }
+      else if (this.events[1].wantToGo == 'Line') {
+        this.eventsCompany = this.events[3];
+      }
+      else if (this.events[1].wantToGo == 'Netmarble') {
+        this.eventsCompany = this.events[4];
+      }
+      else if (this.events[1].wantToGo == 'Nexon') {
+        this.eventsCompany = this.events[5];
+      }
+      else if (this.events[1].wantToGo == 'Ottugi') {
+        this.eventsCompany = this.events[6];
+      } else {
+        this.eventsCompany = this.events[1];
       }
     },
     async DialogCheckEvent() {
