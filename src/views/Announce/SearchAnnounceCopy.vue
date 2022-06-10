@@ -80,7 +80,7 @@
       
       <v-btn @click="AddAllJob1">모두 저장하려면 여기를 누르시오</v-btn>
        <div>
-      {{this.eventsKeyword}}
+      <!-- {{this.eventsKeyword}} -->
     </div>
       <p>{{this.events.data.jobs.job}}</p>
       <!-- <div v-for="item in this.events.data" :key="item.id">
@@ -387,7 +387,7 @@ export default {
       this.getEvents();
     },
     async DeleteAllJob(){
-      for (let i = 51; i < 101; i++){ // 여기 범위는 내가 정해야함
+      for (let i = 2; i < 151; i++){ // 여기 범위는 내가 정해야함
         await db.collection('job').doc(i.toString()).delete();
       }
     },
